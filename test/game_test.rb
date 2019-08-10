@@ -36,7 +36,7 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_main_game_loop
-    # pend("Not implemented")
+    pend("Not implemented")
 
     assert_equal @game_state, puzzle_fighter(@instructions)
   end
