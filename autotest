@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+fswatch -o .| xargs -n1 -I{} ruby test/test_runner.rb
