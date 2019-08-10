@@ -32,7 +32,14 @@ class GameTest < Test::Unit::TestCase
       "    R ",
       " R  YR",
       "RR  RB"
-    ].join
+    ].join("\n")
+  end
+
+  def test_main_game_output_format
+    assert_match(
+      /\A([RGBY ]{6}\n){11}[RGBY ]{6}/m,
+      puzzle_fighter(@instructions),
+    )
   end
 
   def test_main_game_loop
