@@ -10,7 +10,7 @@ class PuzzleFighter < BaseScaffold
   end
 
   def call
-    process_input
+    output_format
   end
 
   private
@@ -23,6 +23,10 @@ class PuzzleFighter < BaseScaffold
 
   def initial_state
     Array.new(12, " " * 6)
+  end
+
+  def output_format
+    process_input.join("\n")
   end
 end
 
