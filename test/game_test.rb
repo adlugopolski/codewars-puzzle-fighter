@@ -2,8 +2,8 @@ require "test/unit"
 require_relative "../src/app.rb"
 
 class GameTest < Test::Unit::TestCase
-  def setup
-    @instructions = [
+  def x_test_solves_game_0
+    instructions = [
       %w[BR LLL],
       %w[BY LL],
       %w[BG ALL],
@@ -19,7 +19,7 @@ class GameTest < Test::Unit::TestCase
       %w[gy AAL],
     ]
 
-    @game_state = [
+    game_state = [
       "      ",
       "      ",
       "      ",
@@ -34,28 +34,143 @@ class GameTest < Test::Unit::TestCase
       "RR  RB"
     ].join("\n")
 
-    @expected_output_format = /\A([RGBY ]{6}\n){11}[RGBY ]{6}/m
+    pend
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 
-  def test_returns_expected_state_in_expected_format
-    assert_match @expected_output_format, @game_state
+  def x_test_solve_game_2
+    instructions = [
+      ["GR", "ALLL"],
+      ["GG", "ALLL"],
+      ["RG", "AAL"],
+      ["RB", "BLL"],
+      ["RG", "ALL"],
+      ["BB", "RR"],
+      ["BR", "BB"],
+      ["BR", "ALLL"],
+      ["YB", "R"],
+      ["BG", "BBRR"],
+      ["YR", "AAR"],
+      ["RR", "L"],
+      ["RR", "ABLL"],
+      ["GY", "BRR"],
+      ["BB", "R"],
+      ["gB", "RR"],
+      ["BR", "ALL"],
+      ["Gr", "BB"],
+      ["Rb", "R"],
+      ["GG", "B"],
+      ["bB", "LL"],
+    ]
+
+    pend
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "    R ",
+      "  GGY ",
+      "  GGYB",
+      "GGGRYB",
+      "GRRBBB",
+    ].join("\n")
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 
-  def test_returns_expected_game_output_format
-    assert_match @expected_output_format, puzzle_fighter(@instructions)
+  def x_test_solve_game_3
+    instructions = [
+      ["RR","LLL"],
+      ["GG","LL"],
+      ["RG","BBL"],
+      ["GY","AR"],
+      ["RR","BBLLL"],
+      ["RB","AALL"],
+      ["GR","B"],
+      ["GB","AR"],
+      ["RR",""],
+      ["GG","R"],
+      ["YR","BR"],
+      ["RR","LLL"],
+      ["BR","AALL"],
+      ["Bg",""],
+      ["RR","BBBBLLL"],
+      ["GR","ALLL"],
+      ["bR","L"],
+      ["YG","BBBALL"],
+      ["RR","L"],
+      ["YB","AL"],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "GG    ",
+      "RY    ",
+      "RRYB  ",
+      "RRRB  ",
+      "R RgY ",
+      "R RRG ",
+      "RRRRG ",
+      "RGGRGB",
+      "RGRGGY",
+    ].join("\n")
+
+    pend
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 
-  def test_passes_initial_state_in_expected_format
-    initial_state = Array.new(12, " " * 6)
-    stub(MainLoop).call(initial_state, %w[BR LLL]).times(1)
-    stub(MainLoop).call(anything, anything).times(12) { initial_state }
+  def x_test_solve_game_4
+    instructions = [
+      ["BB", "LLLL"],
+      ["BB", "LL"],
+      ["BB", "L"],
+      ["BB", "LLL"],
+      ["BB", "LL"],
+      ["BG", "L"],
+      ["BB", ""],
+      ["BB", "R"],
+      ["RB", "BBRRR"],
+      ["RR", "LLL"],
+      ["RR", "BALL"],
+      ["RR", ""],
+      ["RR", "R"],
+      ["RR", "L"],
+      ["RR", "B"],
+      ["RR", "LLL"],
+      ["RR", "LL"],
+      ["RR", "BLLL"],
+      ["RR", "B"],
+      ["YR", "ALL"],
+      ["GR", "AL"],
+      ["Rb", "RRRR"],
+    ]
 
-    PuzzleFighter.call(@instructions)
-  end
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      " YG   ",
+      "RRR   ",
+      "RRR   ",
+      "RRRR  ",
+      "RRRR  ",
+      "RRRR  ",
+      "   RRR",
+      "  GRRR",
+    ].join("\n")
 
-  def xtest_returns_expected_game_state
-    pend("Not implemented")
+    pend
 
-    assert_equal @game_state, puzzle_fighter(@instructions)
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 end
