@@ -48,7 +48,7 @@ class GameTest < Test::Unit::TestCase
   def test_passes_initial_state_in_expected_format
     initial_state = Array.new(12, " " * 6)
     stub(MainLoop).call(initial_state, %w[BR LLL]).times(1)
-    stub(MainLoop).call(anything, anything).times(12)
+    stub(MainLoop).call(anything, anything).times(12) { initial_state }
 
     PuzzleFighter.call(@instructions)
   end
