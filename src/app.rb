@@ -16,9 +16,13 @@ class PuzzleFighter < BaseScaffold
   private
 
   def process_input
-    @input.reduce([]) do |state, step|
+    @input.reduce(initial_state) do |state, step|
       MainLoop.call(state, step)
     end
+  end
+
+  def initial_state
+    Array.new(12, " " * 6)
   end
 end
 
@@ -40,4 +44,3 @@ end
 def puzzle_fighter(instructions)
   PuzzleFighter.call(instructions)
 end
-
