@@ -6,18 +6,20 @@ end
 
 class PuzzleFighter < BaseScaffold
   def initialize(input)
-    self.input = input
+    @input = input
   end
 
   def call
-    input.reduce([]) do |state, step|
-      MainLoop.call(state, step)
-    end
+    process_input
   end
 
   private
 
-  attr_accessor :input
+  def process_input
+    @input.reduce([]) do |state, step|
+      MainLoop.call(state, step)
+    end
+  end
 end
 
 class MainLoop < BaseScaffold
