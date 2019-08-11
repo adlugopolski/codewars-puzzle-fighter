@@ -44,8 +44,6 @@ class InitialRotatorTest < Test::Unit::TestCase
   end
 
   def test_moves_the_block_to_initial_location_6
-    pend
-
     assert_equal(
       InitialRotator.call(["BG", "BBRR"]),
       ["     G", "     B"],
@@ -53,8 +51,6 @@ class InitialRotatorTest < Test::Unit::TestCase
   end
 
   def test_moves_the_block_to_initial_location_7
-    pend
-
     assert_equal(
       InitialRotator.call(["RR", "BBBBLLL"]),
       ["R     ", "R     "],
@@ -62,8 +58,6 @@ class InitialRotatorTest < Test::Unit::TestCase
   end
 
   def test_moves_the_block_to_initial_location_8
-    pend
-
     assert_equal(
       InitialRotator.call(["YG", "BBBALL"]),
       [" G    ", " Y    "],
