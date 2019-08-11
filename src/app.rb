@@ -50,12 +50,13 @@ end
 
 class InitialRotator < BaseScaffold
   def initialize(action)
-    @blocks, @move = action
+    @blocks, @moves = action
     @template = Array.new(2, " " * 6)
   end
 
   def call
     set_starting_position
+    perform_moves
     @template
   end
 
@@ -64,6 +65,23 @@ class InitialRotator < BaseScaffold
   def set_starting_position
     @template[0][3] = @blocks[0]
     @template[1][3] = @blocks[1]
+  end
+
+  def perform_moves
+    @moves.chars.each do |move|
+      case move
+      when "L"
+      when "R"
+      when "A"
+      when "B"
+      else
+        raise ArgumentError, invalid_move_error_message
+      end
+    end
+  end
+
+  def invalid_move_error_message
+    format("Invalid move %s for blocks: %s", @blocks, @move)
   end
 end
 
