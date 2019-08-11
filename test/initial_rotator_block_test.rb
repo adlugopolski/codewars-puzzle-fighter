@@ -44,6 +44,20 @@ class InitialRotator::BlockTest < Test::Unit::TestCase
     assert_equal block2, block1 << block2
   end
 
+  def test_returns_rightmost_object_for_equal
+    block1 = InitialRotator::Block.new("B", 3, 2)
+    block2 = InitialRotator::Block.new("B", 3, 2)
+
+    assert_equal block1, block1 >> block2
+  end
+
+  def test_returns_rightmost_object_for_different
+    block1 = InitialRotator::Block.new("B", 3, 2)
+    block2 = InitialRotator::Block.new("B", 4, 2)
+
+    assert_equal block2, block1 >> block2
+  end
+
   def test_draws_on_provided_template
     block = InitialRotator::Block.new("B", 3, 1)
 
