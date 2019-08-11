@@ -180,7 +180,7 @@ class InitialRotator < BaseScaffold
       end
     end
 
-    def to_s
+    def to_a
       @block2.draw_on(
         @block1.draw_on(
           ["      ", "      "],
@@ -220,7 +220,7 @@ class InitialRotator < BaseScaffold
   def call
     perform_moves
     adjust_negatives
-    @pair.to_s
+    @pair.to_a
   end
 
   private

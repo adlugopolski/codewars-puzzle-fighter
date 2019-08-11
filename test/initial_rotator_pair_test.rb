@@ -9,7 +9,7 @@ class InitialRotator
 
       assert_equal(
         ["   B  ", "   Y  "],
-        Pair.new(block1, block2).to_s,
+        Pair.new(block1, block2).to_a,
       )
     end
 
