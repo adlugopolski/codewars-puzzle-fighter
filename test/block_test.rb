@@ -161,4 +161,32 @@ class BlockTest < Test::Unit::TestCase
 
     assert_equal block.copy(kind: "A"), Block.new("A", 3, 1)
   end
+
+  def test_sorts_equal_blocks
+    block1 = Block.new("B", 3, 2)
+    block2 = Block.new("B", 3, 2)
+
+    assert_equal 0, block1 <=> block2
+  end
+
+  def test_sorts_upper_block
+    block1 = Block.new("B", 3, 0)
+    block2 = Block.new("B", 3, 1)
+
+    assert_equal(-1, block1 <=> block2)
+  end
+
+  def test_sorts_lower_block
+    block1 = Block.new("B", 3, 1)
+    block2 = Block.new("B", 4, 0)
+
+    assert_equal 1, block1 <=> block2
+  end
+
+  def test_sorts_leftmost_blocks
+    block1 = Block.new("B", 3, 1)
+    block2 = Block.new("B", 4, 1)
+
+    assert_equal(-1, block1 <=> block2)
+  end
 end
