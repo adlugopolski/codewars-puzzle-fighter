@@ -4,19 +4,19 @@ require_relative "../src/app.rb"
 class GameTest < Test::Unit::TestCase
   def x_test_solves_game_0
     instructions = [
-      ["BR", "LLL]",
-      ["BY", "LL]",
-      ["BG", "ALL]",
-      ["BY", "BRR]",
-      ["RR", "AR]",
-      ["GY", "A]",
-      ["BB", "AALLL]",
-      ["GR", "A]",
-      ["RY", "LL]",
-      ["GG", "L]",
-      ["GY", "BB]",
-      ["bR", "ALLL]",
-      ["gy", "AAL]",
+      ["BR", "LLL"],
+      ["BY", "LL"],
+      ["BG", "ALL"],
+      ["BY", "BRR"],
+      ["RR", "AR"],
+      ["GY", "A"],
+      ["BB", "AALLL"],
+      ["GR", "A"],
+      ["RY", "LL"],
+      ["GG", "L"],
+      ["GY", "BB"],
+      ["bR", "ALLL"],
+      ["gy", "AAL"],
     ]
 
     game_state = [
