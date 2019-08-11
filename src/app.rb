@@ -71,6 +71,10 @@ class Block
     @y = y
   end
 
+  def copy(kind: self.kind, x: self.x, y: self.y)
+    Block.new(kind, x, y)
+  end
+
   def draw_on(template)
     board = template.map(&:dup)
     board[y][x] = kind
