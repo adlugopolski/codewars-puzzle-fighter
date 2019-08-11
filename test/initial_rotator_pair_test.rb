@@ -79,7 +79,7 @@ class InitialRotator
 
     # Clockwise rotation
 
-    def test_roates_blocks_clock_wise_1
+    def test_roates_blocks_clockwise_1
       block1 = Block.new("B", 3, 0)
       block2 = Block.new("Y", 3, 1)
 
@@ -89,7 +89,7 @@ class InitialRotator
       assert_equal new_block2, Block.new("Y", 2, 0)
     end
 
-    def test_roates_blocks_clock_wise_2
+    def test_roates_blocks_clockwise_2
       block1 = Block.new("B", 3, 1)
       block2 = Block.new("Y", 3, 0)
 
@@ -99,7 +99,7 @@ class InitialRotator
       assert_equal new_block2, Block.new("Y", 4, 1)
     end
 
-    def test_roates_blocks_clock_wise_3
+    def test_roates_blocks_clockwise_3
       block1 = Block.new("B", 3, 0)
       block2 = Block.new("Y", 2, 0)
 
@@ -109,7 +109,7 @@ class InitialRotator
       assert_equal new_block2, Block.new("Y", 3, -1)
     end
 
-    def test_roates_blocks_clock_wise_4
+    def test_roates_blocks_clockwise_4
       block1 = Block.new("B", 3, 0)
       block2 = Block.new("Y", 4, 0)
 
