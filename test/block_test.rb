@@ -189,4 +189,11 @@ class BlockTest < Test::Unit::TestCase
 
     assert_equal(-1, block1 <=> block2)
   end
+
+  def test_sorts_rightmost_blocks
+    block1 = Block.new("B", 6, 1)
+    block2 = Block.new("B", 4, 1)
+
+    assert_equal 1, block1 <=> block2
+  end
 end
