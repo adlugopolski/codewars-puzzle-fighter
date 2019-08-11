@@ -39,7 +39,9 @@ class PuzzleFighter < BaseScaffold
   private
 
   def process_input
-    @input.reduce([]) do |state, step|
+    @input.each_with_index.reduce([]) do |state, (step, _counter)|
+      # break state if _counter == 5
+
       MainLoop.call(state, step)
     end
   end
@@ -284,9 +286,9 @@ class InitialRotator < BaseScaffold
         when "R"
           Pair.new(*@pair.move_right)
         when "A"
-          Pair.new(*@pair.rotate_clockwise)
-        when "B"
           Pair.new(*@pair.rotate_anticlockwise)
+        when "B"
+          Pair.new(*@pair.rotate_clockwise)
         else
           raise ArgumentError, invalid_move_error_message
         end
