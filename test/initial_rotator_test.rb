@@ -84,4 +84,11 @@ class InitialRotatorTest < Test::Unit::TestCase
       ["  B   ", "  R   "],
     )
   end
+
+  def test_moves_the_piece_to_initial_location_10
+    assert_equal(
+      InitialRotator.call(["BR", "LLLLL"]),
+      ["B     ", "R     "],
+    )
+  end
 end
