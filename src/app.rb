@@ -39,13 +39,9 @@ class PuzzleFighter < BaseScaffold
   private
 
   def process_input
-    @input.reduce(initial_state) do |state, step|
+    @input.reduce([]) do |state, step|
       MainLoop.call(state, step)
     end
-  end
-
-  def initial_state
-    Array.new(12, "      ")
   end
 
   def output_format
@@ -54,11 +50,31 @@ class PuzzleFighter < BaseScaffold
 end
 
 class Board
-  def initialize(blocks)
+  class NullBlock
+    def y
+      12
+    end
+  end
+
+  def initialize(blocks = [])
     @blocks = blocks
   end
 
-  def insert(blocks)
+  def insert(new_blocks)
+    new_blocks.reverse.each do |block|
+      @blocks << block.copy(y: lowest_in_column(block.x))
+    end
+    @blocks
+  end
+
+  def lowest_in_column(column)
+    found_block =
+      @blocks
+      .select { |block| block.x == column }
+      .min_by(&:y)
+
+    found_block ||= NullBlock.new
+    found_block.y - 1
   end
 end
 
@@ -141,7 +157,7 @@ class MainLoop < BaseScaffold
   end
 
   def call
-    InitialRotator.call(@step)
+    Board.new(@state).insert InitialRotator.call(@step)
   end
 end
 
