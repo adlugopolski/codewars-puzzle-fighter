@@ -54,19 +54,20 @@ class PuzzleFighter < BaseScaffold
   end
 end
 
-class Board
+class Board < BaseScaffold
   class NullBlock
     def y
       12
     end
   end
 
-  def initialize(blocks = [])
+  def initialize(blocks, new_blocks)
     @blocks = blocks.map(&:copy)
+    @new_blocks = new_blocks
   end
 
-  def insert(new_blocks)
-    new_blocks.reverse.each do |block|
+  def call
+    @new_blocks.reverse.each do |block|
       @blocks << block.copy(y: lowest_in_column(block.x))
     end
     @blocks
@@ -178,7 +179,7 @@ class MainLoop < BaseScaffold
   end
 
   def call
-    Board.new(@state).insert InitialRotator.call(@step)
+    Board.call @state, InitialRotator.call(@step)
   end
 end
 
