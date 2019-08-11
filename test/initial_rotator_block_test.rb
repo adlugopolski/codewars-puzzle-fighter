@@ -59,6 +59,34 @@ class InitialRotator
       assert_equal block2, block1 >> block2
     end
 
+    def test_returns_upmost_object_for_equal
+      block1 = Block.new("B", 3, 2)
+      block2 = Block.new("B", 3, 2)
+
+      assert_equal block1, block1 <= block2
+    end
+
+    def test_returns_upmost_object_for_different
+      block1 = Block.new("B", 3, 2)
+      block2 = Block.new("B", 4, 1)
+
+      assert_equal block2, block1 <= block2
+    end
+
+    def test_returns_downmost_object_for_equal
+      block1 = Block.new("B", 3, 2)
+      block2 = Block.new("B", 3, 2)
+
+      assert_equal block1, block1 >= block2
+    end
+
+    def test_returns_downmost_object_for_different
+      block1 = Block.new("B", 3, 2)
+      block2 = Block.new("B", 3, 3)
+
+      assert_equal block2, block1 >= block2
+    end
+
     def test_draws_on_provided_template
       block = Block.new("B", 3, 1)
 
