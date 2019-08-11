@@ -158,4 +158,18 @@ class InitialRotatorTest < Test::Unit::TestCase
       ["  RB  ", "      "],
     )
   end
+
+  def test_rotates_the_block_anticlockwise_2
+    assert_equal(
+      _format(InitialRotator.call(["BR", "BB"])),
+      ["   R  ", "   B  "],
+    )
+  end
+
+  def test_rotates_the_block_anticlockwise_3
+    assert_equal(
+      _format(InitialRotator.call(["GY", "BB"])),
+      ["   Y  ", "   G  "],
+    )
+  end
 end
