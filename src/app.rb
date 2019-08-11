@@ -8,6 +8,25 @@ class BaseScaffold
   end
 end
 
+class FormatOutput < BaseScaffold
+  def initialize(blocks, rows)
+    @blocks = blocks
+    @rows = rows
+  end
+
+  def call
+    @blocks.reduce(template) do |board, block|
+      block.draw_on(board)
+    end
+  end
+
+  private
+
+  def template
+    Array.new(@rows, "      ")
+  end
+end
+
 class PuzzleFighter < BaseScaffold
   def initialize(input)
     @input = input
@@ -30,7 +49,7 @@ class PuzzleFighter < BaseScaffold
   end
 
   def output_format
-    process_input.join("\n")
+    FormatOutput.call(process_input, 12).join("\n")
   end
 end
 
@@ -41,7 +60,7 @@ class MainLoop < BaseScaffold
   end
 
   def call
-    Array.new(10, "      ") + InitialRotator.call(@step)
+    InitialRotator.call(@step)
   end
 end
 
@@ -176,6 +195,10 @@ class InitialRotator < BaseScaffold
       end
     end
 
+    def blocks
+      [@block1, @block2]
+    end
+
     def to_a
       @block2.draw_on(
         @block1.draw_on(
@@ -216,7 +239,7 @@ class InitialRotator < BaseScaffold
   def call
     perform_moves
     adjust_negatives
-    @pair.to_a
+    @pair.blocks
   end
 
   private
