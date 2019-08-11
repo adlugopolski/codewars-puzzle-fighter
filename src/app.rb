@@ -73,6 +73,14 @@ class InitialRotator < BaseScaffold
       Block.new(kind, [5, x + 1].min, y)
     end
 
+    def up
+      Block.new(kind, x, y - 1)
+    end
+
+    def down
+      Block.new(kind, x, y + 1)
+    end
+
     def ==(other)
       x == other.x && y == other.y && kind == other.kind
     end
@@ -132,7 +140,38 @@ class InitialRotator < BaseScaffold
       end
     end
 
+    def horizontal?
+      @block1.y == @block2.y
+    end
+
+    def center_top?
+      @block1 == @block1 <= @block2
+    end
+
+    def center_left?
+      @block1 == @block1 << @block2
+    end
+
     def rotate_clockwise
+      if horizontal?
+        if center_left?
+          [@block1, @block2.left.down]
+        else
+          [@block1, @block2.right.up]
+        end
+      elsif center_top?
+        [@block1, @block2.left.up]
+      else
+        [@block1, @block2.right.down]
+      end
+    end
+
+    def rotate_anticlockwise
+      # FIXME: Implement proper rotation
+
+      pair = Pair.new(*rotate_clockwise)
+      pair = Pair.new(*pair.rotate_clockwise)
+      pair.rotate_clockwise
     end
 
     def to_s
@@ -140,6 +179,15 @@ class InitialRotator < BaseScaffold
         @block1.draw_on(
           ["      ", "      "],
         ),
+      )
+    end
+
+    def adjust_negatives
+      return self if @block1.y >= 0 && @block2.y >= 0
+
+      Pair.new(
+        Block.new(@block1.kind, @block1.x, @block1.y + 1),
+        Block.new(@block2.kind, @block2.x, @block2.y + 1),
       )
     end
 
@@ -165,6 +213,7 @@ class InitialRotator < BaseScaffold
 
   def call
     perform_moves
+    adjust_negatives
     @pair.to_s
   end
 
@@ -179,11 +228,18 @@ class InitialRotator < BaseScaffold
         when "R"
           Pair.new(*@pair.move_right)
         when "A"
+          Pair.new(*@pair.rotate_clockwise)
         when "B"
+          Pair.new(*@pair.rotate_anticlockwise)
         else
           raise ArgumentError, invalid_move_error_message
         end
+
     end
+  end
+
+  def adjust_negatives
+    @pair = @pair.adjust_negatives
   end
 
   def invalid_move_error_message
