@@ -60,7 +60,7 @@ class InitialRotator < BaseScaffold
     end
 
     def draw_on(template)
-      board = template.dup
+      board = template.map(&:dup)
       board[y][x] = kind
       board
     end
