@@ -343,7 +343,7 @@ if $PROGRAM_NAME == __FILE__
   pf = PuzzleFighter.new(instructions)
   pf.call
 
-  bar = Array.new(11) { "+------+" }
+  bar = Array.new(instructions.size) { "+------+" }
   output = pf.debug.map(&FormatOutput.method(:call)).transpose
   puts bar.join(" ")
   output.map do |line|
