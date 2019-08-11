@@ -339,5 +339,3 @@ if $PROGRAM_NAME == __FILE__
 
   DebugState.call(puzzle_fighter(instructions).split("\n"))
 end
-
-
