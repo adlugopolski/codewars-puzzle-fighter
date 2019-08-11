@@ -41,25 +41,11 @@ class DebugState
   end
 
   def call
-    puts colorize
-  end
-
-  private
-
-  def rows
     @state.map do |row|
       output_row = row.chars.map do |char|
         COLOR_MAP.fetch(char, char)
       end
       format("|%s|", output_row.join)
     end
-  end
-
-  def bar
-    "+------+"
-  end
-
-  def colorize
-    [bar, *rows, bar]
   end
 end
