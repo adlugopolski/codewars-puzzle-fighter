@@ -196,4 +196,11 @@ class BlockTest < Test::Unit::TestCase
 
     assert_equal 1, block1 <=> block2
   end
+
+  def test_doesnt_sort_sorted_blocks
+    block1 = Block.new("B", 6, 0)
+    block2 = Block.new("B", 4, 1)
+
+    assert_equal(-1, block1 <=> block2)
+  end
 end
