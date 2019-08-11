@@ -70,7 +70,7 @@ class InitialRotator < BaseScaffold
     end
 
     def right
-      Block.new(kind, [5, x + 1].max, y)
+      Block.new(kind, [5, x + 1].min, y)
     end
 
     def ==(other)
