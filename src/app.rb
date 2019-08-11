@@ -160,6 +160,7 @@ class InitialRotator < BaseScaffold
       when "L"
         @state = Pair.new(*@state).move_left
       when "R"
+        @state = Pair.new(*@state).move_right
       when "A"
       when "B"
       else
