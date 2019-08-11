@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-fswatch -o .| xargs -n1 -I{} sh -c "clear; ruby test/test_runner.rb"
+fswatch -o .| xargs -n1 -I{} sh -c \
+  "clear; ruby test/test_runner.rb --stop-on-failure"
