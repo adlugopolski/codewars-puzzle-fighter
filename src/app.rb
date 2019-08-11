@@ -67,6 +67,8 @@ class Board
     @blocks
   end
 
+  private
+
   def lowest_in_column(column)
     found_block =
       @blocks
