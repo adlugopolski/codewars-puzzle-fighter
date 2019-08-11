@@ -2,37 +2,55 @@ require "test/unit"
 require_relative "../src/app.rb"
 
 class GameTest < Test::Unit::TestCase
-  def test_solves_game_0
+  def test_solves_game_without_specials
     instructions = [
       ["BR", "LLL"],
       ["BY", "LL"],
       ["BG", "ALL"],
       ["BY", "BRR"],
       ["RR", "AR"],
-      # ["GY", "A"],
-      # ["BB", "AALLL"],
-      # ["GR", "A"],
-      # ["RY", "LL"],
-      # ["GG", "L"],
-      # ["GY", "BB"],
-      # ["bR", "ALLL"],
-      # ["gy", "AAL"],
+      ["GY", "A"],
+      ["BB", "AALLL"],
+      ["GR", "A"],
+      ["RY", "LL"],
+      ["GG", "L"],
+      ["GY", "BB"],
     ]
-    #
-    # game_state = [
-    #   "      ",
-    #   "      ",
-    #   "      ",
-    #   "      ",
-    #   "      ",
-    #   "      ",
-    #   "      ",
-    #   "      ",
-    #   "      ",
-    #   "    R ",
-    #   " R  YR",
-    #   "RR  RB"
-    # ].join("\n")
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      " R    ",
+      "BY YR ",
+      "BBGGY ",
+      "BBGGRR",
+      "RYGGYB",
+    ].join("\n")
+
+    assert_equal game_state, puzzle_fighter(instructions)
+  end
+
+  def x_test_solves_game_0
+    instructions = [
+      ["BR", "LLL"],
+      ["BY", "LL"],
+      ["BG", "ALL"],
+      ["BY", "BRR"],
+      ["RR", "AR"],
+      ["GY", "A"],
+      ["BB", "AALLL"],
+      ["GR", "A"],
+      ["RY", "LL"],
+      ["GG", "L"],
+      ["GY", "BB"],
+      ["bR", "ALLL"],
+      ["gy", "AAL"],
+    ]
 
     game_state = [
       "      ",
@@ -44,9 +62,9 @@ class GameTest < Test::Unit::TestCase
       "      ",
       "      ",
       "      ",
-      " B    ",
-      "BB  RR",
-      "RYG YB",
+      "    R ",
+      " R  YR",
+      "RR  RB"
     ].join("\n")
 
     assert_equal game_state, puzzle_fighter(instructions)
