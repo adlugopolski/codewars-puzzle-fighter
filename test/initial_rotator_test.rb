@@ -105,4 +105,60 @@ class InitialRotatorTest < Test::Unit::TestCase
       ["     B", "     R"],
     )
   end
+
+  def test_moves_the_piece_to_initial_location_13
+    assert_equal(
+      InitialRotator.call(["BR", "LLLLLLRRRRR"]),
+      ["     B", "     R"],
+    )
+  end
+
+  def test_moves_the_piece_to_initial_location_14
+    assert_equal(
+      InitialRotator.call(["BR", "LRLRLRLRLR"]),
+      ["   B  ", "   R  "],
+    )
+  end
+
+  def test_rotates_the_piece_clockwise_1
+    assert_equal(
+      InitialRotator.call(["BR", "A"]),
+      ["  RB  ", "      "],
+    )
+  end
+
+  def test_rotates_the_piece_clockwise_2
+    assert_equal(
+      InitialRotator.call(["BR", "AA"]),
+      ["   R  ", "   B  "],
+    )
+  end
+
+  def test_rotates_the_piece_clockwise_3
+    assert_equal(
+      InitialRotator.call(["BR", "AAA"]),
+      ["      ", "   BR "],
+    )
+  end
+
+  def test_rotates_the_piece_clockwise_4
+    assert_equal(
+      InitialRotator.call(["BR", "AAAA"]),
+      ["   B  ", "   R  "],
+    )
+  end
+
+  def test_rotates_the_piece_clockwise_5
+    assert_equal(
+      InitialRotator.call(["BR", "AAAAAAA"]),
+      ["      ", "   BR "],
+    )
+  end
+
+  def test_rotates_the_piece_clockwise_6
+    assert_equal(
+      InitialRotator.call(["BR", "AAAAAAAA"]),
+      ["   B  ", "   R  "],
+    )
+  end
 end
