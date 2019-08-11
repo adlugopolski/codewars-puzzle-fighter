@@ -61,4 +61,44 @@ class InitialRotator::BlockTest < Test::Unit::TestCase
 
     assert_equal ["AAB   ", "C     "], template
   end
+
+  def test_moves_the_block_to_left
+    block = InitialRotator::Block.new("B", 3, 1)
+
+    assert_equal block.left, InitialRotator::Block.new("B", 2, 1)
+  end
+
+  def test_moves_leftmost_block_to_left
+    block = InitialRotator::Block.new("B", 0, 1)
+
+    assert_equal block.left, block
+  end
+
+  def test_moves_the_block_to_left_without_mutation
+    block = InitialRotator::Block.new("B", 3, 1)
+
+    block.left
+
+    assert_equal block, InitialRotator::Block.new("B", 3, 1)
+  end
+
+  def test_moves_the_block_to_right
+    block = InitialRotator::Block.new("B", 3, 1)
+
+    assert_equal block.right, InitialRotator::Block.new("B", 4, 1)
+  end
+
+  def test_moves_rightmost_block_to_right
+    block = InitialRotator::Block.new("B", 5, 1)
+
+    assert_equal block.right, InitialRotator::Block.new("B", 5, 1)
+  end
+
+  def test_moves_the_block_to_right_without_mutation
+    block = InitialRotator::Block.new("B", 3, 1)
+
+    block.right
+
+    assert_equal block, InitialRotator::Block.new("B", 3, 1)
+  end
 end
