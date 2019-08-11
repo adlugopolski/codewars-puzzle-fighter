@@ -40,7 +40,7 @@ class PuzzleFighter < BaseScaffold
 
   def process_input
     @input.each_with_index.reduce([]) do |state, (step, _counter)|
-      # break state if _counter == 5
+      # break state if _counter == 11
 
       MainLoop.call(state, step)
     end
@@ -119,6 +119,20 @@ class Block
 
   def ==(other)
     x == other.x && y == other.y && kind == other.kind
+  end
+
+  def <=>(other)
+    return 0 if other == self
+
+    if y > other.y
+      1
+    elsif y < other.y
+      -1
+    elsif x > other.x
+      1
+    else
+      -1
+    end
   end
 
   def >>(other)
@@ -272,7 +286,7 @@ class InitialRotator < BaseScaffold
   def call
     perform_moves
     adjust_negatives
-    @pair.blocks
+    @pair.blocks.sort
   end
 
   private
@@ -307,3 +321,23 @@ end
 def puzzle_fighter(instructions)
   PuzzleFighter.call(instructions)
 end
+
+if $PROGRAM_NAME == __FILE__
+  instructions = [
+    ["BR", "LLL"],
+    ["BY", "LL"],
+    ["BG", "ALL"],
+    ["BY", "BRR"],
+    ["RR", "AR"],
+    ["GY", "A"],
+    ["BB", "AALLL"],
+    ["GR", "A"],
+    ["RY", "LL"],
+    ["GG", "L"],
+    ["GY", "BB"],
+  ]
+
+  DebugState.call(puzzle_fighter(instructions).split("\n"))
+end
+
+
