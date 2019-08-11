@@ -49,30 +49,95 @@ class MainLoop < BaseScaffold
   attr_accessor :state, :step
 end
 
-
 class InitialRotator < BaseScaffold
+  class Block
+    attr_reader :x, :y, :kind
+
+    def initialize(kind, x, y)
+      @kind = kind
+      @x = x
+      @y = y
+    end
+
+    def draw_on(template)
+      board = template.dup
+      board[y][x] = kind
+      board
+    end
+
+    def left
+      Block.new(kind, [0, x - 1].max, y)
+    end
+
+    def right
+      Block.new(kind, [5, x + 1].max, y)
+    end
+
+    def ==(other)
+      x == other.x && y == other.y && kind == other.kind
+    end
+
+    def <<(other)
+      if x <= other.x
+        self
+      else
+        other
+      end
+    end
+  end
+
+  class Pair
+    def initialize(block1, block2)
+      @block1 = block1
+      @block2 = block2
+    end
+
+    def move_left
+      if leftmost.left == leftmost
+        [@block1, @block2]
+      else
+        [@block1.left, @block2.left]
+      end
+    end
+
+    def to_s
+      template = Array.new(2) { " " * 6 }
+      template = @block1.draw_on(template)
+      template = @block2.draw_on(template)
+      template
+    end
+
+    private
+
+    def leftmost
+      @block1 << @block2
+    end
+  end
+
   def initialize(action)
     @blocks, @moves = action
-    @template = Array.new(2) { " " * 6 }
   end
 
   def call
     set_starting_position
     perform_moves
-    @template
+    Pair.new(*@state).to_s
   end
 
   private
 
   def set_starting_position
-    @template[0][3] = @blocks[0]
-    @template[1][3] = @blocks[1]
+    @state = [
+      Block.new(@blocks[0], 3, 0),
+      Block.new(@blocks[1], 3, 1),
+    ]
   end
 
   def perform_moves
     @moves.chars.each do |move|
       case move
       when "L"
+        @state = Pair.new(*@state).move_left
       when "R"
       when "A"
       when "B"
