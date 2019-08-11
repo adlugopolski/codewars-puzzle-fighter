@@ -62,6 +62,75 @@ class Board
   end
 end
 
+class Block
+  attr_reader :x, :y, :kind
+
+  def initialize(kind, x, y)
+    @kind = kind
+    @x = x
+    @y = y
+  end
+
+  def draw_on(template)
+    board = template.map(&:dup)
+    board[y][x] = kind
+    board
+  end
+
+  def left
+    Block.new(kind, [0, x - 1].max, y)
+  end
+
+  def right
+    Block.new(kind, [5, x + 1].min, y)
+  end
+
+  def up
+    Block.new(kind, x, y - 1)
+  end
+
+  def down
+    Block.new(kind, x, y + 1)
+  end
+
+  def ==(other)
+    x == other.x && y == other.y && kind == other.kind
+  end
+
+  def >>(other)
+    if x >= other.x
+      self
+    else
+      other
+    end
+  end
+
+  def <<(other)
+    if x <= other.x
+      self
+    else
+      other
+    end
+  end
+
+  def >=(other)
+    if y >= other.y
+      self
+    else
+      other
+    end
+  end
+
+  def <=(other)
+    if y <= other.y
+      self
+    else
+      other
+    end
+  end
+end
+
+
 class MainLoop < BaseScaffold
   def initialize(state, step)
     @state = state
@@ -74,74 +143,6 @@ class MainLoop < BaseScaffold
 end
 
 class InitialRotator < BaseScaffold
-  class Block
-    attr_reader :x, :y, :kind
-
-    def initialize(kind, x, y)
-      @kind = kind
-      @x = x
-      @y = y
-    end
-
-    def draw_on(template)
-      board = template.map(&:dup)
-      board[y][x] = kind
-      board
-    end
-
-    def left
-      Block.new(kind, [0, x - 1].max, y)
-    end
-
-    def right
-      Block.new(kind, [5, x + 1].min, y)
-    end
-
-    def up
-      Block.new(kind, x, y - 1)
-    end
-
-    def down
-      Block.new(kind, x, y + 1)
-    end
-
-    def ==(other)
-      x == other.x && y == other.y && kind == other.kind
-    end
-
-    def >>(other)
-      if x >= other.x
-        self
-      else
-        other
-      end
-    end
-
-    def <<(other)
-      if x <= other.x
-        self
-      else
-        other
-      end
-    end
-
-    def >=(other)
-      if y >= other.y
-        self
-      else
-        other
-      end
-    end
-
-    def <=(other)
-      if y <= other.y
-        self
-      else
-        other
-      end
-    end
-  end
-
   class Pair
     def initialize(block1, block2)
       @block1 = block1
