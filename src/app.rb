@@ -36,17 +36,13 @@ end
 
 class MainLoop < BaseScaffold
   def initialize(state, step)
-    self.state = state
-    self.step = step
+    @state = state
+    @step = step
   end
 
   def call
-    state
+    Array.new(10, "      ") + InitialRotator.call(@step)
   end
-
-  private
-
-  attr_accessor :state, :step
 end
 
 class InitialRotator < BaseScaffold
