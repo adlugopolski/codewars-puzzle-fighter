@@ -12,9 +12,8 @@ class PuzzleFighterTest < Test::Unit::TestCase
   end
 
   def test_passes_initial_state_in_expected_format
-    initial_state = []
-    stub(MainLoop).call(initial_state, %w[BR ALL]).times(1)
-    stub(MainLoop).call(anything, anything).times(12) { initial_state }
+    stub(MainLoop).call([], %w[BR ALL]).times(1) { [] }
+    stub(MainLoop).call(anything, anything).times(12) { [] }
 
     PuzzleFighter.call(@instructions)
   end
