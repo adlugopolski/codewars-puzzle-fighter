@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative "debug.rb"
 
 class BaseScaffold
@@ -24,7 +26,7 @@ class PuzzleFighter < BaseScaffold
   end
 
   def initial_state
-    Array.new(12, " " * 6)
+    Array.new(12, "      ")
   end
 
   def output_format
