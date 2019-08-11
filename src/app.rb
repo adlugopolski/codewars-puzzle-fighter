@@ -9,7 +9,7 @@ class BaseScaffold
 end
 
 class FormatOutput < BaseScaffold
-  def initialize(blocks, rows)
+  def initialize(blocks, rows = 12)
     @blocks = blocks
     @rows = rows
   end
@@ -28,8 +28,11 @@ class FormatOutput < BaseScaffold
 end
 
 class PuzzleFighter < BaseScaffold
+  attr_accessor :debug
+
   def initialize(input)
     @input = input
+    @debug = []
   end
 
   def call
@@ -38,16 +41,16 @@ class PuzzleFighter < BaseScaffold
 
   private
 
-  def process_input
+  def result
     @input.each_with_index.reduce([]) do |state, (step, _counter)|
-      # break state if _counter == 11
-
-      MainLoop.call(state, step)
+      MainLoop.call(state, step).tap do |nstate|
+        @debug << nstate
+      end
     end
   end
 
   def output_format
-    FormatOutput.call(process_input, 12).join("\n")
+    FormatOutput.call(result, 12).join("\n")
   end
 end
 
@@ -337,5 +340,14 @@ if $PROGRAM_NAME == __FILE__
     ["GY", "BB"],
   ]
 
-  DebugState.call(puzzle_fighter(instructions).split("\n"))
+  pf = PuzzleFighter.new(instructions)
+  pf.call
+
+  bar = Array.new(11) { "+------+" }
+  output = pf.debug.map(&FormatOutput.method(:call)).transpose
+  puts bar.join(" ")
+  output.map do |line|
+    puts DebugState.call(line).join(" ")
+  end
+  puts bar.join(" ")
 end
