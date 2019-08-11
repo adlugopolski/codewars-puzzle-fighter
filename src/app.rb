@@ -130,7 +130,6 @@ class Block
   end
 end
 
-
 class MainLoop < BaseScaffold
   def initialize(state, step)
     @state = state
@@ -269,7 +268,6 @@ class InitialRotator < BaseScaffold
         else
           raise ArgumentError, invalid_move_error_message
         end
-
     end
   end
 
