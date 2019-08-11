@@ -53,6 +53,15 @@ class PuzzleFighter < BaseScaffold
   end
 end
 
+class Board
+  def initialize(blocks)
+    @blocks = blocks
+  end
+
+  def insert(blocks)
+  end
+end
+
 class MainLoop < BaseScaffold
   def initialize(state, step)
     @state = state
