@@ -137,7 +137,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_rotates_the_block_clockwise_3
     assert_equal(
       InitialRotator.call(["BR", "AAA"]),
-      ["      ", "   BR "],
+      ["   BR ", "      "],
     )
   end
 
@@ -151,7 +151,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_rotates_the_block_clockwise_5
     assert_equal(
       InitialRotator.call(["BR", "AAAAAAA"]),
-      ["      ", "   BR "],
+      ["   BR ", "      "],
     )
   end
 
