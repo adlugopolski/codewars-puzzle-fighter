@@ -77,6 +77,14 @@ class InitialRotator < BaseScaffold
       x == other.x && y == other.y && kind == other.kind
     end
 
+    def >>(other)
+      if x >= other.x
+        self
+      else
+        other
+      end
+    end
+
     def <<(other)
       if x <= other.x
         self
