@@ -1,3 +1,5 @@
+require_relative "debug.rb"
+
 class BaseScaffold
   def self.call(*args)
     new(*args).call
