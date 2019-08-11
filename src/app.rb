@@ -47,6 +47,17 @@ class MainLoop < BaseScaffold
   attr_accessor :state, :step
 end
 
+
+class InitialRotator < BaseScaffold
+  def initialize(move)
+    @move = move
+  end
+
+  def call
+    @move
+  end
+end
+
 def puzzle_fighter(instructions)
   PuzzleFighter.call(instructions)
 end
