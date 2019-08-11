@@ -101,10 +101,11 @@ class InitialRotator < BaseScaffold
     end
 
     def to_s
-      template = Array.new(2) { " " * 6 }
-      template = @block1.draw_on(template)
-      template = @block2.draw_on(template)
-      template
+      @block2.draw_on(
+        @block1.draw_on(
+          ["      ", "      "],
+        ),
+      )
     end
 
     private
