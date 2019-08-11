@@ -54,6 +54,16 @@ class PuzzleFighter < BaseScaffold
   end
 end
 
+class Effects < BaseScaffold
+  def initialize(blocks)
+    @blocks = blocks.map(&:copy)
+  end
+
+  def call
+    @blocks
+  end
+end
+
 class Board < BaseScaffold
   class NullBlock
     def y
@@ -179,7 +189,9 @@ class MainLoop < BaseScaffold
   end
 
   def call
-    Board.call @state, InitialRotator.call(@step)
+    Effects.call(
+      Board.call(@state, InitialRotator.call(@step))
+    )
   end
 end
 
