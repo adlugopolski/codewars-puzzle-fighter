@@ -136,36 +136,34 @@ class InitialRotator < BaseScaffold
   end
 
   def initialize(action)
-    @blocks, @moves = action
+    blocks, @moves = action
+
+    @pair = Pair.new(
+      Block.new(blocks[0], 3, 0),
+      Block.new(blocks[1], 3, 1),
+    )
   end
 
   def call
-    set_starting_position
     perform_moves
-    Pair.new(*@state).to_s
+    @pair.to_s
   end
 
   private
 
-  def set_starting_position
-    @state = [
-      Block.new(@blocks[0], 3, 0),
-      Block.new(@blocks[1], 3, 1),
-    ]
-  end
-
   def perform_moves
     @moves.chars.each do |move|
-      case move
-      when "L"
-        @state = Pair.new(*@state).move_left
-      when "R"
-        @state = Pair.new(*@state).move_right
-      when "A"
-      when "B"
-      else
-        raise ArgumentError, invalid_move_error_message
-      end
+      @pair =
+        case move
+        when "L"
+          Pair.new(*@pair.move_left)
+        when "R"
+          Pair.new(*@pair.move_right)
+        when "A"
+        when "B"
+        else
+          raise ArgumentError, invalid_move_error_message
+        end
     end
   end
 
