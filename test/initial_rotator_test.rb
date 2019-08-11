@@ -11,7 +11,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_moves_the_piece_to_initial_location_1
     pend
 
-    assert_match(
+    assert_equal(
       InitialRotator.call(["BR", "LLL"]),
       ["B     ", "R     "],
     )
@@ -20,7 +20,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_moves_the_piece_to_initial_location_2
     pend
 
-    assert_match(
+    assert_equal(
       InitialRotator.call(["BG", "ALL"]),
       ["      ", " BG   "],
     )
@@ -29,7 +29,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_moves_the_piece_to_initial_location_3
     pend
 
-    assert_match(
+    assert_equal(
       InitialRotator.call(["BY", "BRR"]),
       ["      ", "    YB"],
     )
@@ -38,14 +38,14 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_moves_the_piece_to_initial_location_4
     pend
 
-    assert_match(
+    assert_equal(
       InitialRotator.call(["BB", "AALLL"]),
       ["B     ", "B     "],
     )
   end
 
   def test_moves_the_piece_to_initial_location_5
-    assert_match(
+    assert_equal(
       InitialRotator.call(["YR", ""]),
       ["   Y  ", "   R  "],
     )
@@ -54,7 +54,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_moves_the_piece_to_initial_location_6
     pend
 
-    assert_match(
+    assert_equal(
       InitialRotator.call(["BG", "BBRR"]),
       ["     G", "     B"],
     )
@@ -63,7 +63,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_moves_the_piece_to_initial_location_7
     pend
 
-    assert_match(
+    assert_equal(
       InitialRotator.call(["RR", "BBBBLLL"]),
       ["R     ", "R     "],
     )
@@ -72,7 +72,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_moves_the_piece_to_initial_location_8
     pend
 
-    assert_match(
+    assert_equal(
       InitialRotator.call(["YG", "BBBALL"]),
       [" G    ", " Y    "],
     )
