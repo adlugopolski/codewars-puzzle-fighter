@@ -92,6 +92,22 @@ class InitialRotator < BaseScaffold
         other
       end
     end
+
+    def >=(other)
+      if y >= other.y
+        self
+      else
+        other
+      end
+    end
+
+    def <=(other)
+      if y <= other.y
+        self
+      else
+        other
+      end
+    end
   end
 
   class Pair
@@ -114,6 +130,9 @@ class InitialRotator < BaseScaffold
       else
         [@block1.right, @block2.right]
       end
+    end
+
+    def rotate_clockwise
     end
 
     def to_s
