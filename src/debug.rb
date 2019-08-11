@@ -19,6 +19,10 @@ module Colors
     def bg_blue
       "\e[44m#{self}\e[0m"
     end
+
+    def red
+      "\e[31m#{self}\e[0m"
+    end
   end
 end
 
@@ -30,6 +34,11 @@ class DebugState
     "G" => "G".bg_green.black,
     "B" => "B".bg_blue.black,
     "Y" => "Y".bg_brown.black,
+    "r" => "r".bg_red.black,
+    "g" => "g".bg_green.black,
+    "b" => "b".bg_blue.black,
+    "y" => "y".bg_brown.black,
+    "0" => "0".red,
   }.freeze
 
   def self.call(*args)
