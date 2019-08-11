@@ -22,14 +22,14 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_moves_the_block_to_initial_location_2
     assert_equal(
       _format(InitialRotator.call(["BG", "ALL"])),
-      ["GB    ", "      "],
+      [" BG   ", "      "],
     )
   end
 
   def test_moves_the_block_to_initial_location_3
     assert_equal(
       _format(InitialRotator.call(["BY", "BRR"])),
-      ["    BY", "      "],
+      ["    YB", "      "],
     )
   end
 
@@ -113,7 +113,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_rotates_the_block_clockwise_1
     assert_equal(
       _format(InitialRotator.call(["BR", "A"])),
-      ["  RB  ", "      "],
+      ["   BR ", "      "],
     )
   end
 
@@ -127,7 +127,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_rotates_the_block_clockwise_3
     assert_equal(
       _format(InitialRotator.call(["BR", "AAA"])),
-      ["   BR ", "      "],
+      ["  RB  ", "      "],
     )
   end
 
@@ -141,7 +141,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_rotates_the_block_clockwise_5
     assert_equal(
       _format(InitialRotator.call(["BR", "AAAAAAA"])),
-      ["   BR ", "      "],
+      ["  RB  ", "      "],
     )
   end
 
@@ -155,7 +155,7 @@ class InitialRotatorTest < Test::Unit::TestCase
   def test_rotates_the_block_anticlockwise_1
     assert_equal(
       _format(InitialRotator.call(["BR", "B"])),
-      ["   BR ", "      "],
+      ["  RB  ", "      "],
     )
   end
 end
