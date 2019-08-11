@@ -108,6 +108,14 @@ class InitialRotator < BaseScaffold
       end
     end
 
+    def move_right
+      if rightmost.right == rightmost
+        [@block1, @block2]
+      else
+        [@block1.right, @block2.right]
+      end
+    end
+
     def to_s
       @block2.draw_on(
         @block1.draw_on(
@@ -120,6 +128,10 @@ class InitialRotator < BaseScaffold
 
     def leftmost
       @block1 << @block2
+    end
+
+    def rightmost
+      @block1 >> @block2
     end
   end
 
