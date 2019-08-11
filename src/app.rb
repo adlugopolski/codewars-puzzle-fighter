@@ -167,11 +167,17 @@ class InitialRotator < BaseScaffold
     end
 
     def rotate_anticlockwise
-      # FIXME: Implement proper rotation
-
-      pair = Pair.new(*rotate_clockwise)
-      pair = Pair.new(*pair.rotate_clockwise)
-      pair.rotate_clockwise
+      if horizontal?
+        if center_left?
+          [@block1, @block2.left.up]
+        else
+          [@block1, @block2.right.down]
+        end
+      elsif center_top?
+        [@block1, @block2.right.up]
+      else
+        [@block1, @block2.left.down]
+      end
     end
 
     def to_s
