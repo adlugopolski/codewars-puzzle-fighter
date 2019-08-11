@@ -51,7 +51,7 @@ end
 class InitialRotator < BaseScaffold
   def initialize(action)
     @blocks, @moves = action
-    @template = Array.new(2, " " * 6)
+    @template = Array.new(2) { " " * 6 }
   end
 
   def call
