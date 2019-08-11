@@ -62,7 +62,7 @@ class Board
   end
 
   def initialize(blocks = [])
-    @blocks = blocks
+    @blocks = blocks.map(&:copy)
   end
 
   def insert(new_blocks)
