@@ -39,8 +39,6 @@ class InitialRotatorTest < Test::Unit::TestCase
   end
 
   def test_moves_the_piece_to_initial_location_5
-    pend
-
     assert_match(
       InitialRotator.call(["YR", ""]),
       ["   Y  ", "   R  "],
