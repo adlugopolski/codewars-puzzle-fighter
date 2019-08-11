@@ -1,11 +1,7 @@
 require "test/unit"
 require_relative "../src/app.rb"
 
-class MainLoopTest < Test::Unit::TestCase
-  def _format(blocks)
-    FormatOutput.call(blocks, 12)
-  end
-
+class MainLoopTest < BaseTestCase
   def setup
     @initial_state = Array.new(12, "      ")
   end
