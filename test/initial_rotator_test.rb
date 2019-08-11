@@ -3,9 +3,7 @@ require_relative "../src/app.rb"
 
 class InitialRotatorTest < Test::Unit::TestCase
   def _format(blocks)
-    blocks.reduce(["      ", "      "]) do |template, block|
-      block.draw_on(template)
-    end
+    FormatOutput.call(blocks, 2)
   end
 
   def test_raises_error_on_invalid_move
