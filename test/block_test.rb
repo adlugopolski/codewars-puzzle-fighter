@@ -143,4 +143,22 @@ class BlockTest < Test::Unit::TestCase
 
     assert_equal block, Block.new("B", 3, 1)
   end
+
+  def test_copies_the_block
+    block = Block.new("B", 3, 1)
+
+    assert_equal block.copy, block
+  end
+
+  def test_creates_new_object_on_copy
+    block = Block.new("B", 3, 1)
+
+    refute_equal block.copy.hash, block.hash
+  end
+
+  def test_changes_given_argument_on_copy
+    block = Block.new("B", 3, 1)
+
+    assert_equal block.copy(kind: "A"), Block.new("A", 3, 1)
+  end
 end
