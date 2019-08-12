@@ -108,6 +108,32 @@ class Crash < BaseScaffold
   end
 end
 
+class Gravity < BaseScaffold
+  def initialize(blocks)
+    @blocks = blocks.sort.map(&:copy).reverse
+  end
+
+  def call
+    Board.call(@blocks - hanging_blocks, hanging_blocks.reverse)
+  end
+
+  private
+
+  def hanging_blocks
+    @_hanging_blcoks ||= @blocks.select do |block|
+      hanging?(block)
+    end
+  end
+
+  def hanging?(block)
+    supporting = @blocks.select do |member|
+      member.x == block.x && member.y > block.y
+    end
+
+    supporting.size < 11 - block.y
+  end
+end
+
 class Board < BaseScaffold
   class NullBlock
     def y
