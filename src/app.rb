@@ -62,15 +62,20 @@ class Effects < BaseScaffold
   end
 
   def call
-    Gravity.call(crashed)
+    logic
   end
 
   private
 
-  def crashed
-    @blocks.select(&:crash?).reduce(@blocks) do |board, block|
-      Crash.call(board, block)
+  def logic
+    crashes.reduce(@blocks) do |board, crash|
+      target = board.sort.reverse.detect { |block| block.kind == crash.kind }
+      Gravity.call Crash.call(board, target)
     end
+  end
+
+  def crashes
+    @blocks.select(&:crash?).sort.reverse
   end
 end
 
@@ -78,12 +83,10 @@ class Crash < BaseScaffold
   def initialize(blocks, crash)
     @blocks = blocks.map(&:copy)
     @crash = crash.copy
-    @remove = []
   end
 
   def call
     traverse(@crash, :none)
-    puts @remove.inspect
     @blocks
   end
 
@@ -433,7 +436,7 @@ if $PROGRAM_NAME == __FILE__
     ["GG", "L"],
     ["GY", "BB"],
     ["bR", "ALLL"],
-    # ["gy", "AAL"],
+    ["gy", "AAL"],
   ]
 
   pf = PuzzleFighter.new(instructions)
