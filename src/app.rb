@@ -62,8 +62,7 @@ class Effects < BaseScaffold
   end
 
   def call
-    # Gravity.call(crashed)
-    crashed
+    Gravity.call(crashed)
   end
 
   private
