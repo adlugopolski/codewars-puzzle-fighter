@@ -35,7 +35,7 @@ class GameTest < Test::Unit::TestCase
     assert_equal game_state, puzzle_fighter(instructions)
   end
 
-  def x_test_solves_game_0
+  def test_solves_game_0
     instructions = [
       ["BR", "LLL"],
       ["BY", "LL"],
