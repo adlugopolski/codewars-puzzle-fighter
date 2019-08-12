@@ -43,4 +43,25 @@ class CrashTest < BaseTestCase
 
     assert_equal expected, Crash.call(input, Block.new("r", 3, 9))
   end
+
+  def test_does_not_crash_lonely_blocks
+    templates = [
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "RY    ", "RY    ",
+      "BBRgBY", "BBRgBY",
+      "BRRRRY", "BRRRRY",
+      "BRBYBY", "BRBYBY",
+    ]
+
+    input, expected = _set_from_ascii(templates)
+
+    assert_equal expected, Crash.call(input, Block.new("g", 3, 9))
+  end
 end

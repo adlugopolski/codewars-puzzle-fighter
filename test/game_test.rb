@@ -71,8 +71,6 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solve_game_2
-    pend
-
     instructions = [
       ["GR", "ALLL"],
       ["GG", "ALLL"],
