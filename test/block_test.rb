@@ -235,7 +235,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   def test_is_falsey_for_inner_1
-    assert Block.new("A", 0, 0).outside
+    assert Block.new("A", 0, 0).outside?
   end
 
   def test_is_falsey_for_inner_2
