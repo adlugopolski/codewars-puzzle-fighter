@@ -92,7 +92,7 @@ class Crash < BaseScaffold
 
   def traverse(crash, from)
     return if crash.outside?
-    return unless (current = @blocks.detect { |block| block.overlap?(crash) })
+    return unless (current = block_present?(crash))
     return if crash.kind != current.kind.downcase
 
     @blocks.delete(current)
@@ -101,6 +101,10 @@ class Crash < BaseScaffold
     traverse(crash.left, :left) unless from == :right
     traverse(crash.down, :down) unless from == :up
     traverse(crash.right, :right) unless from == :left
+  end
+
+  def block_present?(crash)
+    @blocks.detect { |block| block.overlap?(crash) }
   end
 end
 
