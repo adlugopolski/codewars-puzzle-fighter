@@ -432,6 +432,8 @@ if $PROGRAM_NAME == __FILE__
     ["RY", "LL"],
     ["GG", "L"],
     ["GY", "BB"],
+    ["bR", "ALLL"],
+    # ["gy", "AAL"],
   ]
 
   pf = PuzzleFighter.new(instructions)
