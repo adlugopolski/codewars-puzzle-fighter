@@ -20,6 +20,6 @@ class GravityTest < BaseTestCase
 
     input, expected = _set_from_ascii(templates)
 
-    assert_equal expected, Gravity.call(input)
+    assert_equal expected.sort, Gravity.call(input).sort
   end
 end
