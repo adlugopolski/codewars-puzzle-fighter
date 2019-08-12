@@ -44,8 +44,6 @@ class PuzzleFighter < BaseScaffold
   def result
     @input.each_with_index.reduce([]) do |state, (step, _counter)|
       MainLoop.call(state, step).tap do |nstate|
-        break nstate if _counter == 15
-
         @debug << nstate
       end
     end
@@ -424,19 +422,27 @@ end
 
 if $PROGRAM_NAME == __FILE__
   instructions = [
-    ["BR", "LLL"],
-    ["BY", "LL"],
-    ["BG", "ALL"],
-    ["BY", "BRR"],
-    ["RR", "AR"],
-    ["GY", "A"],
-    ["BB", "AALLL"],
-    ["GR", "A"],
-    ["RY", "LL"],
-    ["GG", "L"],
-    ["GY", "BB"],
-    ["bR", "ALLL"],
-    ["gy", "AAL"],
+    ["GR", "ALLL"],
+    ["GG", "ALLL"],
+    ["RG", "AAL"],
+    ["RB", "BLL"],
+    ["RG", "ALL"],
+    ["BB", "RR"],
+    ["BR", "BB"],
+    ["BR", "ALLL"],
+    ["YB", "R"],
+    ["BG", "BBRR"],
+    ["YR", "AAR"],
+    ["RR", "L"],
+    ["RR", "ABLL"],
+    ["GY", "BRR"],
+    ["BB", "R"],
+    ["gB", "RR"],
+    ["BR", "ALL"],
+    ["Gr", "BB"],
+    ["Rb", "R"],
+    ["GG", "B"],
+    ["bB", "LL"],
   ]
 
   pf = PuzzleFighter.new(instructions)
@@ -444,6 +450,8 @@ if $PROGRAM_NAME == __FILE__
 
   bar = Array.new(instructions.size) { "+------+" }
   output = pf.debug.map(&FormatOutput.method(:call)).transpose
+
+  puts instructions.map { |command| format("%-8s", command.join(" ")) }.join(" ")
   puts bar.join(" ")
   output.map do |line|
     puts DebugState.call(line).join(" ")
