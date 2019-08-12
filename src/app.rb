@@ -109,7 +109,7 @@ end
 
 class Gravity < BaseScaffold
   def initialize(blocks)
-    @blocks = blocks.map(&:copy).reverse
+    @blocks = blocks.map(&:copy)
   end
 
   def call
