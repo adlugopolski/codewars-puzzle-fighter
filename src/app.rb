@@ -164,6 +164,14 @@ class Block
     ("a".."z").include?(kind)
   end
 
+  def outside?
+    !(0..11).include?(x) || !(0..11).include?(y)
+  end
+
+  def overlap?(other)
+    x == other.x && y == other.y
+  end
+
   def ==(other)
     x == other.x && y == other.y && kind == other.kind
   end
