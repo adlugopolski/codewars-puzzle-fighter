@@ -110,11 +110,11 @@ end
 
 class Gravity < BaseScaffold
   def initialize(blocks)
-    @blocks = blocks.sort.map(&:copy).reverse
+    @blocks = blocks.map(&:copy).reverse
   end
 
   def call
-    Board.call(@blocks - hanging_blocks, hanging_blocks.reverse)
+    Board.call(@blocks - hanging_blocks, hanging_blocks.sort.reverse)
   end
 
   private
