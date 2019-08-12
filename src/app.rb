@@ -81,11 +81,16 @@ class Crash < BaseScaffold
   def initialize(blocks, crash)
     @blocks = blocks.map(&:copy)
     @crash = crash.copy
+    @remove = []
   end
 
   def call
     traverse(@crash, :none)
-    @blocks
+    if @remove.size > 1
+      @blocks - @remove
+    else
+      @blocks
+    end
   end
 
   private
@@ -93,9 +98,10 @@ class Crash < BaseScaffold
   def traverse(crash, from)
     return if crash.outside?
     return unless (current = block_present?(crash))
+    return if @remove.detect { |block| block.overlap?(crash) }
     return if crash.kind != current.kind.downcase
 
-    @blocks.delete(current)
+    @remove << current
 
     traverse(crash.up, :up) unless from == :down
     traverse(crash.left, :left) unless from == :right
