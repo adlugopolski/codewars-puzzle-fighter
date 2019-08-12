@@ -113,7 +113,7 @@ class Gravity < BaseScaffold
   end
 
   def call
-    Board.call(@blocks - hanging_blocks, hanging_blocks.sort.reverse)
+    Board.call(@blocks - hanging_blocks, hanging_blocks.sort)
   end
 
   private
