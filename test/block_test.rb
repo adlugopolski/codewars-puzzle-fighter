@@ -243,10 +243,10 @@ class BlockTest < Test::Unit::TestCase
   end
 
   def test_is_truthy_for_same_position
-    assert Block.new("a", 6, 2).covers? Block.new("0", 6, 2)
+    assert Block.new("a", 6, 2).overlap? Block.new("0", 6, 2)
   end
 
   def test_is_false_for_different_position
-    refute Block.new("a", 6, 2).covers? Block.new("a", 6, 3)
+    refute Block.new("a", 6, 2).overlap? Block.new("a", 6, 3)
   end
 end
