@@ -59,3 +59,7 @@ class DebugState
     end
   end
 end
+
+def DebugPrint(board)
+  DebugState.call FormatOutput.call board
+end
