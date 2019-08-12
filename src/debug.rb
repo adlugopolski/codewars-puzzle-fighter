@@ -39,6 +39,7 @@ class DebugState
     "b" => "b".bg_blue.black,
     "y" => "y".bg_brown.black,
     "0" => "0".red,
+    " " => ".",
   }.freeze
 
   def self.call(*args)
