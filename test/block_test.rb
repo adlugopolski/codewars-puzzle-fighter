@@ -217,4 +217,28 @@ class BlockTest < Test::Unit::TestCase
 
     assert_equal 4, predicates.size
   end
+
+  def test_is_truthy_for_negative_x
+    assert Block.new("A", -1, 0).outside?
+  end
+
+  def test_is_truthy_for_negative_y
+    assert Block.new("A", 0, -1).outside?
+  end
+
+  def test_is_truthy_for_overflow_x
+    assert Block.new("A", 0, 12).outside?
+  end
+
+  def test_is_truthy_for_overflow_y
+    assert Block.new("A", 12, 2).outside?
+  end
+
+  def test_is_falsey_for_inner_1
+    assert Block.new("A", 0, 0).outside
+  end
+
+  def test_is_falsey_for_inner_2
+    assert Block.new("A", 11, 11).outside?
+  end
 end
