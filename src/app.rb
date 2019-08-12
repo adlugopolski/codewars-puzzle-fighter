@@ -44,6 +44,8 @@ class PuzzleFighter < BaseScaffold
   def result
     @input.each_with_index.reduce([]) do |state, (step, _counter)|
       MainLoop.call(state, step).tap do |nstate|
+        break nstate if _counter == 15
+
         @debug << nstate
       end
     end
@@ -60,36 +62,45 @@ class Effects < BaseScaffold
   end
 
   def call
-    @blocks.select(&:crash?).map do |block|
-      Crash.call(@blocks, block)
+    # Gravity.call(crashed)
+    crashed
+  end
+
+  private
+
+  def crashed
+    @blocks.select(&:crash?).reduce(@blocks) do |board, block|
+      Crash.call(board, block)
     end
-    @blocks
   end
 end
 
 class Crash < BaseScaffold
   def initialize(blocks, crash)
-    @blocks = blocks
+    @blocks = blocks.map(&:copy)
     @crash = crash.copy
     @remove = []
   end
 
   def call
-    traverse(@crash)
-    @remove
+    traverse(@crash, :none)
+    puts @remove.inspect
+    @blocks
   end
 
   private
 
-  def traverse(current)
-    return if current.outside?
-    return if @blocks.empty_at?(current)
+  def traverse(crash, from)
+    return if crash.outside?
+    return unless (current = @blocks.detect { |block| block.overlap?(crash) })
+    return if crash.kind != current.kind.downcase
 
-    @remove << current if current.kind.downcase == crash.kind
-    traverse(current.move_up)
-    traverse(current.move_left)
-    traverse(current.move_down)
-    traverse(current.move_right)
+    @blocks.delete(current)
+
+    traverse(crash.up, :up) unless from == :down
+    traverse(crash.left, :left) unless from == :right
+    traverse(crash.down, :down) unless from == :up
+    traverse(crash.right, :right) unless from == :left
   end
 end
 
