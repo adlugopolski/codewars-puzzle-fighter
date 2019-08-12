@@ -203,4 +203,18 @@ class BlockTest < Test::Unit::TestCase
 
     assert_equal(-1, block1 <=> block2)
   end
+
+  def test_is_truthy_for_crash_g1_01
+    blocks = [
+      Block.new("0", 6, 0),
+      Block.new("b", 4, 1),
+      Block.new("y", 6, 0),
+      Block.new("r", 4, 1),
+      Block.new("g", 4, 1),
+    ]
+
+    predicates = blocks.select(&:crash?)
+
+    assert_equal 4, predicates.size
+  end
 end
