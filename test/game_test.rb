@@ -70,7 +70,9 @@ class GameTest < Test::Unit::TestCase
     assert_equal game_state, puzzle_fighter(instructions)
   end
 
-  def x_test_solve_game_2
+  def test_solve_game_2
+    pend
+
     instructions = [
       ["GR", "ALLL"],
       ["GG", "ALLL"],
@@ -95,8 +97,6 @@ class GameTest < Test::Unit::TestCase
       ["bB", "LL"],
     ]
 
-    pend
-
     game_state = [
       "      ",
       "      ",
@@ -116,6 +116,8 @@ class GameTest < Test::Unit::TestCase
   end
 
   def x_test_solve_game_3
+    pend
+
     instructions = [
       ["RR","LLL"],
       ["GG","LL"],
@@ -153,8 +155,6 @@ class GameTest < Test::Unit::TestCase
       "RGGRGB",
       "RGRGGY",
     ].join("\n")
-
-    pend
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
