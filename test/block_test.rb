@@ -235,10 +235,18 @@ class BlockTest < Test::Unit::TestCase
   end
 
   def test_is_falsey_for_inner_1
-    assert Block.new("A", 0, 0).outside?
+    refute Block.new("A", 0, 0).outside?
   end
 
   def test_is_falsey_for_inner_2
-    assert Block.new("A", 11, 11).outside?
+    refute Block.new("A", 11, 11).outside?
+  end
+
+  def test_is_truthy_for_same_position
+    assert Block.new("a", 6, 2).covers? Block.new("0", 6, 2)
+  end
+
+  def test_is_false_for_different_position
+    refute Block.new("a", 6, 2).covers? Block.new("a", 6, 3)
   end
 end
