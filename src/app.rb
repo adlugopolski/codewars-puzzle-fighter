@@ -60,7 +60,36 @@ class Effects < BaseScaffold
   end
 
   def call
+    @blocks.select(&:crash?).map do |block|
+      Crash.call(@blocks, block)
+    end
     @blocks
+  end
+end
+
+class Crash < BaseScaffold
+  def initialize(blocks, crash)
+    @blocks = blocks
+    @crash = crash.copy
+    @remove = []
+  end
+
+  def call
+    traverse(@crash)
+    @remove
+  end
+
+  private
+
+  def traverse(current)
+    return if current.outside?
+    return if @blocks.empty_at?(current)
+
+    @remove << current if current.kind.downcase == crash.kind
+    traverse(current.move_up)
+    traverse(current.move_left)
+    traverse(current.move_down)
+    traverse(current.move_right)
   end
 end
 
@@ -129,6 +158,10 @@ class Block
 
   def down
     Block.new(kind, x, y + 1)
+  end
+
+  def crash?
+    ("a".."z").include?(kind)
   end
 
   def ==(other)
