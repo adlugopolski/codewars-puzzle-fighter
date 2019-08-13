@@ -60,6 +60,52 @@ class DebugState
   end
 end
 
+class DebugRun
+  def self.call(*args)
+    new(*args).call
+  end
+
+  def initialize(puzzle_figther, max_entries = nil)
+    @puzzle_figther = puzzle_figther
+    @max_entries = Integer(max_entries || puzzle_figther.input.size)
+  end
+
+  def call
+    puts [header, body].join("\n")
+  end
+
+  private
+
+  def output
+    @puzzle_figther
+      .debug
+      .last(@max_entries)
+      .map(&FormatOutput.method(:call))
+      .transpose
+      .map { |line| DebugState.call(line).join(" ") }
+  end
+
+  def header
+    @puzzle_figther
+      .input
+      .last(@max_entries)
+      .map { |command| format "%-8s", command.join(" ") }
+      .join(" ")
+  end
+
+  def bar
+    @_bar ||= Array.new(@max_entries) { "+------+" }
+  end
+
+  def body
+    [
+      bar.join(" "),
+      output,
+      bar.join(" "),
+    ]
+  end
+end
+
 def DebugPrint(board)
   DebugState.call FormatOutput.call board
 end
