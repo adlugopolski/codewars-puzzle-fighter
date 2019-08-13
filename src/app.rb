@@ -126,6 +126,10 @@ class Board < Array
 
     supporting.size < 11 - block.y
   end
+
+  def hanging_blocks
+    select(&method(:hanging?))
+  end
 end
 
 class Gravity < BaseScaffold
@@ -140,17 +144,7 @@ class Gravity < BaseScaffold
   private
 
   def hanging_blocks
-    @_hanging_blocks ||= @blocks.select do |block|
-      hanging?(block)
-    end
-  end
-
-  def hanging?(block)
-    supporting = @blocks.select do |member|
-      member.x == block.x && member.y > block.y
-    end
-
-    supporting.size < 11 - block.y
+    @_hanging_blocks ||= @blocks.hanging_blocks
   end
 end
 
