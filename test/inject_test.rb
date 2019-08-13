@@ -2,6 +2,29 @@ require "test/unit"
 require_relative "../src/app.rb"
 
 class InjectTest < BaseTestCase
+  def test_does_not_change_on_empty_input
+    templates = [
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "     Y", "     Y",
+      "     Y", "     Y",
+      "RRRYBY", "RRRYBY",
+    ]
+
+    input, expected = _set_from_ascii(templates)
+
+    blocks = Inject.call input, []
+
+    assert_equal expected.sort, blocks.sort
+  end
+
   def test_inserts_new_blocks_into_the_board
     templates = [
       "      ", "      ",
