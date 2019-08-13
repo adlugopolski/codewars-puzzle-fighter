@@ -71,7 +71,7 @@ class DebugRun
   end
 
   def call
-    puts [header, body].join("\n")
+    [header, body].join("\n")
   end
 
   private
@@ -104,8 +104,4 @@ class DebugRun
       bar.join(" "),
     ]
   end
-end
-
-def DebugPrint(board)
-  DebugState.call FormatOutput.call board
 end
