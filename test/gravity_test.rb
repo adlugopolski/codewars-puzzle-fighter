@@ -45,4 +45,28 @@ class GravityTest < BaseTestCase
       assert_equal expected.sort, Gravity.call(input).sort
     }
   end
+
+  def test_does_move_down_trapped_blocks
+    templates = [
+      "     Y", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "  B   ", "      ",
+      " Y    ", "      ",
+      "      ", " YB   ",
+      "RRRR  ", "RRRR  ",
+      "RRRR Y", "RRRR Y",
+      " G B  ", "   B Y",
+      "   BBY", "   BBY",
+      "   BBB", " G BBB",
+    ]
+
+    input, expected = _set_from_ascii(templates)
+
+    ascii_expected, ascii_output =
+      _format_all(expected.sort, Gravity.call(input).sort)
+
+    assert_equal ascii_expected, ascii_output
+  end
 end
