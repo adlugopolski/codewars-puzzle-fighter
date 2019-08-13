@@ -129,8 +129,14 @@ class Board < Array
     supporting.size < 11 - block.y
   end
 
+  def minus(elements)
+    reject do |current|
+      Array(elements).include?(current)
+    end
+  end
+
   def hanging_blocks
-    select(&method(:hanging?))
+    Board.new select(&method(:hanging?))
   end
 end
 
@@ -140,13 +146,15 @@ class Gravity < BaseScaffold
   end
 
   def call
-    Inject.call(@blocks - hanging_blocks, hanging_blocks.sort)
+    hanging_blocks.reduce(@blocks) do |result, block|
+      Board.new Inject.call(result.minus(block), block)
+    end
   end
 
   private
 
   def hanging_blocks
-    @_hanging_blocks ||= @blocks.hanging_blocks
+    @_hanging_blocks ||= @blocks.hanging_blocks.sort.reverse
   end
 end
 
@@ -159,22 +167,23 @@ class Inject < BaseScaffold
 
   def initialize(blocks, new_blocks)
     @blocks = blocks.map(&:copy)
-    @new_blocks = new_blocks
+    @new_blocks = Array(new_blocks)
   end
 
   def call
     @new_blocks.reverse.each do |block|
-      @blocks << block.copy(y: lowest_in_column(block.x))
+      @blocks << block.copy(y: lowest_in_column(block))
     end
     @blocks
   end
 
   private
 
-  def lowest_in_column(column)
+  def lowest_in_column(check)
     found_block =
       @blocks
-      .select { |block| block.x == column }
+      .select { |block| block.x == check.x }
+      .select { |block| block.y > check.y }
       .min_by(&:y)
 
     found_block ||= NullBlock.new
