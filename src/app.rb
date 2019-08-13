@@ -461,10 +461,22 @@ if $PROGRAM_NAME == __FILE__
   pf = PuzzleFighter.new(instructions)
   pf.call
 
-  bar = Array.new(instructions.size) { "+------+" }
-  output = pf.debug.map(&FormatOutput.method(:call)).transpose
+  max_entries = Integer(ARGV[1] || instructions.size)
 
-  puts instructions.map { |command| format("%-8s", command.join(" ")) }.join(" ")
+  bar = Array.new(max_entries) { "+------+" }
+
+  output =
+    pf
+    .debug
+    .last(max_entries)
+    .map(&FormatOutput.method(:call))
+    .transpose
+
+  puts instructions
+    .last(max_entries)
+    .map { |command| format "%-8s", command.join(" ") }
+    .join(" ")
+
   puts bar.join(" ")
   output.map do |line|
     puts DebugState.call(line).join(" ")
