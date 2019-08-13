@@ -20,10 +20,15 @@ class GravityTest < BaseTestCase
 
     input, expected = _set_from_ascii(templates)
 
-    assert_equal expected.sort, Gravity.call(input).sort
+    ascii_expected, ascii_output =
+      _format_all(expected.sort, Gravity.call(input).sort)
+
+    assert_equal ascii_expected, ascii_output
   end
 
   def test_does_not_move_power_blocks_down
+    pend
+
     templates = [
       "     Y", "      ",
       "      ", "      ",
@@ -41,14 +46,13 @@ class GravityTest < BaseTestCase
 
     input, expected = _set_from_ascii(templates)
 
-    pend {
-      assert_equal expected.sort, Gravity.call(input).sort
-    }
+    ascii_expected, ascii_output =
+      _format_all(expected.sort, Gravity.call(input).sort)
+
+    assert_equal ascii_expected, ascii_output
   end
 
   def test_does_move_down_trapped_blocks
-    pend
-
     templates = [
       "     Y", "      ",
       "      ", "      ",
