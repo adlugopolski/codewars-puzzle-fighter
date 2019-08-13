@@ -1,7 +1,7 @@
 require "test/unit"
 require_relative "../src/app.rb"
 
-class BoardTest < BaseTestCase
+class InjectTest < BaseTestCase
   def test_inserts_new_blocks_into_the_board
     templates = [
       "      ", "      ",
@@ -20,7 +20,7 @@ class BoardTest < BaseTestCase
 
     input, expected = _set_from_ascii(templates)
 
-    blocks = Board.call(
+    blocks = Inject.call(
       input,
       [
         Block.new("Y", 1, 0),
@@ -49,7 +49,7 @@ class BoardTest < BaseTestCase
 
     input, expected = _set_from_ascii(templates)
 
-    blocks = Board.call(
+    blocks = Inject.call(
       input,
       [
         Block.new("Y", 1, 0),

@@ -120,7 +120,7 @@ class Gravity < BaseScaffold
   end
 
   def call
-    Board.call(@blocks - hanging_blocks, hanging_blocks.sort)
+    Inject.call(@blocks - hanging_blocks, hanging_blocks.sort)
   end
 
   private
@@ -140,7 +140,7 @@ class Gravity < BaseScaffold
   end
 end
 
-class Board < BaseScaffold
+class Inject < BaseScaffold
   class NullBlock
     def y
       12
@@ -278,7 +278,7 @@ class MainLoop < BaseScaffold
 
   def call
     Effects.call(
-      Board.call(@state, InitialRotator.call(@step))
+      Inject.call(@state, InitialRotator.call(@step))
     )
   end
 end
