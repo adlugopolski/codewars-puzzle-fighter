@@ -3,8 +3,8 @@
 require_relative "debug.rb"
 
 class BaseScaffold
-  def self.call(*args)
-    new(*args).call
+  def self.call(*args, &block)
+    new(*args).call(&block)
   end
 end
 
@@ -28,7 +28,7 @@ class FormatOutput < BaseScaffold
 end
 
 class PuzzleFighter < BaseScaffold
-  attr_accessor :debug
+  attr_reader :debug, :input
 
   def initialize(input)
     @input = input
@@ -36,13 +36,15 @@ class PuzzleFighter < BaseScaffold
   end
 
   def call
+    result
+    yield self if block_given?
     output_format
   end
 
   private
 
   def result
-    @input.each_with_index.reduce([]) do |state, (step, _counter)|
+    @_result ||= @input.each_with_index.reduce([]) do |state, (step, _counter)|
       MainLoop.call(state, step).tap do |nstate|
         @debug << nstate
       end
@@ -458,28 +460,7 @@ if $PROGRAM_NAME == __FILE__
     ["YB", "AL"],
   ]
 
-  pf = PuzzleFighter.new(instructions)
-  pf.call
-
-  max_entries = Integer(ARGV[1] || instructions.size)
-
-  bar = Array.new(max_entries) { "+------+" }
-
-  output =
-    pf
-    .debug
-    .last(max_entries)
-    .map(&FormatOutput.method(:call))
-    .transpose
-
-  puts instructions
-    .last(max_entries)
-    .map { |command| format "%-8s", command.join(" ") }
-    .join(" ")
-
-  puts bar.join(" ")
-  output.map do |line|
-    puts DebugState.call(line).join(" ")
+  PuzzleFighter.call(instructions) do |fighter|
+    puts DebugRun.call(fighter)
   end
-  puts bar.join(" ")
 end
