@@ -1,27 +1,33 @@
 require "test/unit"
 require_relative "../src/app.rb"
 
-class BoardTest < Test::Unit::TestCase
+class BoardTest < BaseTestCase
   def test_inserts_new_blocks_into_the_board
+    templates = [
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "     Y", "     Y",
+      "     Y", " YB  Y",
+      "RRRYBY", "RRRYBY",
+    ]
+
+    input, expected = _set_from_ascii(templates)
+
     blocks = Board.call(
-      [
-        Block.new("A", 1, 11),
-        Block.new("A", 1, 10),
-      ],
+      input,
       [
         Block.new("Y", 1, 0),
         Block.new("B", 2, 0),
       ],
     )
 
-    assert_equal(
-      blocks,
-      [
-        Block.new("A", 1, 11),
-        Block.new("A", 1, 10),
-        Block.new("B", 2, 11),
-        Block.new("Y", 1, 9),
-      ]
-    )
+    assert_equal expected.sort, blocks.sort
   end
 end
