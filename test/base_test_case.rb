@@ -2,8 +2,8 @@ require "test/unit"
 require_relative "../src/app.rb"
 
 class BaseTestCase < Test::Unit::TestCase
-  def _format_all(*boards, rows)
-    boards.map { |board| FormatOutput.call(board, rows) }
+  def _format_all(*boards)
+    boards.map { |board| FormatOutput.call(board, 12) }
   end
 
   def _format(blocks, rows = 12)
