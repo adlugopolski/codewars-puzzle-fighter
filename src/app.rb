@@ -126,7 +126,7 @@ class Gravity < BaseScaffold
   private
 
   def hanging_blocks
-    @_hanging_blcoks ||= @blocks.select do |block|
+    @_hanging_blocks ||= @blocks.select do |block|
       hanging?(block)
     end
   end
