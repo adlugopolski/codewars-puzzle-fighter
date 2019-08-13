@@ -114,9 +114,23 @@ class Crash < BaseScaffold
   end
 end
 
+class Board < Array
+  def initialize(blocks)
+    super(blocks)
+  end
+
+  def hanging?(block)
+    supporting = select do |member|
+      member.x == block.x && member.y > block.y
+    end
+
+    supporting.size < 11 - block.y
+  end
+end
+
 class Gravity < BaseScaffold
   def initialize(blocks)
-    @blocks = blocks.map(&:copy)
+    @blocks = Board.new(blocks.map(&:copy))
   end
 
   def call
