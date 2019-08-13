@@ -22,4 +22,27 @@ class GravityTest < BaseTestCase
 
     assert_equal expected.sort, Gravity.call(input).sort
   end
+
+  def test_does_not_move_power_blocks_down
+    templates = [
+      "     Y", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "  B   ", "      ",
+      " Y    ", "      ",
+      "      ", "      ",
+      "RRRR  ", " YB   ",
+      "RRRR Y", "RRRR Y",
+      "      ", "RRRR Y",
+      "   BBY", "   BBY",
+    ]
+
+    input, expected = _set_from_ascii(templates)
+
+    pend {
+      assert_equal expected.sort, Gravity.call(input).sort
+    }
+  end
 end
