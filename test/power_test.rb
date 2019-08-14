@@ -78,7 +78,7 @@ class PowerTest < BaseTestCase
     assert_equal(*_format_all(expected.sort, Power.call(input, "B").sort))
   end
 
-  def test_does_not_detect_sigle_column_blocks
+  def test_does_not_detect_single_column_vertical_blocks
     input, expected = _set_from_ascii [
       "      ", "      ",
       "      ", "      ",
@@ -90,7 +90,26 @@ class PowerTest < BaseTestCase
       "  B   ", "      ",
       "YYB   ", "      ",
       "YBBRR ", " BB   ",
-      "YBBBB ", " BB   ",
+      "YBBBG ", " BB   ",
+      "GGBGG ", "      ",
+    ]
+
+    assert_equal(*_format_all(expected.sort, Power.call(input, "B").sort))
+  end
+
+  def test_does_not_detect_single_column_horizontal_blocks
+    input, expected = _set_from_ascii [
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "YYB   ", "      ",
+      "YBBRR ", " BB   ",
+      "BBBBB ", " BB   ",
       "GGBGG ", "      ",
     ]
 
