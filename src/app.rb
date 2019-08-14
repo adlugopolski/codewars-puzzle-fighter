@@ -350,7 +350,7 @@ class Block
 
   def draw_on(template)
     board = template.map(&:dup)
-    board[y][x] = kind.to_s
+    board[y][x] = kind.to_s[0]
     board
   end
 

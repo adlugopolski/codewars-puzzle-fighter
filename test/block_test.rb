@@ -87,7 +87,7 @@ class BlockTest < Test::Unit::TestCase
   end
 
   def test_draws_on_provided_template
-    block = Block.new("B", 3, 1)
+    block = Block.new("B2", 3, 1)
 
     assert_equal(
       ["AAB   ", "C  B  "],
