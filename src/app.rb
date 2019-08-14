@@ -79,6 +79,51 @@ class Effects < BaseScaffold
   end
 end
 
+class HistogramArea < BaseScaffold
+  def initialize(row)
+    @row = row
+  end
+
+  # This is O(N^2)
+  def call
+    subrows.max_by(&:first)
+  end
+
+  def subrows
+    (0..@row.size).flat_map do |index|
+      index.upto(@row.size - 1).map do |position|
+        subrow = @row[index..position]
+        [subrow.size * subrow.min, Array(index..position)]
+      end
+    end
+  end
+end
+
+class Power < BaseScaffold
+  def initialize(blocks)
+    @blocks = Board.new(blocks)
+  end
+
+  def call
+    x = histogram("B")
+    puts FormatOutput.call(x)
+    raise ArgumentError, x
+  end
+
+  def kind(color)
+    @blocks.select do |block|
+      block.kind == color
+    end
+  end
+
+  def histogram(color)
+    kind(color).each_with_object(Board.new) do |block, memo|
+      upper_block = memo.at(block.x, block.y - 1) || Block.new(0, 0, 0)
+      memo.append block.copy(kind: upper_block.kind + 1)
+    end
+  end
+end
+
 class Crash < BaseScaffold
   def initialize(blocks, crash)
     @blocks = blocks.map(&:copy)
