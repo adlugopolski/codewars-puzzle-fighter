@@ -115,4 +115,23 @@ class PowerTest < BaseTestCase
 
     assert_equal(*_format_all(expected.sort, Power.call(input, "B").sort))
   end
+
+  def test_does_detect_bigger_power_blocks
+    input, expected = _set_from_ascii [
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      " YG   ", "      ",
+      "RRR   ", "      ",
+      "RRRR  ", "RRRR  ",
+      "RRRR  ", "RRRR  ",
+      "RRRR  ", "RRRR  ",
+      "RRRRRR", "RRRR  ",
+      "  GRRR", "      ",
+    ]
+
+    assert_equal(*_format_all(expected.sort, Power.call(input, "R").sort))
+  end
 end

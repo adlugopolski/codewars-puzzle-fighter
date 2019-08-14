@@ -126,7 +126,7 @@ class Power < BaseScaffold
       .map { |y, row| [y, kinds_with_gaps(row)] }
       .map { |y, row| [y, HistogramArea.call(row)] }
       .reject { |_, row| row.nil? }
-      .max_by(&:first)
+      .max_by { |_, row| row[:size] }
       .then(&format_block_coords)
       .map { |x, y| @blocks.at(x, y) }
   end
