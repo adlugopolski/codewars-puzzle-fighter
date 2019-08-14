@@ -43,19 +43,22 @@ class InjectTest < BaseTestCase
 
     input, expected = _set_from_ascii(templates)
 
-    blocks = Inject.call(
-      input,
-      [
-        Block.new("Y", 1, 0),
-        Block.new("B", 2, 0),
-      ],
-    )
+    new_blocks = [
+      Block.new("Y", 1, 0),
+      Block.new("B", 2, 0),
+    ]
 
-    assert_equal expected.sort, blocks.sort
+    board = new_blocks.reduce(input) do |state, block|
+      Inject.call(state, block)
+    end
+
+    ascii_expected, ascii_output = _format_all(expected.sort, board)
+
+    assert_equal ascii_expected, ascii_output
   end
 
   def test_inserts_new_blocks_into_the_board_with_power_blocks
-    templates = [
+    input, expected = _set_from_ascii [
       "      ", "      ",
       "      ", "      ",
       "      ", "      ",
@@ -70,21 +73,20 @@ class InjectTest < BaseTestCase
       "   BBY", "   BBY",
     ]
 
-    input, expected = _set_from_ascii(templates)
+    new_blocks = [
+      Block.new("Y", 1, 0),
+      Block.new("B", 2, 0),
+    ]
 
-    blocks = Inject.call(
-      input,
-      [
-        Block.new("Y", 1, 0),
-        Block.new("B", 2, 0),
-      ],
-    )
+    board = new_blocks.reduce(input) do |state, block|
+      Inject.call(state, block)
+    end
 
-    assert_equal expected.sort, blocks.sort
+    assert_equal(*_format_all(expected.sort, board))
   end
 
   def test_inserts_new_power_blocks
-    templates = [
+    input, expected = _set_from_ascii [
       "      ", "      ",
       "      ", "      ",
       "      ", "      ",
@@ -99,8 +101,6 @@ class InjectTest < BaseTestCase
       "   BBY", "   BBY",
     ]
 
-    input, expected = _set_from_ascii(templates)
-
     blocks = Inject.call(
       input,
       [
@@ -111,8 +111,6 @@ class InjectTest < BaseTestCase
       ],
     )
 
-    ascii_expected, ascii_output = _format_all(expected.sort, blocks)
-
-    assert_equal ascii_expected, ascii_output
+    assert_equal(*_format_all(expected.sort, blocks))
   end
 end
