@@ -162,7 +162,7 @@ class Crash < BaseScaffold
 end
 
 class Board < Array
-  def initialize(blocks)
+  def initialize(blocks = [])
     super(blocks)
   end
 
@@ -180,8 +180,16 @@ class Board < Array
     end
   end
 
+  def locked_power_block?(block)
+    true
+  end
+
   def hanging_blocks
     Board.new select(&method(:hanging?))
+  end
+
+  def at(x, y)
+    detect { |block| block.x == x && block.y == y }
   end
 end
 
