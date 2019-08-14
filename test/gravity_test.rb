@@ -97,4 +97,30 @@ class GravityTest < BaseTestCase
 
     assert_equal ascii_expected, ascii_output
   end
+
+  def test_does_move_hanging_power_blocks
+    pend
+
+    templates = [
+      "     Y", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "  BGGG", "     Y",
+      " Y GGG", "   GGG",
+      "      ", " YBGGG",
+      "RRRR  ", "RRRR  ",
+      "RRRR Y", "RRRR  ",
+      " G B  ", "   B Y",
+      "   BBY", "   BBY",
+      "   BBB", " G BBB",
+    ]
+
+    input, expected = _set_from_ascii(templates)
+
+    ascii_expected, ascii_output =
+      _format_all(expected.sort, Gravity.call(input).sort)
+
+    assert_equal ascii_expected, ascii_output
+  end
 end
