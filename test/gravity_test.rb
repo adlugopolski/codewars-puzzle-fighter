@@ -123,7 +123,7 @@ class GravityTest < BaseTestCase
   end
 
   def test_does_move_trapped_power_block
-    templates = [
+    input, expected = _set_from_ascii [
       "      ", "      ",
       "      ", "      ",
       "      ", "      ",
@@ -138,11 +138,25 @@ class GravityTest < BaseTestCase
       "    G ", "RRRBG ",
     ]
 
-    input, expected = _set_from_ascii(templates)
+    assert_equal(*_format_all(expected.sort, Gravity.call(input).sort))
+  end
 
-    ascii_expected, ascii_output =
-      _format_all(expected.sort, Gravity.call(input).sort)
+  def test_does_move_combined_power_gems
+    input, expected = _set_from_ascii [
+      "      ", "      ",
+      "      ", "      ",
+      " YG   ", "      ",
+      "RRR   ", "      ",
+      "RRR   ", " YG   ",
+      "RRRR  ", "RRR   ",
+      "RRRR  ", "RRR   ",
+      "RRRR  ", "RRRR  ",
+      "   RRR", "RRRR  ",
+      "  GRR ", "RRRR  ",
+      "      ", "   RRR",
+      "     R", "  GRRR",
+    ]
 
-    assert_equal ascii_expected, ascii_output
+    assert_equal(*_format_all(expected.sort, Gravity.call(input).sort))
   end
 end
