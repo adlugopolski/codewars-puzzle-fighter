@@ -99,8 +99,6 @@ class GravityTest < BaseTestCase
   end
 
   def test_does_move_hanging_power_blocks
-    pend
-
     templates = [
       "     Y", "      ",
       "      ", "      ",
