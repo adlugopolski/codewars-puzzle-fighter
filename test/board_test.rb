@@ -44,6 +44,27 @@ class BoardTest < BaseTestCase
     refute Board.new(input).power_block_static?(power_block)
   end
 
+  def test_is_truthy_for_floor_power_block
+    templates = [
+      "     Y", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "      ", "      ",
+      "  B   ", "      ",
+      " Y    ", "      ",
+      "      ", "      ",
+      "RRRR  ", "RRRR  ",
+      "RRRR Y", "RRRR  ",
+      "G  B  ", "      ",
+      "RR  BY", "RR    ",
+      "RR BBB", "RR    ",
+    ]
+
+    input, power_block  = _set_from_ascii(templates)
+
+    assert Board.new(input).power_block_static?(power_block)
+  end
+
   def test_is_hanging_over_board
     pend
   end
