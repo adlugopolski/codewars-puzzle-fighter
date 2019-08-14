@@ -86,40 +86,70 @@ class HistogramArea < BaseScaffold
 
   # This is O(N^2)
   def call
-    subrows.max_by(&:first)
+    subrows.max_by do |group|
+      [group[:size], group[:positions].size]
+    end
   end
 
   def subrows
     (0..@row.size).flat_map do |index|
       index.upto(@row.size - 1).map do |position|
         subrow = @row[index..position]
-        [subrow.size * subrow.min, Array(index..position)]
+        {
+          size: subrow.size * subrow.min,
+          positions: Array(index..position),
+          values: subrow,
+        }
       end
     end
   end
 end
 
 class Power < BaseScaffold
-  def initialize(blocks)
-    @blocks = Board.new(blocks)
+  def initialize(blocks, color)
+    @blocks = Board.new(blocks.select { |block| block.kind == color })
+    @color = color
   end
 
   def call
-    x = histogram("B")
-    puts FormatOutput.call(x)
-    raise ArgumentError, x
+    find_power_block
   end
 
-  def kind(color)
-    @blocks.select do |block|
-      block.kind == color
+  private
+
+  def find_power_block
+    possible_blocks
+      .sort
+      .group_by(&:y)
+      .map { |y, row| [y, kinds_with_gaps(row)] }
+      .map { |y, row| [y, HistogramArea.call(row)] }
+      .select { |_, row| row[:size] >= 4 }
+      .max_by(&:first)
+      .then(&format_block_coords)
+      .map { |x, y| @blocks.at(x, y) }
+  end
+
+  def format_block_coords
+    lambda do |(row, result)|
+      return [] unless result
+
+      (row - result[:values].min + 1 .. row).flat_map do |index|
+        result[:positions].zip Array.new(result[:values].size, index)
+      end
     end
   end
 
-  def histogram(color)
-    kind(color).each_with_object(Board.new) do |block, memo|
+  def possible_blocks
+    @blocks.each_with_object(Board.new) do |block, memo|
       upper_block = memo.at(block.x, block.y - 1) || Block.new(0, 0, 0)
       memo.append block.copy(kind: upper_block.kind + 1)
+    end
+  end
+
+  def kinds_with_gaps(row)
+    (0..5).map do |x|
+      found = row.detect { |block| block.x == x } || Block.new(0, x, 0)
+      found.kind
     end
   end
 end
