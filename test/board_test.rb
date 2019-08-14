@@ -65,8 +65,23 @@ class BoardTest < BaseTestCase
     assert Board.new(input).power_block_static?(power_block)
   end
 
-  def test_is_hanging_over_board
-    pend
+  def test_returns_all_power_blocks
+    input = _from_ascii [
+      "     Y",
+      "      ",
+      "      ",
+      "      ",
+      "  B   ",
+      " Y GGG",
+      "   GGG",
+      "RRRR  ",
+      "RRRR Y",
+      "G  B  ",
+      "RR  BY",
+      "RR BBB",
+    ]
+
+    assert_equal [4, 8, 6], Board.new(input).power_blocks.map(&:size)
   end
 
   def test_returns_all_hanging_blocks
