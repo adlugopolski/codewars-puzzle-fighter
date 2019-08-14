@@ -238,11 +238,13 @@ class Board < Array
   end
 
   def power_blocks
-    (0..).reduce([]) do |blocks, _|
-      powers = Power.call(minus(blocks.flatten), "R")
-      break blocks if powers.empty?
+    %w[R G B Y].flat_map do |color|
+      (0..).reduce([]) do |blocks, _|
+        powers = Power.call(minus(blocks.flatten), color)
+        break blocks if powers.empty?
 
-      blocks + [powers]
+        blocks + [powers]
+      end
     end
   end
 end
