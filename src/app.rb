@@ -132,6 +132,7 @@ class Power < BaseScaffold
       .reject { |_, row| row.nil? }
       .max_by { |_, row| row[:size] }
       .then(&format_block_coords)
+      .map { |x, y| @blocks.at(x, y) }
   end
 
   def format_block_coords
