@@ -44,7 +44,7 @@ class PuzzleFighter < BaseScaffold
   private
 
   def result
-    @_result ||= @input.each_with_index.reduce([]) do |state, (step, _counter)|
+    @_result ||= @input.reduce([]) do |state, step|
       MainLoop.call(state, step).tap do |nstate|
         @debug << nstate
       end
@@ -270,17 +270,34 @@ end
 class Inject < BaseScaffold
   def initialize(blocks, new_blocks)
     @blocks = blocks.map(&:copy)
-    @new_blocks = Array(new_blocks)
+    @new_blocks = Array(new_blocks).reverse
   end
 
   def call
-    @new_blocks.reverse.each do |block|
-      @blocks << block.copy(y: lowest_in_column(block))
+    @new_blocks.reduce(@blocks) do |state, block|
+      state << block.copy(y: highest_of_lowest - bshift(block))
     end
-    @blocks
   end
 
   private
+
+  def bshift(block)
+    if @new_blocks.size == 1
+      0
+    else
+      block.y
+    end
+  end
+
+  def highest_of_lowest
+    @_highest_of_lowest ||=
+      @new_blocks
+      .group_by(&:y)
+      .max_by(&:last)
+      .last
+      .map { |check| lowest_in_column(check) }
+      .min
+  end
 
   def lowest_in_column(check)
     found_block =
