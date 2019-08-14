@@ -2,6 +2,16 @@
 
 require_relative "debug.rb"
 
+class Object
+  def if_none
+    if nil?
+      yield if block_given?
+    else
+      self
+    end
+  end
+end
+
 class BaseScaffold
   def self.call(*args, &block)
     new(*args).call(&block)
