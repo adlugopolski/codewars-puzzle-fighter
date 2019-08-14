@@ -109,7 +109,7 @@ end
 
 class Power < BaseScaffold
   def initialize(blocks, color)
-    @blocks = Board.new(blocks.select { |block| block.kind == color })
+    @blocks = Board.new(blocks.select { |block| block.kind == color }.sort)
     @color = color
   end
 
