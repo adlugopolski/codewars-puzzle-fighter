@@ -81,7 +81,7 @@ class BoardTest < BaseTestCase
       "RR BBB",
     ]
 
-    assert_equal [4, 8, 6], Board.new(input).power_blocks.map(&:size)
+    assert_equal [4, 6, 8], Board.new(input).power_blocks.map(&:size).sort
   end
 
   def test_returns_all_hanging_blocks
