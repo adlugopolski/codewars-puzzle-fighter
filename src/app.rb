@@ -196,6 +196,21 @@ class Board < Array
     super(blocks)
   end
 
+  def power_block_static?(elements)
+    row_number, lowest_row = elements.group_by(&:y).max_by(&:first)
+    columns = lowest_row.map(&:x)
+
+    support_present =
+      select { |block| block.y > row_number }
+      .select { |block| block.x.between?(columns.min, columns.max) }
+      .group_by(&:x)
+      .map { |_, value| value.count }
+      .select { |value| value == 11 - row_number }
+      .any?
+
+    row_number == 11 || support_present
+  end
+
   def hanging?(block)
     supporting = select do |member|
       member.x == block.x && member.y > block.y
