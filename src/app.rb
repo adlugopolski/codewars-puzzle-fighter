@@ -212,12 +212,6 @@ class Gravity < BaseScaffold
 end
 
 class Inject < BaseScaffold
-  class NullBlock
-    def y
-      12
-    end
-  end
-
   def initialize(blocks, new_blocks)
     @blocks = blocks.map(&:copy)
     @new_blocks = Array(new_blocks)
@@ -239,7 +233,7 @@ class Inject < BaseScaffold
       .select { |block| block.y > check.y }
       .min_by(&:y)
 
-    found_block ||= NullBlock.new
+    found_block ||= Block.new("B", 0, 12)
     found_block.y - 1
   end
 end
@@ -259,7 +253,7 @@ class Block
 
   def draw_on(template)
     board = template.map(&:dup)
-    board[y][x] = kind
+    board[y][x] = kind.to_s
     board
   end
 
