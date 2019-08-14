@@ -89,6 +89,7 @@ class HistogramArea < BaseScaffold
     subrows
       .select { |group| group[:size] >= 4 }
       .select { |group| group[:positions].size >= 2 }
+      .select { |group| group[:values].min >= 2 }
       .max_by { |group| [group[:size], group[:positions].size] }
   end
 
