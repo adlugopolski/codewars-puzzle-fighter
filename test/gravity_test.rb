@@ -136,8 +136,8 @@ class GravityTest < BaseTestCase
       " BBBB ", " BBBB ",
       "RBBBB ", " BBBB ",
       " RR G ", "    G ",
-      " RR G ", " RR G ",
-      "    G ", "RRR G ",
+      " RRBG ", " RR G ",
+      "    G ", "RRRBG ",
     ]
 
     input, expected = _set_from_ascii(templates)
