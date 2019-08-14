@@ -238,12 +238,14 @@ class Board < Array
     detect { |block| block.x == x && block.y == y }
   end
 
+  def power(id)
+    Board.new(select { |block| block.power == id })
+  end
+
   def power_count
-    group_by { |block| block.kind[1] }
+    group_by(&:power)
       .keys
-      .compact
-      .min
-      .if_none { "0" }
+      .max
       .next
   end
 
@@ -371,16 +373,17 @@ class Inject < BaseScaffold
 end
 
 class Block
-  attr_reader :x, :y, :kind
+  attr_reader :x, :y, :kind, :power
 
-  def initialize(kind, x, y)
+  def initialize(kind, x, y, power = 0)
     @kind = kind
     @x = x
     @y = y
+    @power = power
   end
 
-  def copy(kind: self.kind, x: self.x, y: self.y)
-    Block.new(kind, x, y)
+  def copy(kind: self.kind, x: self.x, y: self.y, power: self.power)
+    Block.new(kind, x, y, power)
   end
 
   def draw_on(template)
