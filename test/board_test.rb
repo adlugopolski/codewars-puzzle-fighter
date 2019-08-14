@@ -1,6 +1,16 @@
 require "test/unit"
 require_relative "../src/app.rb"
 
+class Object
+  def if_none
+    if nil?
+      yield if block_given?
+    else
+      self
+    end
+  end
+end
+
 class BoardTest < BaseTestCase
   def test_is_truthy_for_static_power_block
     templates = [
