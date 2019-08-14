@@ -220,6 +220,14 @@ class Board < Array
     Board.new select(&method(:hanging?)) - static_power_blocks.flatten
   end
 
+  def hanging_power_blocks
+    power_blocks.reject(&method(:power_block_static?))
+  end
+
+  def static_power_blocks
+    power_blocks.select(&method(:power_block_static?))
+  end
+
   def power_block_static?(elements)
     row_number, lowest_row = elements.group_by(&:y).max_by(&:first)
     columns = lowest_row.map(&:x)
@@ -233,10 +241,6 @@ class Board < Array
       .any?
 
     row_number == 11 || support_present
-  end
-
-  def static_power_blocks
-    power_blocks.select(&method(:power_block_static?))
   end
 
   def power_blocks
@@ -257,15 +261,27 @@ class Gravity < BaseScaffold
   end
 
   def call
-    hanging_blocks.reduce(@blocks) do |result, block|
-      Board.new Inject.call(result.minus(block), block)
+    hanging_queue.reduce(@blocks) do |result, block|
+      Board.new(Inject.call(result.minus(block), block))
     end
   end
 
   private
 
+  def hanging_queue
+    (@blocks.hanging_power_blocks + hanging_blocks)
+      .sort_by(&:first)
+      .reverse
+  end
+
+  def non_power_hanging_blocks
+    @blocks.hanging_blocks - @blocks.hanging_power_blocks.flatten
+  end
+
   def hanging_blocks
-    @_hanging_blocks ||= @blocks.hanging_blocks.sort.reverse
+    @_hanging_blocks ||= non_power_hanging_blocks.map do |block|
+      [block]
+    end
   end
 end
 
@@ -277,18 +293,20 @@ class Inject < BaseScaffold
 
   def call
     @new_blocks.reduce(@blocks) do |state, block|
-      state << block.copy(y: highest_of_lowest - bshift(block))
+      state << block.copy(y: highest_of_lowest - diff_y[block.y])
     end
   end
 
   private
 
-  def bshift(block)
-    if @new_blocks.size == 1
-      0
-    else
-      block.y
-    end
+  def diff_y
+    @_diff_y ||=
+      @new_blocks
+      .group_by(&:y)
+      .keys
+      .map
+      .with_index(0)
+      .reduce({}) { |memo, (y, index)| memo.merge(y => index) }
   end
 
   def highest_of_lowest
@@ -571,29 +589,31 @@ end
 
 if $PROGRAM_NAME == __FILE__
   instructions = [
+    ["BB", "LLLL"],
+    ["BB", "LL"],
+    ["BB", "L"],
+    ["BB", "LLL"],
+    ["BB", "LL"],
+    ["BG", "L"],
+    ["BB", ""],
+    ["BB", "R"],
+    ["RB", "BBRRR"],
     ["RR", "LLL"],
-    ["GG", "LL"],
-    ["RG", "BBL"],
-    ["GY", "AR"],
-    ["RR", "BBLLL"],
-    ["RB", "AALL"],
-    ["GR", "B"],
-    ["GB", "AR"],
+    ["RR", "BALL"],
     ["RR", ""],
-    ["GG", "R"],
-    ["YR", "BR"],
-    ["RR", "LLL"],
-    ["BR", "AALL"],
-    ["Bg", ""],
-    ["RR", "BBBBLLL"],
-    ["GR", "ALLL"],
-    ["bR", "L"],
-    ["YG", "BBBALL"],
+    ["RR", "R"],
     ["RR", "L"],
-    ["YB", "AL"],
+    ["RR", "B"],
+    ["RR", "LLL"],
+    ["RR", "LL"],
+    ["RR", "BLLL"],
+    ["RR", "B"],
+    ["YR", "ALL"],
+    ["GR", "AL"],
+    ["Rb", "RRRR"],
   ]
 
   PuzzleFighter.call(instructions) do |fighter|
-    puts DebugRun.call(fighter)
+    puts DebugRun.call(fighter, ARGV[0])
   end
 end
