@@ -213,9 +213,12 @@ class Board < Array
   end
 
   def power_count
-    group_by do |block|
-      block.kind[1]
-    end
+    group_by { |block| block.kind[1] }
+      .keys
+      .compact
+      .min
+      .if_none { "0" }
+      .next
   end
 
   def hanging?(block)
