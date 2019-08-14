@@ -117,6 +117,22 @@ class HistogramArea < BaseScaffold
   end
 end
 
+class Combiner < BaseScaffold
+  def initialize(blocks)
+    @blocks = Board.new(blocks)
+  end
+
+  def call
+    @blocks.minus(power) + power.map do |block|
+      block.copy(power: @blocks.power_count)
+    end
+  end
+
+  def power
+    @_power ||= Power.call(@blocks, "R")
+  end
+end
+
 class Power < BaseScaffold
   def initialize(blocks, color)
     @color = color
