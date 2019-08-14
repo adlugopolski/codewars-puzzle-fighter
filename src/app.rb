@@ -196,6 +196,28 @@ class Board < Array
     super(blocks)
   end
 
+  def minus(elements)
+    reject do |current|
+      Array(elements).include?(current)
+    end
+  end
+
+  def at(x, y)
+    detect { |block| block.x == x && block.y == y }
+  end
+
+  def hanging?(block)
+    supporting = select do |member|
+      member.x == block.x && member.y > block.y
+    end
+
+    supporting.size < 11 - block.y
+  end
+
+  def hanging_blocks
+    Board.new select(&method(:hanging?)) - static_power_blocks.flatten
+  end
+
   def power_block_static?(elements)
     row_number, lowest_row = elements.group_by(&:y).max_by(&:first)
     columns = lowest_row.map(&:x)
@@ -211,30 +233,17 @@ class Board < Array
     row_number == 11 || support_present
   end
 
-  def hanging?(block)
-    supporting = select do |member|
-      member.x == block.x && member.y > block.y
+  def static_power_blocks
+    power_blocks.select(&method(:power_block_static?))
+  end
+
+  def power_blocks
+    (0..).reduce([]) do |blocks, _|
+      powers = Power.call(minus(blocks.flatten), "R")
+      break blocks if powers.empty?
+
+      blocks + [powers]
     end
-
-    supporting.size < 11 - block.y
-  end
-
-  def minus(elements)
-    reject do |current|
-      Array(elements).include?(current)
-    end
-  end
-
-  def locked_power_block?(block)
-    true
-  end
-
-  def hanging_blocks
-    Board.new select(&method(:hanging?))
-  end
-
-  def at(x, y)
-    detect { |block| block.x == x && block.y == y }
   end
 end
 
