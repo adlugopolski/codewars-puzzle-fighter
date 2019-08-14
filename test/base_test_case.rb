@@ -10,20 +10,20 @@ class BaseTestCase < Test::Unit::TestCase
     FormatOutput.call(blocks, rows)
   end
 
-  def _set_from_ascii(templates)
-    convert_board = proc do |board|
-      board.flat_map.with_index(0) do |row, y|
-        row.chars.flat_map.with_index(0) do |kind, x|
-          next [] if kind == " "
+  def _from_ascii(board)
+    board.flat_map.with_index(0) do |row, y|
+      row.chars.flat_map.with_index(0) do |kind, x|
+        next [] if kind == " "
 
-          Block.new(kind, x, y)
-        end
+        Block.new(kind, x, y)
       end
     end
+  end
 
+  def _set_from_ascii(templates)
     templates
       .partition
       .with_index(1) { |_, i| i.odd? }
-      .map(&convert_board)
+      .map(&method(:_from_ascii))
   end
 end
