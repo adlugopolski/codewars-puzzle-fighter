@@ -370,6 +370,10 @@ class Block
     ("a".."z").include?(kind)
   end
 
+  def kind?(other)
+    other.kind[0].downcase == kind[0].downcase
+  end
+
   def outside?
     !(0..11).include?(x) || !(0..11).include?(y)
   end
