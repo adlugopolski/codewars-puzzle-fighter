@@ -27,8 +27,6 @@ class GravityTest < BaseTestCase
   end
 
   def test_does_not_move_power_blocks_down
-    pend
-
     templates = [
       "     Y", "      ",
       "      ", "      ",
@@ -37,10 +35,10 @@ class GravityTest < BaseTestCase
       "      ", "      ",
       "  B   ", "      ",
       " Y    ", "      ",
-      "      ", "      ",
-      "RRRR  ", " YB   ",
+      "      ", " YB   ",
+      "RRRR  ", "RRRR  ",
       "RRRR Y", "RRRR Y",
-      "      ", "RRRR Y",
+      "   R  ", "   R Y",
       "   BBY", "   BBY",
     ]
 
