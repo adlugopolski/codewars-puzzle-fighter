@@ -86,9 +86,10 @@ class HistogramArea < BaseScaffold
 
   # This is O(N^2)
   def call
-    subrows.max_by do |group|
-      [group[:size], group[:positions].size]
-    end
+    subrows
+      .select { |group| group[:size] >= 4 }
+      .select { |group| group[:positions].size >= 2 }
+      .max_by { |group| [group[:size], group[:positions].size] }
   end
 
   def subrows
@@ -123,7 +124,7 @@ class Power < BaseScaffold
       .group_by(&:y)
       .map { |y, row| [y, kinds_with_gaps(row)] }
       .map { |y, row| [y, HistogramArea.call(row)] }
-      .select { |_, row| row[:size] >= 4 }
+      .reject { |_, row| row.nil? }
       .max_by(&:first)
       .then(&format_block_coords)
       .map { |x, y| @blocks.at(x, y) }
