@@ -51,8 +51,6 @@ class GravityTest < BaseTestCase
   end
 
   def test_does_move_down_trapped_blocks
-    pend
-
     templates = [
       "     Y", "      ",
       "      ", "      ",
