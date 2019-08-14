@@ -90,15 +90,15 @@ class BoardTest < BaseTestCase
       Block.new("R", 1, 3),
     ]
 
-    assert_equal "1", board.power_count
+    assert_equal 1, board.power_count
   end
 
   def test_returns_prefix_for_next_power_block_if_present
     board = Board.new [
       Block.new("R", 1, 2),
-      Block.new("R1", 1, 3),
+      Block.new("R", 1, 3, 1),
     ]
 
-    assert_equal "2", board.power_count
+    assert_equal 2, board.power_count
   end
 end
