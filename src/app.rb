@@ -289,7 +289,7 @@ class Inject < BaseScaffold
       .select { |block| block.y > check.y }
       .min_by(&:y)
 
-    found_block ||= Block.new("B", 0, 12)
+    found_block ||= Block.new("?", 0, 12)
     found_block.y - 1
   end
 end
@@ -400,7 +400,9 @@ class MainLoop < BaseScaffold
 
   def call
     Effects.call(
-      Inject.call(@state, InitialRotator.call(@step))
+      InitialRotator.call(@step).reduce(@state) do |state, block|
+        Inject.call(state, block)
+      end
     )
   end
 end
@@ -512,7 +514,7 @@ class InitialRotator < BaseScaffold
   def call
     perform_moves
     adjust_negatives
-    @pair.blocks.sort
+    @pair.blocks.sort.reverse
   end
 
   private
