@@ -84,7 +84,12 @@ class BoardTest < BaseTestCase
     assert_equal [4, 6, 8], Board.new(input).power_blocks.map(&:size).sort
   end
 
-  def test_returns_all_hanging_blocks
-    pend
+  def test_returns_count_of_power_blocks
+    board = Board.new [
+      Block.new("R1", 1, 2),
+      Block.new("R1", 1, 3),
+    ]
+
+    assert_equal 1, board.power_count
   end
 end
