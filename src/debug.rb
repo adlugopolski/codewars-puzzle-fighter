@@ -105,3 +105,11 @@ class DebugRun
     ]
   end
 end
+
+def DebugPrint(data)
+  [
+    "+------+",
+    DebugState.call(FormatOutput.call(data)),
+    "+------+",
+  ]
+end
