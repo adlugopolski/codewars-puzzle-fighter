@@ -249,4 +249,20 @@ class BlockTest < Test::Unit::TestCase
   def test_is_false_for_different_position
     refute Block.new("a", 6, 2).overlap? Block.new("a", 6, 3)
   end
+
+  def test_is_the_same_kind_as_power_gem
+    assert Block.new("R", 8, 2).kind? Block.new("R2", 6, 3)
+  end
+
+  def test_is_the_same_kind_as_other_gem
+    assert Block.new("R", 8, 2).kind? Block.new("R", 9, 3)
+  end
+
+  def test_is_the_same_kind_as_crash_gem
+    assert Block.new("R2", 8, 2).kind? Block.new("r", 9, 3)
+  end
+
+  def test_is_not_the_same_as_diffrent_color
+    refute Block.new("B", 8, 2).kind? Block.new("R", 9, 3)
+  end
 end
