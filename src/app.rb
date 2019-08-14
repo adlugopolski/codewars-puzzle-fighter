@@ -109,8 +109,12 @@ end
 
 class Power < BaseScaffold
   def initialize(blocks, color)
-    @blocks = Board.new(blocks.select { |block| block.kind == color }.sort)
     @color = color
+    @blocks = Board.new(
+      blocks
+      .select { |block| block.kind? Block.new(color, 0, 0) }
+        .sort
+    )
   end
 
   def call
@@ -178,7 +182,7 @@ class Crash < BaseScaffold
     return if crash.outside?
     return unless (current = block_present?(crash))
     return if @remove.detect { |block| block.overlap?(crash) }
-    return if crash.kind != current.kind.downcase
+    return unless current.kind?(crash)
 
     @remove << current
 
@@ -383,7 +387,7 @@ class Block
   end
 
   def ==(other)
-    x == other.x && y == other.y && kind == other.kind
+    x == other.x && y == other.y && kind?(other)
   end
 
   def <=>(other)
