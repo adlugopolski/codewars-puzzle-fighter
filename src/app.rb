@@ -28,8 +28,6 @@ module ObjectExtensions
       end
     end
 
-    alias old_then then
-
     def then(*args, &block)
       block.call(self, *args)
     end
@@ -148,6 +146,30 @@ class HistogramArea < BaseScaffold
 end
 
 class PowerMerger < BaseScaffold
+  def initialize(blocks)
+    @blocks = Board.new(blocks)
+  end
+
+  def call
+    Board.new(mergers)
+  end
+
+  def mergers
+    filtered_blocks.reduce(@blocks) do |board, pair|
+      power = Power.call(pair.flatten, "R")
+      if pair.flatten.sort == power.sort
+        board.minus(power) + power.map do |block|
+          block.copy(power: board.power_count)
+        end
+      else
+        board
+      end
+    end
+  end
+
+  def filtered_blocks
+    @blocks.power_blocks("R").combination(2)
+  end
 end
 
 class PowerCombiner < BaseScaffold
