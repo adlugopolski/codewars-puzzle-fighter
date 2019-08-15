@@ -116,7 +116,7 @@ class PowerDebug < BaseScaffold
   }.freeze
 
   def initialize(board)
-    @board = board
+    @board = Board.new(board)
   end
 
   def call
