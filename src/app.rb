@@ -108,8 +108,8 @@ class Effects < BaseScaffold
     logic
       .then(&Rainbow)
       .then(&PowerCombiner)
-      .then(&PowerMerger)
       .then(&PowerExpander)
+      .then(&PowerMerger)
       .then(&Gravity)
   end
 
@@ -857,11 +857,11 @@ class InitialRotator < BaseScaffold
 end
 
 def puzzle_fighter(instructions)
-  puts "["
-  instructions.each do |line|
-    puts format("  %s,", line.inspect)
-  end
-  puts "]"
+  # puts "["
+  # instructions.each do |line|
+  #   puts format("  %s,", line.inspect)
+  # end
+  # puts "]"
 
   PuzzleFighter.call(instructions)
 end
