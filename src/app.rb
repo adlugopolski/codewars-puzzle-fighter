@@ -45,7 +45,7 @@ class BaseScaffold
   end
 end
 
-# require_relative "debug.rb"
+require_relative "debug.rb"
 
 class FormatOutput < BaseScaffold
   def initialize(blocks, rows = 12)
@@ -770,28 +770,27 @@ end
 
 if $PROGRAM_NAME == __FILE__
   instructions = [
-    ["BB", "LLLL"],
-    ["BB", "LL"],
-    ["BB", "L"],
-    ["BB", "LLL"],
-    ["BB", "LL"],
-    ["BG", "L"],
-    ["BB", ""],
-    ["BB", "R"],
+    ["YY", "BALLL"],
+    ["RR", "AALL"],
+    ["RG", "BR"],
+    ["YG", "ALLR"],
+    ["BG", "BRR"],
+    ["YR", "BBLLLL"],
+    ["GR", "BL"],
+    ["GG", "ALB"],
+    ["GY", ""],
+    ["yB", "RR"],
+    ["GG", "R"],
+    ["RB", "LLLAAAB"],
+    ["Ry", "LL"],
+    ["BG", "BR"],
     ["RB", "BBRRR"],
-    ["RR", "LLL"],
-    ["RR", "BALL"],
-    ["RR", ""],
-    ["RR", "R"],
-    ["RR", "L"],
-    ["RR", "B"],
-    ["RR", "LLL"],
-    ["RR", "LL"],
-    ["RR", "BLLL"],
-    ["RR", "B"],
-    ["YR", "ALL"],
-    ["GR", "AL"],
-    ["Rb", "RRRR"],
+    ["Rg", "R"],
+    ["bR", "L"],
+    ["YR", "BLLL"],
+    ["RR", "LLLLLLLL"],
+    ["Yg", "AALL"],
+    ["Br", "LLL"],
   ]
 
   PuzzleFighter.call(instructions) do |fighter|
