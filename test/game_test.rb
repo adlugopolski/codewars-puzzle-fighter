@@ -599,4 +599,155 @@ class GameTest < Test::Unit::TestCase
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
+
+  def test_solves_game_14
+    pend
+
+    instructions = [
+      ["RR", "L"],
+      ["GB", "BBLLL"],
+      ["RR", "BRRR"],
+      ["YG", "L"],
+      ["BB", "BBBL"],
+      ["gg", "BBBL"],
+      ["Yb", "BBR"],
+      ["YB", "LL"],
+      ["GB", "BBLL"],
+      ["RY", "AA"],
+      ["GR", "AA"],
+      ["gg", "BB"],
+      ["0B", "BB"],
+      ["GB", "R"],
+      ["RB", "BB"],
+      ["RR", "AARRR"],
+      ["GY", "LLL"],
+      ["GB", "AAALL"],
+      ["RB", "AAL"],
+      ["GB", "BR"],
+      ["Rr", "ALLL"],
+      ["RB", "L"],
+      ["YG", "AAARR"],
+      ["GY", "BBBR"],
+      ["RG", ""],
+      ["BB", "BR"],
+      ["YG", "RR"],
+      ["GY", "BBLL"],
+      ["RG", "B"],
+      ["YY", "A"],
+      ["Rb", "L"],
+      ["GY", "BLL"],
+      ["GG", "AAR"],
+      ["RR", "LLL"],
+      ["bR", "AAA"],
+      ["YG", "AA"],
+      ["GB", "BL"],
+      ["YG", "AAALLL"],
+      ["YB", "AAA"],
+      ["BG", "RRR"],
+      ["YG", "AAALLL"],
+      ["YY", "BBBLL"],
+      ["YR", "BBB"],
+      ["RG", ""],
+      ["BG", "BB"],
+      ["RR", "BBBLL"],
+      ["GB", "RR"],
+      ["YY", "BBBRR"],
+      ["BB", "BBR"],
+      ["Rg", ""],
+      ["BG", "RRR"],
+      ["GG", ""],
+      ["RB", "BBBRRR"],
+      ["YR", ""],
+      ["RY", "L"],
+      ["BG", "BBR"],
+      ["BR", "AAAL"],
+      ["RY", "R"],
+      ["YR", "BBLLL"],
+      ["yb", "BBBRR"],
+      ["RB", "BBBR"],
+      ["bG", ""],
+      ["GB", "AAR"],
+    ]
+
+    game_state =[
+      "      ",
+      "   b  ",
+      "  RY  ",
+      "  RR  ",
+      "RGGRG ",
+      "RYRGG ",
+      "YGBBYY",
+      "BGBBBG",
+      "GBRRGY",
+      "YGBBGY",
+      "BYYYGR",
+      "GBGBYR",
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
+  end
+
+  def test_solves_game_15
+    instructions = [
+      ["GG", "LR"],
+      ["GG", "BLL"],
+      ["RR", "LRR"],
+      ["RR", "LRRR"],
+      ["GG", "L"],
+      ["RR", "LBL"],
+      ["YY", "LA"],
+      ["YY", "LA"],
+      ["YY", "LA"],
+      ["YY", "LA"],
+      ["YY", "ALRR"],
+      ["YY", "ALRR"],
+      ["YY", "ALRR"],
+      ["YY", "BLL"],
+      ["BB", "BLL"],
+      ["YY", "LBL"],
+      ["GG", "LBL"],
+      ["YY", "LBL"],
+      ["BB", "BLL"],
+      ["YY", "LBL"],
+      ["BB", "LA"],
+      ["BB", "LA"],
+      ["YY", "LA"],
+      ["BB", "ALRR"],
+      ["YY", "ALRR"],
+      ["YY", "ALRR"],
+      ["BB", "ALRR"],
+      ["R0", "LRRR"],
+      ["B0", "LRRR"],
+      ["YY", "BLRRR"],
+      ["BR", "LLL"],
+      ["YG", "BLRR"],
+      ["YY", "LA"],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "   YYY",
+      "B YGYB",
+      "R YYYY",
+      "YYYYYY",
+      "YYYYYY",
+      "GGYYYY",
+      "YYYYYY",
+      "YYGG  ",
+      "GGGG  ",
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
+  end
+
+  def test_solves_game_16
+  end
+
+  def test_solves_game_17
+  end
+
+  def test_solves_game_18
+  end
 end
