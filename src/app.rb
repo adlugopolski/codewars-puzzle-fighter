@@ -1,14 +1,31 @@
 # frozen_string_literal: true
 
 require "forwardable"
-require_relative "debug.rb"
 
-class Object
-  def if_none
-    if nil?
-      yield if block_given?
-    else
-      self
+module ArrayExtensions
+  refine Array do
+    def unwords
+      join(" ")
+    end
+
+    def unlines
+      join("\n")
+    end
+
+    def unpipes
+      join("|")
+    end
+  end
+end
+
+module ObjectExtensions
+  refine Object do
+    def if_none
+      if nil?
+        yield if block_given?
+      else
+        self
+      end
     end
   end
 end
@@ -18,6 +35,8 @@ class BaseScaffold
     new(*args).call(&block)
   end
 end
+
+require_relative "debug.rb"
 
 class FormatOutput < BaseScaffold
   def initialize(blocks, rows = 12)
