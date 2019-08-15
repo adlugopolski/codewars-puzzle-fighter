@@ -131,7 +131,7 @@ class PowerDebug < BaseScaffold
   def colorize(block)
     output = MAP.fetch(block.kind, block.kind)
     if block.power_positive?
-      output.tr(block.kind, block.power.to_s)
+      output.tr(block.kind, block.power.to_s[-1])
     else
       output
     end
