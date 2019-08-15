@@ -102,9 +102,11 @@ class Effects < BaseScaffold
 
   def call
     logic
+      .then(&Rainbow)
       .then(&PowerCombiner)
       .then(&PowerMerger)
       .then(&PowerExpander)
+      .then(&Gravity)
   end
 
   private
@@ -127,6 +129,7 @@ class Effects < BaseScaffold
         .detect { |block| block.kind == crash.kind }
         .if_none { Block.new("?", -1, -1) }
         .then(board, &Crash)
+        .then(&Rainbow)
         .then(&PowerCombiner)
         .then(&PowerMerger)
         .then(&PowerExpander)
@@ -313,6 +316,30 @@ class Power < BaseScaffold
   end
 end
 
+class Rainbow < BaseScaffold
+  def initialize(blocks)
+    @blocks = Board.new(blocks)
+  end
+
+  def call
+    rainbows.reduce(@blocks) do |board, rainbow|
+      color = board.at(rainbow.x, rainbow.y + 1)
+      if color
+        remove = board.select { |block| block.kind == color.kind }
+        board.minus(remove).minus(rainbow)
+      else
+        board.minus(rainbow)
+      end
+    end
+  end
+
+  private
+
+  def rainbows
+    @blocks.select(&:rainbow?)
+  end
+end
+
 class Crash < BaseScaffold
   def initialize(crash, blocks)
     @blocks = blocks.map(&:copy)
@@ -366,9 +393,11 @@ class Board < Array
   end
 
   def minus(elements)
-    reject do |current|
-      Array(elements).include?(current)
-    end
+    Board.new(
+      reject do |current|
+        Array(elements).include?(current)
+      end
+    )
   end
 
   def contains?(elements)
@@ -393,6 +422,7 @@ class Board < Array
     group_by(&:power)
       .keys
       .max
+      .then { |max| max || -1 }
       .next
   end
 
@@ -567,6 +597,10 @@ class Block
 
   def crash?
     ("a".."z").include?(kind)
+  end
+
+  def rainbow?
+    kind == "0"
   end
 
   def kind?(other)
