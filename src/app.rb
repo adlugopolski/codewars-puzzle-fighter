@@ -137,6 +137,9 @@ class HistogramArea < BaseScaffold
   end
 end
 
+class PowerMerger < BaseScaffold
+end
+
 class Combiner < BaseScaffold
   def initialize(blocks)
     @blocks = Board.new(blocks)
