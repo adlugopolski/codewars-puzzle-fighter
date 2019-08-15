@@ -1,4 +1,4 @@
-eequire "test/unit"
+require "test/unit"
 require_relative "../src/app.rb"
 
 class GameTest < Test::Unit::TestCase
@@ -237,7 +237,7 @@ class GameTest < Test::Unit::TestCase
       "  b gy",
       "  R BB",
       "BBYYRB",
-    ]
+    ].join("\n")
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
