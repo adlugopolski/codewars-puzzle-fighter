@@ -27,6 +27,12 @@ module ObjectExtensions
         self
       end
     end
+
+    alias old_then then
+
+    def then(*args, &block)
+      block.call(self, *args)
+    end
   end
 end
 
