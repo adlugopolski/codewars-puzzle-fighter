@@ -388,6 +388,8 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solves_game_9
+    pend
+
     instructions = [
       ["YY", "LLL"],
       ["YY", "LLL"],
