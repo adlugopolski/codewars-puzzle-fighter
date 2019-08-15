@@ -115,12 +115,6 @@ class PowerDebug < BaseScaffold
     " " => ".",
   }.freeze
 
-  def self.to_proc
-    proc do |object|
-      call(object)
-    end
-  end
-
   def initialize(board)
     @board = board
   end
