@@ -172,4 +172,11 @@ class InitialRotatorTest < Test::Unit::TestCase
       ["   Y  ", "   G  "],
     )
   end
+
+  def test_moves_the_block_then_orates
+    assert_equal(
+      _format(InitialRotator.call(["RB", "LLLAAAB"])),
+      ["B     ", "R     "],
+    )
+  end
 end
