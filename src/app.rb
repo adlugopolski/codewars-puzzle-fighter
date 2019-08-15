@@ -66,6 +66,9 @@ class FormatOutput < BaseScaffold
   end
 end
 
+class BoardOverflow < StandardError
+end
+
 class PuzzleFighter < BaseScaffold
   attr_reader :debug, :input
 
@@ -87,6 +90,8 @@ class PuzzleFighter < BaseScaffold
       MainLoop.call(state, step).tap do |nstate|
         @debug << nstate
       end
+    rescue BoardOverflow
+      break state
     end
   end
 
@@ -325,7 +330,7 @@ class Rainbow < BaseScaffold
     rainbows.reduce(@blocks) do |board, rainbow|
       color = board.at(rainbow.x, rainbow.y + 1)
       if color
-        remove = board.select { |block| block.kind == color.kind }
+        remove = board.select { |block| block.kind?(color) }
         board.minus(remove).minus(rainbow)
       else
         board.minus(rainbow)
@@ -674,10 +679,38 @@ class MainLoop < BaseScaffold
 
   def call
     Effects.call(
-      InitialRotator.call(@step).reduce(@state) do |state, block|
-        Inject.call(state, block)
-      end
+      Overflow.call(@state, InitialRotator.call(@step))
+        .reduce(@state) do |state, block|
+          Inject.call(state, block)
+        end
     )
+  end
+end
+
+class Overflow < BaseScaffold
+  def initialize(state, blocks)
+    @state = state
+    @blocks = Array(blocks)
+  end
+
+  def call
+    raise BoardOverflow if overflow?
+
+    @blocks
+  end
+
+  private
+
+  def projection
+    @state + @blocks
+  end
+
+  def overflow?
+    projection
+      .group_by(&:x)
+      .values
+      .map(&:size)
+      .any? { |size| size > 12 }
   end
 end
 
