@@ -22,11 +22,14 @@ class PowerMergerTest < BaseTestCase
 
     result =
       input
-      .follow(&PowerCombiner)
-      .then(&Board)
-      .follow(["RR", ""], &MainLoop)
-      .follow(["RR", "L"], &MainLoop)
       .then(&PowerCombiner)
+      .then(&Board)
+      .then(["RR", ""], &MainLoop)
+      .then(["RR", "L"], &MainLoop)
+      .then(["RR", "R"], &MainLoop)
+      .then(&PowerCombiner)
+      .then(&Board)
+      .then(&PowerMerger)
       .then(&:power_blocks)
       .then(&:first)
 
