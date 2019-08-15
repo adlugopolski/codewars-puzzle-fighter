@@ -53,7 +53,6 @@ end
 
 class DebugRun < BaseScaffold
   using ArrayExtensions
-  using ObjectExtensions
 
   def self.call(*args)
     new(*args).call
@@ -99,7 +98,6 @@ end
 
 class PowerDebug < BaseScaffold
   using ArrayExtensions
-  using ObjectExtensions
   using Colors
 
   MAP = {

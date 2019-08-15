@@ -105,6 +105,7 @@ class Effects < BaseScaffold
     logic
       .then(&PowerCombiner)
       .then(&PowerMerger)
+      .then(&PowerExpander)
   end
 
   private
@@ -117,6 +118,7 @@ class Effects < BaseScaffold
         .then(target, &Crash)
         .then(&PowerCombiner)
         .then(&PowerMerger)
+        .then(&PowerExpander)
         .then(&Gravity)
     end
   end
@@ -199,7 +201,27 @@ class PowerExpander < BaseScaffold
   end
 
   def call
-    @blocks
+    %w[R G B Y].reduce(@blocks) do |blocks, color|
+      expand(blocks, color)
+    end
+  end
+
+  def expand(state, color)
+    state.power_blocks(color).reduce(state) do |board, power_block|
+      test_board =
+        board.minus(state.power_blocks(color).flatten) + power_block
+      new_power = Board.new Power.call(test_board, color)
+
+      if new_power.size > power_block.size && new_power.contains?(power_block)
+        Board.new(
+          board.minus(new_power) + new_power.map do |block|
+            block.copy(power: board.power_count)
+          end
+        )
+      else
+        board
+      end
+    end
   end
 end
 
@@ -333,6 +355,12 @@ class Board < Array
   def minus(elements)
     reject do |current|
       Array(elements).include?(current)
+    end
+  end
+
+  def contains?(elements)
+    elements.all? do |element|
+      at(element.x, element.y)
     end
   end
 
