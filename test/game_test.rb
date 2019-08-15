@@ -1,4 +1,4 @@
-require "test/unit"
+eequire "test/unit"
 require_relative "../src/app.rb"
 
 class GameTest < Test::Unit::TestCase
@@ -198,4 +198,407 @@ class GameTest < Test::Unit::TestCase
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
+
+  def test_solves_game_5
+    instructions = [
+      ["YY", "BALLL"],
+      ["RR", "AALL"],
+      ["RG", "BR"],
+      ["YG", "ALLR"],
+      ["BG", "BRR"],
+      ["YR", "BBLLLL"],
+      ["GR", "BL"],
+      ["GG", "ALB"],
+      ["GY", ""],
+      ["yB", "RR"],
+      ["GG", "R"],
+      ["RB", "LLLAAAB"],
+      ["Ry", "LL"],
+      ["BG", "BR"],
+      ["RB", "BBRRR"],
+      ["Rg", "R"],
+      ["bR", "L"],
+      ["YR", "BLLL"],
+      ["RR", "LLLLLLLL"],
+      ["Yg", "AALL"],
+      ["Br", "LLL"],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "     B",
+      "    RR",
+      "  b gy",
+      "  R BB",
+      "BBYYRB",
+    ]
+
+    assert_equal game_state, puzzle_fighter(instructions)
+  end
+
+  def test_solves_game_6
+    pend
+
+    instruction = [
+      ["RY", "ALLL"],
+      ["YY", "L"],
+      ["RG", "BBR"],
+      ["YR", "BLL"],
+      ["RR", "ALLLL"],
+      ["GY", "B"],
+      ["RR", "RRRRRRR"],
+      ["RY", "ALLL"],
+      ["BY", "BBBBLL"],
+      ["BY", "L"],
+      ["BG", "BBBL"],
+      ["BB", "LLL"],
+      ["BY", "BBLL"],
+      ["BR", "AL"],
+      ["RB", "AR"],
+      ["BB", "RR"],
+      ["GG", "R"],
+      ["YB", "LLLRR"],
+      ["GG", ""],
+      ["rb", "RR"],
+      ["bY", "ABLL"],
+      ["GY", "L"],
+      ["GR", "BRR"],
+      ["RR", "LLL"],
+      ["yy", "LLLB"],
+      ["RY", "BB"],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "R  Y  ",
+      "R  RR ",
+      "R  GG ",
+      "R  GG ",
+      "R  G  ",
+      "RRGGGG",
+    ]
+
+    assert_equal game_state, puzzle_fighter(instructions)
+  end
+
+  def test_solves_game_7
+    pend
+  end
+
+  def test_solves_game_8
+    pend
+  end
+
+  def test_solves_game_9
+    pend
+  end
+
+  def test_solves_game_10
+    pend
+  end
+
+  def test_solves_game_11
+    pend
+  end
 end
+
+__END__
+
+
+[
+  ["YR", "LLL"],
+  ["GY", "LLLRL"],
+  ["RY", "BBLL"],
+  ["RB", "AAL"],
+  ["GR", "BR"],
+  ["GG", "A"],
+  ["YY", "LL"],
+  ["GG", "BLLL"],
+  ["YY", "ALLL"],
+  ["BY", "BL"],
+  ["YB", "ALLLR"],
+  ["RY", "LLLB"],
+  ["GG", "BBBBB"],
+  ["GB", "A"],
+  ["GR", "AA"],
+  ["gB", "AALAB"],
+  ["YR", "RRAAA"],
+  ["BB", ""],
+  ["RG", "AL"],
+  ["GG", "L"],
+  ["RG", "RRBL"],
+  ["Gb", "A"],
+  ["rB", "R"],
+  ["GG", "RR"],
+  ["RB", "AARR"],
+  ["GG", "BR"],
+  ["bR", "AARR"],
+]
+
+[
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  " R    ",
+  " Y    ",
+  "YY    ",
+  "YY G  ",
+  " YGGG ",
+  "YYGGYG",
+  "YY GBG",
+]
+
+
+[
+  ["BB", "AALLL"],
+  ["GR", "RR"],
+  ["RR", "R"],
+  ["RG", "A"],
+  ["YY", "BBBL"],
+  ["BG", "RR"],
+  ["BY", ""],
+  ["Rg", "RR"],
+  ["YB", "A"],
+  ["BY", "RRAA"],
+  ["BY", "L"],
+  ["yB", "LLLBB"],
+  ["YR", "A"],
+  ["Yy", "BBB"],
+  ["rY", "BR"],
+  ["Rb", "BRR"],
+  ["gR", "ARR"],
+  ["BB", "B"],
+  ["BG", "B"],
+  ["RG", "BBLL"],
+  ["YG", "LLLA"],
+  ["GG", "L"],
+  ["RY", "BRR"],
+  ["bB", ""],
+]
+
+[
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "  G   ",
+  " GG Y ",
+  " GG R ",
+  "YR RRR",
+]
+
+
+[
+  ["GY", "LL"],
+  ["BG", "R"],
+  ["BB", "BR"],
+  ["GG", "BR"],
+  ["RG", "AAL"],
+  ["GB", "BBRR"],
+  ["YG", "RR"],
+  ["YG", "BRR"],
+  ["BG", "LL"],
+  ["GB", ""],
+  ["RR", "R"],
+  ["YR", "AAAA"],
+  ["RB", "RRA"],
+  ["YB", "BB"],
+  ["BY", "LLLB"],
+  ["bY", "R"],
+  ["GB", "L"],
+  ["RR", "L"],
+  ["0G", "AARR"],
+  ["RB", "AAL"],
+  ["GB", "ALL"],
+  ["yB", "R"],
+  ["Br", "LLLA"],
+  ["BY", "L"],
+  ["GR", "ALL"],
+  ["B0", "L"],
+  ["rY", "ALL"],
+  ["RB", "ALLL"],
+  ["BR", "ALL"],
+  ["RR", "LLLLR"],
+  ["GY", "ALLL"],
+  ["BB", "LL"],
+  ["0G", "RRA"],
+  ["yr", "AALL"],
+]
+
+[
+  "      ",
+  " Y    ",
+  " RR   ",
+  " RY   ",
+  " BB   ",
+  " BB   ",
+  " rY y ",
+  " GB BG",
+  "GGBYYY",
+  "RGGYGY",
+  "BGGGGG",
+  "YY GGG",
+]
+
+
+[
+  ["RR", "LLL"],
+  ["RR", "LLL"],
+  ["GG", "LLL"],
+  ["RR", "LLL"],
+  ["YY", "LL"],
+  ["YY", "LL"],
+  ["BY", "LL"],
+  ["BG", "L"],
+  ["YY", "L"],
+  ["RR", "LL"],
+  ["BR", "L"],
+  ["Yb", "AAL"],
+  ["GG", ""],
+  ["BB", "R"],
+  ["GG", "R"],
+  ["GG", ""],
+  ["GB", "BBRR"],
+  ["BR", ""],
+  ["BY", "RBR"],
+  ["BB", "RRRR"],
+  ["BB", "AARR"],
+  ["yB", "R"],
+  ["Bg", "A"],
+  ["RR", ""],
+  ["Br", ""],
+]
+
+[
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "RR    ",
+  "RR    ",
+  "G Y   ",
+  "GYR   ",
+  "RYY   ",
+  "RYY   ",
+  "RY    ",
+  "RYBR G",
+]
+
+
+[
+  ["RR", "LLL"],
+  ["RR", "LLL"],
+  ["GG", "LLL"],
+  ["RR", "LLL"],
+  ["YY", "LL"],
+  ["YY", "LL"],
+  ["BY", "LL"],
+  ["BG", "L"],
+  ["YY", "L"],
+  ["RR", "LL"],
+  ["BR", "L"],
+  ["Yb", "AAL"],
+  ["GG", ""],
+  ["BB", "R"],
+  ["GG", "R"],
+  ["GG", ""],
+  ["GB", "BBRR"],
+  ["BR", ""],
+  ["BY", "RBR"],
+  ["BB", "RRRR"],
+  ["BB", "AARR"],
+  ["yB", "R"],
+  ["Bg", "A"],
+  ["RR", ""],
+  ["Br", ""],
+]
+
+[
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "RR    ",
+  "RR    ",
+  "G Y   ",
+  "GYR   ",
+  "RYY   ",
+  "RYY   ",
+  "RY    ",
+  "RYBR G",
+]
+
+
+[
+  ["YY", "LLL"],
+  ["YY", "LLL"],
+  ["YY", "LLL"],
+  ["YY", "LLL"],
+  ["YY", "LLL"],
+  ["YY", "LLL"],
+  ["YY", ""],
+  ["YY", ""],
+  ["YY", ""],
+  ["YY", ""],
+  ["YY", ""],
+  ["0Y", ""],
+]
+
+[
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+]
+
+
+
+[
+  ["BY", "R"],
+  ["BY", "RR"],
+  ["YY", "L"],
+  ["GY", ""],
+  ["YB", "LL"],
+  ["BG", "LLL"],
+  ["00", "R"],
+]
+
+[
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "      ",
+  "  YG  ",
+  "GYYYYY",
+]
