@@ -334,18 +334,11 @@ class Board < Array
       .then { |result| result.any? || row_number == 11 }
   end
 
-  def power_blocks
+  def power_blocks(filter = %w[R B G Y])
     select(&:power_positive?)
+      .select { |block| Array(filter).include?(block.kind) }
       .group_by(&:power)
       .values
-    # %w[R G B Y].flat_map do |color|
-    #   (0..).reduce([]) do |blocks, _|
-    #     powers = Power.call(minus(blocks.flatten), color)
-    #     break blocks if powers.empty?
-    #
-    #     blocks + [powers]
-    #   end
-    # end
   end
 end
 
