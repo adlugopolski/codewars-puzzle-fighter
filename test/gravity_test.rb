@@ -27,7 +27,7 @@ class GravityTest < BaseTestCase
   end
 
   def test_does_not_move_power_blocks_down
-    templates = [
+    input, expected = _set_from_ascii [
       "     Y", "      ",
       "      ", "      ",
       "      ", "      ",
@@ -42,16 +42,13 @@ class GravityTest < BaseTestCase
       "   BBY", "   BBY",
     ]
 
-    input, expected = _set_from_ascii(templates)
+    board = Gravity.call Combiner.call(input)
 
-    ascii_expected, ascii_output =
-      _format_all(expected.sort, Gravity.call(input).sort)
-
-    assert_equal ascii_expected, ascii_output
+    assert_equal(*_format_all(expected.sort, board.sort))
   end
 
   def test_does_move_down_trapped_blocks
-    templates = [
+    input, expected = _set_from_ascii [
       "     Y", "      ",
       "      ", "      ",
       "      ", "      ",
@@ -66,16 +63,13 @@ class GravityTest < BaseTestCase
       "   BBB", " G BBB",
     ]
 
-    input, expected = _set_from_ascii(templates)
+    board = Gravity.call Combiner.call(input)
 
-    ascii_expected, ascii_output =
-      _format_all(expected.sort, Gravity.call(input).sort)
-
-    assert_equal ascii_expected, ascii_output
+    assert_equal(*_format_all(expected.sort, board.sort))
   end
 
   def test_does_not_move_multiple_power_blocks
-    templates = [
+    input, expected = _set_from_ascii [
       "     Y", "      ",
       "      ", "      ",
       "      ", "      ",
@@ -90,16 +84,13 @@ class GravityTest < BaseTestCase
       "   BBB", " G BBB",
     ]
 
-    input, expected = _set_from_ascii(templates)
+    board = Gravity.call Combiner.call(input)
 
-    ascii_expected, ascii_output =
-      _format_all(expected.sort, Gravity.call(input).sort)
-
-    assert_equal ascii_expected, ascii_output
+    assert_equal(*_format_all(expected.sort, board.sort))
   end
 
   def test_does_move_hanging_power_blocks
-    templates = [
+    input, expected = _set_from_ascii [
       "     Y", "      ",
       "      ", "      ",
       "      ", "      ",
@@ -114,12 +105,9 @@ class GravityTest < BaseTestCase
       "   BBB", " G BBB",
     ]
 
-    input, expected = _set_from_ascii(templates)
+    board = Gravity.call Combiner.call(input)
 
-    ascii_expected, ascii_output =
-      _format_all(expected.sort, Gravity.call(input).sort)
-
-    assert_equal ascii_expected, ascii_output
+    assert_equal(*_format_all(expected.sort, board.sort))
   end
 
   def test_does_move_trapped_power_block
@@ -138,7 +126,9 @@ class GravityTest < BaseTestCase
       "    G ", "RRRBG ",
     ]
 
-    assert_equal(*_format_all(expected.sort, Gravity.call(input).sort))
+    board = Gravity.call Combiner.call(input)
+
+    assert_equal(*_format_all(expected.sort, board.sort))
   end
 
   def test_does_move_combined_power_gems
@@ -157,6 +147,8 @@ class GravityTest < BaseTestCase
       "     R", "  GRRR",
     ]
 
-    assert_equal(*_format_all(expected.sort, Gravity.call(input).sort))
+    board = Gravity.call Combiner.call(input)
+
+    assert_equal(*_format_all(expected.sort, board.sort))
   end
 end
