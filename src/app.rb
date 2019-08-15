@@ -95,12 +95,14 @@ class PuzzleFighter < BaseScaffold
 end
 
 class Effects < BaseScaffold
+  using ObjectExtensions
+
   def initialize(blocks)
     @blocks = blocks.map(&:copy)
   end
 
   def call
-    PowerCombiner.call logic
+    PowerMerger.call PowerCombiner.call logic
   end
 
   private
@@ -108,7 +110,12 @@ class Effects < BaseScaffold
   def logic
     crashes.reduce(@blocks) do |board, crash|
       target = board.sort.reverse.detect { |block| block.kind == crash.kind }
-      Gravity.call PowerCombiner.call Crash.call(board, target)
+
+      board
+        .then(target, &Crash)
+        .then(&PowerCombiner)
+        .then(&PowerMerger)
+        .then(&Gravity)
     end
   end
 
@@ -151,24 +158,36 @@ class PowerMerger < BaseScaffold
   end
 
   def call
-    Board.new(mergers)
+    %w[R G B Y].reduce(@blocks) do |blocks, color|
+      process_color(blocks, color)
+    end
   end
 
-  def mergers
-    filtered_blocks.reduce(@blocks) do |board, pair|
-      power = Power.call(pair.flatten, "R")
+  def process_color(state, color)
+    (1..).reduce(state) do |board, _|
+      new_board = merge(color, board)
+
+      break board if new_board.power_count == board.power_count
+
+      new_board
+    end
+  end
+
+  def merge(color, state)
+    filtered_blocks = state.power_blocks(color).combination(2)
+
+    filtered_blocks.reduce(state) do |board, pair|
+      power = Power.call(pair.flatten, color)
       if pair.flatten.sort == power.sort
-        board.minus(power) + power.map do |block|
-          block.copy(power: board.power_count)
-        end
+        break Board.new(
+          board.minus(power) + power.map do |block|
+            block.copy(power: board.power_count)
+          end
+        )
       else
         board
       end
     end
-  end
-
-  def filtered_blocks
-    @blocks.power_blocks("R").combination(2)
   end
 end
 
