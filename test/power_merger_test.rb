@@ -2,8 +2,9 @@ require "test/unit"
 require_relative "../src/app.rb"
 
 class PowerMergerTest < BaseTestCase
+  using ObjectExtensions
 
-  def test_merges_new_blocks_into_power_block
+  def test_merges_two_power_blocks
     input, expected = _set_from_ascii [
       "      ", "      ",
       "      ", "      ",
@@ -14,19 +15,20 @@ class PowerMergerTest < BaseTestCase
       "      ", "      ",
       "      ", "      ",
       "      ", "      ",
-      "      ", "RR    ",
-      "RR    ", "RRR   ",
-      "RR    ", "RRR   ",
+      "      ", "      ",
+      "RR    ", "RRRR  ",
+      "RR    ", "RRRR  ",
     ]
 
     result =
       input
-      .then(&PowerCombiner)
+      .follow(&PowerCombiner)
       .then(&Board)
-      .then { |block| MainLoop.call block, ["RR", "ALLL"] }
-      .then { |block| MainLoop.call block, ["RR", "L"] }
+      .follow(["RR", ""], &MainLoop)
+      .follow(["RR", "L"], &MainLoop)
       .then(&PowerCombiner)
-      .select(&:power_positive?)
+      .then(&:power_blocks)
+      .then(&:first)
 
     assert_equal(*_format_all(expected, result))
   end
