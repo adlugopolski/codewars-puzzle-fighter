@@ -121,12 +121,12 @@ class Effects < BaseScaffold
 
   def crashes(bombs, eboard)
     bombs.reduce(eboard) do |board, crash|
-      target = board.sort.reverse.detect do |block|
-        block.kind == crash.kind
-      end
-
       board
-        .then(target, &Crash)
+        .sort
+        .reverse
+        .detect { |block| block.kind == crash.kind }
+        .if_none { Block.new("?", -1, -1) }
+        .then(board, &Crash)
         .then(&PowerCombiner)
         .then(&PowerMerger)
         .then(&PowerExpander)
@@ -314,7 +314,7 @@ class Power < BaseScaffold
 end
 
 class Crash < BaseScaffold
-  def initialize(blocks, crash)
+  def initialize(crash, blocks)
     @blocks = blocks.map(&:copy)
     @crash = crash.copy
     @remove = []
@@ -796,33 +796,30 @@ end
 
 if $PROGRAM_NAME == __FILE__
   instructions = [
-    ["YR", "LLL"],
-    ["GY", "LLLRL"],
-    ["RY", "BBLL"],
-    ["RB", "AAL"],
-    ["GR", "BR"],
-    ["GG", "A"],
-    ["YY", "LL"],
-    ["GG", "BLLL"],
-    ["YY", "ALLL"],
-    ["BY", "BL"],
-    ["YB", "ALLLR"],
-    ["RY", "LLLB"],
-    ["GG", "BBBBB"],
-    ["GB", "A"],
-    ["GR", "AA"],
-    ["gB", "AALAB"],
-    ["YR", "RRAAA"],
-    ["BB", ""],
-    ["RG", "AL"],
+    ["BB", "AALLL"],
+    ["GR", "RR"],
+    ["RR", "R"],
+    ["RG", "A"],
+    ["YY", "BBBL"],
+    ["BG", "RR"],
+    ["BY", ""],
+    ["Rg", "RR"],
+    ["YB", "A"],
+    ["BY", "RRAA"],
+    ["BY", "L"],
+    ["yB", "LLLBB"],
+    ["YR", "A"],
+    ["Yy", "BBB"],
+    ["rY", "BR"],
+    ["Rb", "BRR"],
+    ["gR", "ARR"],
+    ["BB", "B"],
+    ["BG", "B"],
+    ["RG", "BBLL"],
+    ["YG", "LLLA"],
     ["GG", "L"],
-    ["RG", "RRBL"],
-    ["Gb", "A"],
-    ["rB", "R"],
-    ["GG", "RR"],
-    ["RB", "AARR"],
-    ["GG", "BR"],
-    ["bR", "AARR"],
+    ["RY", "BRR"],
+    ["bB", ""],
   ]
 
   PuzzleFighter.call(instructions) do |fighter|
