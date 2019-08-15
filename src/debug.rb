@@ -125,7 +125,7 @@ class PowerDebug < BaseScaffold
           .if_none { Block.new(".", row, col, 0) }
           .then(&method(:colorize))
       end.join("")
-    end
+    end + ["------"]
   end
 
   def colorize(block)
