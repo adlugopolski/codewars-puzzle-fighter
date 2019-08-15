@@ -2,6 +2,8 @@
 
 require "forwardable"
 
+ERANGE = (0..Float::INFINITY).freeze
+
 module ArrayExtensions
   refine Array do
     def unwords
@@ -18,21 +20,20 @@ module ArrayExtensions
   end
 end
 
-module ObjectExtensions
-  refine Object do
-    def if_none
-      if nil?
-        yield if block_given?
-      else
-        self
-      end
-    end
-
-    def then(*args, &block)
-      block.call(self, *args)
+class Object
+  def if_none
+    if nil?
+      yield if block_given?
+    else
+      self
     end
   end
+
+  def then(*args, &block)
+    block.call(self, *args)
+  end
 end
+
 
 class BaseScaffold
   def self.call(*args, &block)
@@ -44,7 +45,7 @@ class BaseScaffold
   end
 end
 
-require_relative "debug.rb"
+# require_relative "debug.rb"
 
 class FormatOutput < BaseScaffold
   def initialize(blocks, rows = 12)
@@ -95,8 +96,6 @@ class PuzzleFighter < BaseScaffold
 end
 
 class Effects < BaseScaffold
-  using ObjectExtensions
-
   def initialize(blocks)
     @blocks = blocks.map(&:copy)
   end
@@ -168,7 +167,7 @@ class PowerMerger < BaseScaffold
   end
 
   def process_color(state, color)
-    (1..).reduce(state) do |board, _|
+    ERANGE.reduce(state) do |board, _|
       new_board = merge(color, board)
 
       break board if new_board.power_count == board.power_count
@@ -239,7 +238,7 @@ class PowerCombiner < BaseScaffold
   private
 
   def mark_power_gems(board, color)
-    (0..).reduce(board) do |blocks, _|
+    ERANGE.reduce(board) do |blocks, _|
       power = Power.call(blocks.unpowered, color)
 
       break blocks if power.empty?
