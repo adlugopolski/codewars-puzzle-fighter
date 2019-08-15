@@ -2,8 +2,6 @@ require "test/unit"
 require_relative "../src/app.rb"
 
 class PowerExpanderTest < BaseTestCase
-  using ObjectExtensions
-
   def test_expands_the_power_block
     input, expected = _set_from_ascii [
       "      ", "      ",
