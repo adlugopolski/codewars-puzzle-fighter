@@ -13,9 +13,9 @@ class RainbowTest < BaseTestCase
       "      ", "      ",
       "      ", "      ",
       "R     ", "R     ",
-      "Bb   Y", "Bb   Y",
-      "BBR  Y", "BBR  Y",
-      "BBBYBY", "BBBYBY",
+      "BB   Y", "BB    ",
+      "BBR  Y", "BBR   ",
+      "BBBYBY", "BBB B ",
     ]
 
     input, expected = _set_from_ascii(templates)
@@ -25,6 +25,6 @@ class RainbowTest < BaseTestCase
       .then(["0R", "A"], &MainLoop)
       .then(&Rainbow)
 
-    assert_equal expected, result
+    assert_equal(*_format_all(expected, result))
   end
 end
