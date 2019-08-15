@@ -2,6 +2,8 @@ require "test/unit"
 require_relative "../src/app.rb"
 
 class GameTest < Test::Unit::TestCase
+  using ArrayExtensions
+
   def test_solves_game_without_specials
     instructions = [
       ["BR", "LLL"],
@@ -30,7 +32,7 @@ class GameTest < Test::Unit::TestCase
       "BBGGY ",
       "BBGGRR",
       "RYGGYB",
-    ].join("\n")
+    ].unlines
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
@@ -65,7 +67,7 @@ class GameTest < Test::Unit::TestCase
       "    R ",
       " R  YR",
       "RR  RB"
-    ].join("\n")
+    ].unlines
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
@@ -108,7 +110,7 @@ class GameTest < Test::Unit::TestCase
       "  GGYB",
       "GGGRYB",
       "GRRBBB",
-    ].join("\n")
+    ].unlines
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
@@ -150,7 +152,7 @@ class GameTest < Test::Unit::TestCase
       "RRRRG ",
       "RGGRGB",
       "RGRGGY",
-    ].join("\n")
+    ].unlines
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
@@ -194,7 +196,7 @@ class GameTest < Test::Unit::TestCase
       "RRRR  ",
       "   RRR",
       "  GRRR",
-    ].join("\n")
+    ].unlines
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
@@ -237,15 +239,13 @@ class GameTest < Test::Unit::TestCase
       "  b gy",
       "  R BB",
       "BBYYRB",
-    ].join("\n")
+    ].unlines
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
 
   def test_solves_game_6
-    pend
-
-    instruction = [
+    instructions = [
       ["RY", "ALLL"],
       ["YY", "L"],
       ["RG", "BBR"],
@@ -287,13 +287,58 @@ class GameTest < Test::Unit::TestCase
       "R  GG ",
       "R  G  ",
       "RRGGGG",
-    ]
+    ].unlines
 
     assert_equal game_state, puzzle_fighter(instructions)
   end
 
   def test_solves_game_7
-    pend
+    instructions = [
+      ["YR", "LLL"],
+      ["GY", "LLLRL"],
+      ["RY", "BBLL"],
+      ["RB", "AAL"],
+      ["GR", "BR"],
+      ["GG", "A"],
+      ["YY", "LL"],
+      ["GG", "BLLL"],
+      ["YY", "ALLL"],
+      ["BY", "BL"],
+      ["YB", "ALLLR"],
+      ["RY", "LLLB"],
+      ["GG", "BBBBB"],
+      ["GB", "A"],
+      ["GR", "AA"],
+      ["gB", "AALAB"],
+      ["YR", "RRAAA"],
+      ["BB", ""],
+      ["RG", "AL"],
+      ["GG", "L"],
+      ["RG", "RRBL"],
+      ["Gb", "A"],
+      ["rB", "R"],
+      ["GG", "RR"],
+      ["RB", "AARR"],
+      ["GG", "BR"],
+      ["bR", "AARR"],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      " R    ",
+      " Y    ",
+      "YY    ",
+      "YY G  ",
+      " YGGG ",
+      "YYGGYG",
+      "YY GBG",
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 
   def test_solves_game_8
@@ -314,52 +359,6 @@ class GameTest < Test::Unit::TestCase
 end
 
 __END__
-
-
-[
-  ["YR", "LLL"],
-  ["GY", "LLLRL"],
-  ["RY", "BBLL"],
-  ["RB", "AAL"],
-  ["GR", "BR"],
-  ["GG", "A"],
-  ["YY", "LL"],
-  ["GG", "BLLL"],
-  ["YY", "ALLL"],
-  ["BY", "BL"],
-  ["YB", "ALLLR"],
-  ["RY", "LLLB"],
-  ["GG", "BBBBB"],
-  ["GB", "A"],
-  ["GR", "AA"],
-  ["gB", "AALAB"],
-  ["YR", "RRAAA"],
-  ["BB", ""],
-  ["RG", "AL"],
-  ["GG", "L"],
-  ["RG", "RRBL"],
-  ["Gb", "A"],
-  ["rB", "R"],
-  ["GG", "RR"],
-  ["RB", "AARR"],
-  ["GG", "BR"],
-  ["bR", "AARR"],
-]
-
-[
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  " R    ",
-  " Y    ",
-  "YY    ",
-  "YY G  ",
-  " YGGG ",
-  "YYGGYG",
-  "YY GBG",
-]
 
 
 [
