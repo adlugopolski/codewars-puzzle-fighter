@@ -113,4 +113,25 @@ class InjectTest < BaseTestCase
 
     assert_equal(*_format_all(expected.sort, blocks))
   end
+
+  def test_does_finalize_on_overflow
+    input = _from_ascii [
+      "      ",
+      " R    ",
+      " R    ",
+      " R    ",
+      " R    ",
+      " R    ",
+      " R    ",
+      " R    ",
+      " R    ",
+      " R    ",
+      " R    ",
+      " R    ",
+    ]
+
+    assert_raise BoardOverflow do
+      MainLoop.call(input, ["RR", "LL"])
+    end
+  end
 end
