@@ -20,7 +20,7 @@ class CrashTest < BaseTestCase
 
     input, expected = _set_from_ascii(templates)
 
-    assert_equal expected, Crash.call(input, Block.new("b", 1, 9))
+    assert_equal expected, Crash.call(Block.new("b", 1, 9), input)
   end
 
   def test_removes_crash_gems_from_board_2
@@ -41,7 +41,7 @@ class CrashTest < BaseTestCase
 
     input, expected = _set_from_ascii(templates)
 
-    assert_equal expected, Crash.call(input, Block.new("r", 3, 9))
+    assert_equal expected, Crash.call(Block.new("r", 3, 9), input)
   end
 
   def test_does_not_crash_lonely_blocks
@@ -62,6 +62,6 @@ class CrashTest < BaseTestCase
 
     input, expected = _set_from_ascii(templates)
 
-    assert_equal expected, Crash.call(input, Block.new("g", 3, 9))
+    assert_equal expected, Crash.call(Block.new("g", 3, 9), input)
   end
 end
