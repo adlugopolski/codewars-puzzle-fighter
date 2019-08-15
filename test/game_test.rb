@@ -422,8 +422,6 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solves_game_10
-    pend
-
     instructions = [
       ["GY", "LL"],
       ["BG", "R"],
@@ -480,8 +478,6 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solves_game_11
-    pend
-
     instructions =  [
       ["RR", "LLL"],
       ["RR", "LLL"],
@@ -576,8 +572,6 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solves_game_13
-    pend
-
     instructions = [
       ["BY", "R"],
       ["BY", "RR"],
@@ -601,7 +595,8 @@ class GameTest < Test::Unit::TestCase
       "      ",
       "  YG  ",
       "GYYYYY",
-    ]
+    ].unlines
+
     assert_equal game_state, puzzle_fighter(instructions)
   end
 end
