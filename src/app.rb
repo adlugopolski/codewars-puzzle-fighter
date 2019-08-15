@@ -34,7 +34,6 @@ class Object
   end
 end
 
-
 class BaseScaffold
   def self.call(*args, &block)
     new(*args).call(&block)
@@ -858,6 +857,9 @@ class InitialRotator < BaseScaffold
 end
 
 def puzzle_fighter(instructions)
+  instructions.each do |line|
+    puts line.inspect
+  end
   PuzzleFighter.call(instructions)
 end
 
