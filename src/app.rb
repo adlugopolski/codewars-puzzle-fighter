@@ -34,6 +34,10 @@ class BaseScaffold
   def self.call(*args, &block)
     new(*args).call(&block)
   end
+
+  def self.to_proc
+    proc(&method(:call))
+  end
 end
 
 require_relative "debug.rb"
@@ -259,6 +263,10 @@ class Crash < BaseScaffold
 end
 
 class Board < Array
+  def self.to_proc
+    proc(&method(:new))
+  end
+
   def initialize(blocks = [])
     super(blocks)
   end
