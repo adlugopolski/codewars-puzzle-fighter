@@ -24,9 +24,9 @@ class PowerMergerTest < BaseTestCase
       input
       .then(&PowerCombiner)
       .then(&Board)
-      .then(["RR", ""], &MainLoop)
-      .then(["RR", "L"], &MainLoop)
-      .then(["RR", "R"], &MainLoop)
+      .then(["RR", ""], &Inject)
+      .then(["RR", "L"], &Inject)
+      .then(["RR", "R"], &Inject)
       .then(&PowerCombiner)
       .then(&Board)
       .then(&PowerMerger)
