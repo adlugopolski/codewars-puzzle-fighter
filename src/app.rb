@@ -857,9 +857,12 @@ class InitialRotator < BaseScaffold
 end
 
 def puzzle_fighter(instructions)
+  puts "["
   instructions.each do |line|
-    puts line.inspect
+    puts format("  %s,", line.inspect)
   end
+  puts "]"
+
   PuzzleFighter.call(instructions)
 end
 
