@@ -48,12 +48,61 @@ module Colors
       "\e[37m#{self}\e[0m"
     end
   end
+
 end
 
-class DebugState
+class DebugRun < BaseScaffold
+  using ArrayExtensions
+  using ObjectExtensions
+
+  def self.call(*args)
+    new(*args).call
+  end
+
+  def initialize(puzzle_figther, max_entries = nil)
+    @puzzle_figther = puzzle_figther
+    @max_entries = Integer(max_entries || puzzle_figther.input.size)
+  end
+
+  def call
+    [blocks, output].unlines
+  end
+
+  private
+
+  def output
+    @puzzle_figther
+      .debug
+      .last(@max_entries)
+      .map(&PowerDebug)
+      .transpose
+      .map(&:unpipes)
+
+  end
+
+  def blocks
+    @puzzle_figther
+      .input
+      .last(@max_entries)
+      .map(&method(:headers))
+      .transpose
+      .map(&:unwords)
+      .unlines
+  end
+
+  def headers(commands)
+    commands.map do |command|
+      format "%-6s", command
+    end
+  end
+end
+
+class PowerDebug < BaseScaffold
+  using ArrayExtensions
+  using ObjectExtensions
   using Colors
 
-  COLOR_MAP = {
+  MAP = {
     "R" => "R".bg_red.black,
     "G" => "G".bg_green.black,
     "B" => "B".bg_blue.black,
@@ -66,74 +115,33 @@ class DebugState
     " " => ".",
   }.freeze
 
-  def self.call(*args)
-    new(*args).call
-  end
-
-  def initialize(state)
-    @state = state
-  end
-
-  def call
-    @state.map do |row|
-      output_row = row.chars.map do |char|
-        COLOR_MAP.fetch(char, char)
-      end
-      format("|%s|", output_row.join)
+  def self.to_proc
+    proc do |object|
+      call(object)
     end
   end
-end
 
-class DebugRun
-  def self.call(*args)
-    new(*args).call
-  end
-
-  def initialize(puzzle_figther, max_entries = nil)
-    @puzzle_figther = puzzle_figther
-    @max_entries = Integer(max_entries || puzzle_figther.input.size)
+  def initialize(board)
+    @board = board
   end
 
   def call
-    [header, body].join("\n")
+    (0..11).map do |row|
+      (0..5).map do |col|
+        @board
+          .at(col, row)
+          .if_none { Block.new(".", row, col, 0) }
+          .then(&method(:colorize))
+      end.join("")
+    end
   end
 
-  private
-
-  def output
-    @puzzle_figther
-      .debug
-      .last(@max_entries)
-      .map(&FormatOutput.method(:call))
-      .transpose
-      .map { |line| DebugState.call(line).join(" ") }
+  def colorize(block)
+    output = MAP.fetch(block.kind, block.kind)
+    if block.power_positive?
+      output.tr(block.kind, block.power.to_s)
+    else
+      output
+    end
   end
-
-  def header
-    @puzzle_figther
-      .input
-      .last(@max_entries)
-      .map { |command| format "%-8s", command.join(" ") }
-      .join(" ")
-  end
-
-  def bar
-    @_bar ||= Array.new(@max_entries) { "+------+" }
-  end
-
-  def body
-    [
-      bar.join(" "),
-      output,
-      bar.join(" "),
-    ]
-  end
-end
-
-def DebugPrint(data)
-  [
-    "+------+",
-    DebugState.call(FormatOutput.call(data)),
-    "+------+",
-  ]
 end
