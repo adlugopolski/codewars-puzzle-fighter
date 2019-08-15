@@ -81,7 +81,9 @@ class BoardTest < BaseTestCase
       "RR BBB",
     ]
 
-    assert_equal [4, 6, 8], Board.new(input).power_blocks.map(&:size).sort
+    board = Combiner.call(Board.new(input))
+
+    assert_equal [4, 6, 8], board.power_blocks.map(&:size).sort
   end
 
   def test_returns_prefix_for_next_power_block_if_none
