@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "forwardable"
 require_relative "debug.rb"
 
 class Object
@@ -72,7 +73,7 @@ class Effects < BaseScaffold
   end
 
   def call
-    logic
+    Combiner.call logic
   end
 
   private
@@ -80,7 +81,7 @@ class Effects < BaseScaffold
   def logic
     crashes.reduce(@blocks) do |board, crash|
       target = board.sort.reverse.detect { |block| block.kind == crash.kind }
-      Gravity.call Crash.call(board, target)
+      Gravity.call Combiner.call Crash.call(board, target)
     end
   end
 
@@ -123,13 +124,25 @@ class Combiner < BaseScaffold
   end
 
   def call
-    @blocks.minus(power) + power.map do |block|
-      block.copy(power: @blocks.power_count)
+    %w[R G B Y].reduce(@blocks) do |blocks, color|
+      mark_power_gems(blocks, color)
     end
   end
 
-  def power
-    @_power ||= Power.call(@blocks, "R")
+  private
+
+  def mark_power_gems(board, color)
+    (0..).reduce(board) do |blocks, _|
+      power = Power.call(blocks.unpowered, color)
+
+      break blocks if power.empty?
+
+      result = blocks.minus(power) + power.map do |block|
+        block.copy(power: blocks.power_count)
+      end
+
+      Board.new(result)
+    end
   end
 end
 
@@ -242,6 +255,10 @@ class Board < Array
     Board.new(select { |block| block.power == id })
   end
 
+  def unpowered
+    Board.new(select(&:power_zero?))
+  end
+
   def power_count
     group_by(&:power)
       .keys
@@ -273,26 +290,26 @@ class Board < Array
     row_number, lowest_row = elements.group_by(&:y).max_by(&:first)
     columns = lowest_row.map(&:x)
 
-    support_present =
-      select { |block| block.y > row_number }
+    select { |block| block.y > row_number }
       .select { |block| block.x.between?(columns.min, columns.max) }
       .group_by(&:x)
       .map { |_, value| value.count }
       .select { |value| value == 11 - row_number }
-      .any?
-
-    row_number == 11 || support_present
+      .then { |result| result.any? || row_number == 11 }
   end
 
   def power_blocks
-    %w[R G B Y].flat_map do |color|
-      (0..).reduce([]) do |blocks, _|
-        powers = Power.call(minus(blocks.flatten), color)
-        break blocks if powers.empty?
-
-        blocks + [powers]
-      end
-    end
+    select(&:power_positive?)
+      .group_by(&:power)
+      .values
+    # %w[R G B Y].flat_map do |color|
+    #   (0..).reduce([]) do |blocks, _|
+    #     powers = Power.call(minus(blocks.flatten), color)
+    #     break blocks if powers.empty?
+    #
+    #     blocks + [powers]
+    #   end
+    # end
   end
 end
 
@@ -373,7 +390,11 @@ class Inject < BaseScaffold
 end
 
 class Block
+  extend Forwardable
   attr_reader :x, :y, :kind, :power
+
+  def_delegator :power, :zero?, :power_zero?
+  def_delegator :power, :positive?, :power_positive?
 
   def initialize(kind, x, y, power = 0)
     @kind = kind
@@ -388,7 +409,12 @@ class Block
 
   def draw_on(template)
     board = template.map(&:dup)
-    board[y][x] = kind.to_s[0]
+    board[y][x] =
+      if block_given?
+        yield block
+      else
+        kind.to_s[0]
+      end
     board
   end
 
@@ -413,7 +439,7 @@ class Block
   end
 
   def kind?(other)
-    other.kind[0].downcase == kind[0].downcase
+    other.kind[0].to_s.downcase == kind[0].to_s.downcase
   end
 
   def outside?
