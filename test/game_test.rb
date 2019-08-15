@@ -388,216 +388,220 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solves_game_9
-    pend
+    instructions = [
+      ["YY", "LLL"],
+      ["YY", "LLL"],
+      ["YY", "LLL"],
+      ["YY", "LLL"],
+      ["YY", "LLL"],
+      ["YY", "LLL"],
+      ["YY", ""],
+      ["YY", ""],
+      ["YY", ""],
+      ["YY", ""],
+      ["YY", ""],
+      ["0Y", ""],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 
   def test_solves_game_10
     pend
+
+    instructions = [
+      ["GY", "LL"],
+      ["BG", "R"],
+      ["BB", "BR"],
+      ["GG", "BR"],
+      ["RG", "AAL"],
+      ["GB", "BBRR"],
+      ["YG", "RR"],
+      ["YG", "BRR"],
+      ["BG", "LL"],
+      ["GB", ""],
+      ["RR", "R"],
+      ["YR", "AAAA"],
+      ["RB", "RRA"],
+      ["YB", "BB"],
+      ["BY", "LLLB"],
+      ["bY", "R"],
+      ["GB", "L"],
+      ["RR", "L"],
+      ["0G", "AARR"],
+      ["RB", "AAL"],
+      ["GB", "ALL"],
+      ["yB", "R"],
+      ["Br", "LLLA"],
+      ["BY", "L"],
+      ["GR", "ALL"],
+      ["B0", "L"],
+      ["rY", "ALL"],
+      ["RB", "ALLL"],
+      ["BR", "ALL"],
+      ["RR", "LLLLR"],
+      ["GY", "ALLL"],
+      ["BB", "LL"],
+      ["0G", "RRA"],
+      ["yr", "AALL"],
+    ]
+
+    game_state = [
+      "      ",
+      " Y    ",
+      " RR   ",
+      " RY   ",
+      " BB   ",
+      " BB   ",
+      " rY y ",
+      " GB BG",
+      "GGBYYY",
+      "RGGYGY",
+      "BGGGGG",
+      "YY GGG",
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 
   def test_solves_game_11
     pend
+
+    instructions =  [
+      ["RR", "LLL"],
+      ["RR", "LLL"],
+      ["GG", "LLL"],
+      ["RR", "LLL"],
+      ["YY", "LL"],
+      ["YY", "LL"],
+      ["BY", "LL"],
+      ["BG", "L"],
+      ["YY", "L"],
+      ["RR", "LL"],
+      ["BR", "L"],
+      ["Yb", "AAL"],
+      ["GG", ""],
+      ["BB", "R"],
+      ["GG", "R"],
+      ["GG", ""],
+      ["GB", "BBRR"],
+      ["BR", ""],
+      ["BY", "RBR"],
+      ["BB", "RRRR"],
+      ["BB", "AARR"],
+      ["yB", "R"],
+      ["Bg", "A"],
+      ["RR", ""],
+      ["Br", ""],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "RR    ",
+      "RR    ",
+      "G Y   ",
+      "GYR   ",
+      "RYY   ",
+      "RYY   ",
+      "RY    ",
+      "RYBR G",
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
+  end
+
+  def test_solves_game_12
+    instructions = [
+      ["RR", "LLL"],
+      ["RR", "LLL"],
+      ["GG", "LLL"],
+      ["RR", "LLL"],
+      ["YY", "LL"],
+      ["YY", "LL"],
+      ["BY", "LL"],
+      ["BG", "L"],
+      ["YY", "L"],
+      ["RR", "LL"],
+      ["BR", "L"],
+      ["Yb", "AAL"],
+      ["GG", ""],
+      ["BB", "R"],
+      ["GG", "R"],
+      ["GG", ""],
+      ["GB", "BBRR"],
+      ["BR", ""],
+      ["BY", "RBR"],
+      ["BB", "RRRR"],
+      ["BB", "AARR"],
+      ["yB", "R"],
+      ["Bg", "A"],
+      ["RR", ""],
+      ["Br", ""],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "RR    ",
+      "RR    ",
+      "G Y   ",
+      "GYR   ",
+      "RYY   ",
+      "RYY   ",
+      "RY    ",
+      "RYBR G",
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
+  end
+
+  def test_solves_game_13
+    pend
+
+    instructions = [
+      ["BY", "R"],
+      ["BY", "RR"],
+      ["YY", "L"],
+      ["GY", ""],
+      ["YB", "LL"],
+      ["BG", "LLL"],
+      ["00", "R"],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "  YG  ",
+      "GYYYYY",
+    ]
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 end
-
-__END__
-
-
-
-[
-  ["GY", "LL"],
-  ["BG", "R"],
-  ["BB", "BR"],
-  ["GG", "BR"],
-  ["RG", "AAL"],
-  ["GB", "BBRR"],
-  ["YG", "RR"],
-  ["YG", "BRR"],
-  ["BG", "LL"],
-  ["GB", ""],
-  ["RR", "R"],
-  ["YR", "AAAA"],
-  ["RB", "RRA"],
-  ["YB", "BB"],
-  ["BY", "LLLB"],
-  ["bY", "R"],
-  ["GB", "L"],
-  ["RR", "L"],
-  ["0G", "AARR"],
-  ["RB", "AAL"],
-  ["GB", "ALL"],
-  ["yB", "R"],
-  ["Br", "LLLA"],
-  ["BY", "L"],
-  ["GR", "ALL"],
-  ["B0", "L"],
-  ["rY", "ALL"],
-  ["RB", "ALLL"],
-  ["BR", "ALL"],
-  ["RR", "LLLLR"],
-  ["GY", "ALLL"],
-  ["BB", "LL"],
-  ["0G", "RRA"],
-  ["yr", "AALL"],
-]
-
-[
-  "      ",
-  " Y    ",
-  " RR   ",
-  " RY   ",
-  " BB   ",
-  " BB   ",
-  " rY y ",
-  " GB BG",
-  "GGBYYY",
-  "RGGYGY",
-  "BGGGGG",
-  "YY GGG",
-]
-
-
-[
-  ["RR", "LLL"],
-  ["RR", "LLL"],
-  ["GG", "LLL"],
-  ["RR", "LLL"],
-  ["YY", "LL"],
-  ["YY", "LL"],
-  ["BY", "LL"],
-  ["BG", "L"],
-  ["YY", "L"],
-  ["RR", "LL"],
-  ["BR", "L"],
-  ["Yb", "AAL"],
-  ["GG", ""],
-  ["BB", "R"],
-  ["GG", "R"],
-  ["GG", ""],
-  ["GB", "BBRR"],
-  ["BR", ""],
-  ["BY", "RBR"],
-  ["BB", "RRRR"],
-  ["BB", "AARR"],
-  ["yB", "R"],
-  ["Bg", "A"],
-  ["RR", ""],
-  ["Br", ""],
-]
-
-[
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "RR    ",
-  "RR    ",
-  "G Y   ",
-  "GYR   ",
-  "RYY   ",
-  "RYY   ",
-  "RY    ",
-  "RYBR G",
-]
-
-
-[
-  ["RR", "LLL"],
-  ["RR", "LLL"],
-  ["GG", "LLL"],
-  ["RR", "LLL"],
-  ["YY", "LL"],
-  ["YY", "LL"],
-  ["BY", "LL"],
-  ["BG", "L"],
-  ["YY", "L"],
-  ["RR", "LL"],
-  ["BR", "L"],
-  ["Yb", "AAL"],
-  ["GG", ""],
-  ["BB", "R"],
-  ["GG", "R"],
-  ["GG", ""],
-  ["GB", "BBRR"],
-  ["BR", ""],
-  ["BY", "RBR"],
-  ["BB", "RRRR"],
-  ["BB", "AARR"],
-  ["yB", "R"],
-  ["Bg", "A"],
-  ["RR", ""],
-  ["Br", ""],
-]
-
-[
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "RR    ",
-  "RR    ",
-  "G Y   ",
-  "GYR   ",
-  "RYY   ",
-  "RYY   ",
-  "RY    ",
-  "RYBR G",
-]
-
-
-[
-  ["YY", "LLL"],
-  ["YY", "LLL"],
-  ["YY", "LLL"],
-  ["YY", "LLL"],
-  ["YY", "LLL"],
-  ["YY", "LLL"],
-  ["YY", ""],
-  ["YY", ""],
-  ["YY", ""],
-  ["YY", ""],
-  ["YY", ""],
-  ["0Y", ""],
-]
-
-[
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-]
-
-
-
-[
-  ["BY", "R"],
-  ["BY", "RR"],
-  ["YY", "L"],
-  ["GY", ""],
-  ["YB", "LL"],
-  ["BG", "LLL"],
-  ["00", "R"],
-]
-
-[
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "  YG  ",
-  "GYYYYY",
-]
