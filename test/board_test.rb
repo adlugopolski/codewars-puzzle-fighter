@@ -81,7 +81,7 @@ class BoardTest < BaseTestCase
       "RR BBB",
     ]
 
-    board = Combiner.call(Board.new(input))
+    board = PowerCombiner.call(Board.new(input))
 
     assert_equal [4, 6, 8], board.power_blocks.map(&:size).sort
   end

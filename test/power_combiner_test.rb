@@ -1,7 +1,7 @@
 require "test/unit"
 require_relative "../src/app.rb"
 
-class CombinerTest < BaseTestCase
+class PowerCombinerTest < BaseTestCase
   def test_doesnt_change_the_board_while_marking_power_blocks
     input = _from_ascii [
       "     Y",
@@ -18,7 +18,7 @@ class CombinerTest < BaseTestCase
       "RR BBB",
     ]
 
-    assert_equal(*_format_all(input.sort, Combiner.call(input).sort))
+    assert_equal(*_format_all(input.sort, PowerCombiner.call(input).sort))
 
   end
 
@@ -38,7 +38,7 @@ class CombinerTest < BaseTestCase
       "RR BBB", "RR    ",
     ]
 
-    result = Board.new(Combiner.call(input)).select(&:power_positive?)
+    result = Board.new(PowerCombiner.call(input)).select(&:power_positive?)
 
     assert_equal(*_format_all(expected, result))
   end

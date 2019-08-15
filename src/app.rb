@@ -92,7 +92,7 @@ class Effects < BaseScaffold
   end
 
   def call
-    Combiner.call logic
+    PowerCombiner.call logic
   end
 
   private
@@ -100,7 +100,7 @@ class Effects < BaseScaffold
   def logic
     crashes.reduce(@blocks) do |board, crash|
       target = board.sort.reverse.detect { |block| block.kind == crash.kind }
-      Gravity.call Combiner.call Crash.call(board, target)
+      Gravity.call PowerCombiner.call Crash.call(board, target)
     end
   end
 
@@ -140,7 +140,7 @@ end
 class PowerMerger < BaseScaffold
 end
 
-class Combiner < BaseScaffold
+class PowerCombiner < BaseScaffold
   def initialize(blocks)
     @blocks = Board.new(blocks)
   end

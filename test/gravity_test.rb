@@ -42,7 +42,7 @@ class GravityTest < BaseTestCase
       "   BBY", "   BBY",
     ]
 
-    board = Gravity.call Combiner.call(input)
+    board = Gravity.call PowerCombiner.call(input)
 
     assert_equal(*_format_all(expected.sort, board.sort))
   end
@@ -63,7 +63,7 @@ class GravityTest < BaseTestCase
       "   BBB", " G BBB",
     ]
 
-    board = Gravity.call Combiner.call(input)
+    board = Gravity.call PowerCombiner.call(input)
 
     assert_equal(*_format_all(expected.sort, board.sort))
   end
@@ -84,7 +84,7 @@ class GravityTest < BaseTestCase
       "   BBB", " G BBB",
     ]
 
-    board = Gravity.call Combiner.call(input)
+    board = Gravity.call PowerCombiner.call(input)
 
     assert_equal(*_format_all(expected.sort, board.sort))
   end
@@ -105,7 +105,7 @@ class GravityTest < BaseTestCase
       "   BBB", " G BBB",
     ]
 
-    board = Gravity.call Combiner.call(input)
+    board = Gravity.call PowerCombiner.call(input)
 
     assert_equal(*_format_all(expected.sort, board.sort))
   end
@@ -126,7 +126,7 @@ class GravityTest < BaseTestCase
       "    G ", "RRRBG ",
     ]
 
-    board = Gravity.call Combiner.call(input)
+    board = Gravity.call PowerCombiner.call(input)
 
     assert_equal(*_format_all(expected.sort, board.sort))
   end
@@ -147,7 +147,7 @@ class GravityTest < BaseTestCase
       "     R", "  GRRR",
     ]
 
-    board = Gravity.call Combiner.call(input)
+    board = Gravity.call PowerCombiner.call(input)
 
     assert_equal(*_format_all(expected.sort, board.sort))
   end
