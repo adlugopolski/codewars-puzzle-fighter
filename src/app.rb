@@ -102,7 +102,9 @@ class Effects < BaseScaffold
   end
 
   def call
-    PowerMerger.call PowerCombiner.call logic
+    logic
+      .then(&PowerCombiner)
+      .then(&PowerMerger)
   end
 
   private
@@ -188,6 +190,16 @@ class PowerMerger < BaseScaffold
         board
       end
     end
+  end
+end
+
+class PowerExpander < BaseScaffold
+  def initialize(blocks)
+    @blocks = Board.new(blocks)
+  end
+
+  def call
+    @blocks
   end
 end
 
