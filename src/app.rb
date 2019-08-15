@@ -111,7 +111,7 @@ class Effects < BaseScaffold
 
   def logic
     ERANGE.reduce(@blocks) do |eboard, _|
-      bombs = eboard.select(&:crash?).sort.reverse
+      bombs = eboard.select(&:crash?)
       new_board = crashes(bombs, eboard)
       break eboard if new_board == eboard
 
@@ -127,10 +127,10 @@ class Effects < BaseScaffold
 
       board
         .then(target, &Crash)
-        .then(&Gravity)
         .then(&PowerCombiner)
         .then(&PowerMerger)
         .then(&PowerExpander)
+        .then(&Gravity)
     end
   end
 end
@@ -723,21 +723,19 @@ class InitialRotator < BaseScaffold
     end
 
     def adjust_columns
-      return self if @block1.x >= 0 && @block2.x >= 0
-
-      Pair.new(
-        @block1.copy(x: @block1.x + 1),
-        @block2.copy(x: @block2.x + 1),
-      )
+      if @block1.x < 0 || @block2.x < 0
+        Pair.new(*move_right)
+      elsif @block1.x > 5 || @block2.x > 5
+        Pair.new(*move_left)
+      else
+        self
+      end
     end
 
     def adjust_lines
       return self if @block1.y >= 0 && @block2.y >= 0
 
-      Pair.new(
-        @block1.copy(y: @block1.y + 1),
-        @block2.copy(y: @block2.y + 1),
-      )
+      Pair.new(@block1.down, @block2.down)
     end
 
     private
@@ -798,27 +796,33 @@ end
 
 if $PROGRAM_NAME == __FILE__
   instructions = [
-    ["YY", "BALLL"],
-    ["RR", "AALL"],
-    ["RG", "BR"],
-    ["YG", "ALLR"],
-    ["BG", "BRR"],
-    ["YR", "BBLLLL"],
-    ["GR", "BL"],
-    ["GG", "ALB"],
-    ["GY", ""],
-    ["yB", "RR"],
-    ["GG", "R"],
-    ["RB", "LLLAAAB"],
-    ["Ry", "LL"],
-    ["BG", "BR"],
-    ["RB", "BBRRR"],
-    ["Rg", "R"],
-    ["bR", "L"],
-    ["YR", "BLLL"],
-    ["RR", "LLLLLLLL"],
-    ["Yg", "AALL"],
-    ["Br", "LLL"],
+    ["YR", "LLL"],
+    ["GY", "LLLRL"],
+    ["RY", "BBLL"],
+    ["RB", "AAL"],
+    ["GR", "BR"],
+    ["GG", "A"],
+    ["YY", "LL"],
+    ["GG", "BLLL"],
+    ["YY", "ALLL"],
+    ["BY", "BL"],
+    ["YB", "ALLLR"],
+    ["RY", "LLLB"],
+    ["GG", "BBBBB"],
+    ["GB", "A"],
+    ["GR", "AA"],
+    ["gB", "AALAB"],
+    ["YR", "RRAAA"],
+    ["BB", ""],
+    ["RG", "AL"],
+    ["GG", "L"],
+    ["RG", "RRBL"],
+    ["Gb", "A"],
+    ["rB", "R"],
+    ["GG", "RR"],
+    ["RB", "AARR"],
+    ["GG", "BR"],
+    ["bR", "AARR"],
   ]
 
   PuzzleFighter.call(instructions) do |fighter|
