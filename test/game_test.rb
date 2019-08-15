@@ -342,7 +342,49 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solves_game_8
-    pend
+    instructions = [
+      ["BB", "AALLL"],
+      ["GR", "RR"],
+      ["RR", "R"],
+      ["RG", "A"],
+      ["YY", "BBBL"],
+      ["BG", "RR"],
+      ["BY", ""],
+      ["Rg", "RR"],
+      ["YB", "A"],
+      ["BY", "RRAA"],
+      ["BY", "L"],
+      ["yB", "LLLBB"],
+      ["YR", "A"],
+      ["Yy", "BBB"],
+      ["rY", "BR"],
+      ["Rb", "BRR"],
+      ["gR", "ARR"],
+      ["BB", "B"],
+      ["BG", "B"],
+      ["RG", "BBLL"],
+      ["YG", "LLLA"],
+      ["GG", "L"],
+      ["RY", "BRR"],
+      ["bB", ""],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "  G   ",
+      " GG Y ",
+      " GG R ",
+      "YR RRR",
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 
   def test_solves_game_9
@@ -360,48 +402,6 @@ end
 
 __END__
 
-
-[
-  ["BB", "AALLL"],
-  ["GR", "RR"],
-  ["RR", "R"],
-  ["RG", "A"],
-  ["YY", "BBBL"],
-  ["BG", "RR"],
-  ["BY", ""],
-  ["Rg", "RR"],
-  ["YB", "A"],
-  ["BY", "RRAA"],
-  ["BY", "L"],
-  ["yB", "LLLBB"],
-  ["YR", "A"],
-  ["Yy", "BBB"],
-  ["rY", "BR"],
-  ["Rb", "BRR"],
-  ["gR", "ARR"],
-  ["BB", "B"],
-  ["BG", "B"],
-  ["RG", "BBLL"],
-  ["YG", "LLLA"],
-  ["GG", "L"],
-  ["RY", "BRR"],
-  ["bB", ""],
-]
-
-[
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "      ",
-  "  G   ",
-  " GG Y ",
-  " GG R ",
-  "YR RRR",
-]
 
 
 [
