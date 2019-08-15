@@ -110,20 +110,28 @@ class Effects < BaseScaffold
   private
 
   def logic
-    crashes.reduce(@blocks) do |board, crash|
-      target = board.sort.reverse.detect { |block| block.kind == crash.kind }
+    ERANGE.reduce(@blocks) do |eboard, _|
+      bombs = eboard.select(&:crash?).sort.reverse
+      new_board = crashes(bombs, eboard)
+      break eboard if new_board == eboard
 
-      board
-        .then(target, &Crash)
-        .then(&PowerCombiner)
-        .then(&PowerMerger)
-        .then(&PowerExpander)
-        .then(&Gravity)
+      new_board
     end
   end
 
-  def crashes
-    @blocks.select(&:crash?).sort.reverse
+  def crashes(bombs, eboard)
+    bombs.reduce(eboard) do |board, crash|
+      target = board.sort.reverse.detect do |block|
+        block.kind == crash.kind
+      end
+
+      board
+        .then(target, &Crash)
+        .then(&Gravity)
+        .then(&PowerCombiner)
+        .then(&PowerMerger)
+        .then(&PowerExpander)
+    end
   end
 end
 
@@ -351,6 +359,12 @@ class Board < Array
     super(blocks)
   end
 
+  def ==(other)
+    sort.zip(other.sort).all? do |sblock, oblock|
+      sblock == oblock
+    end
+  end
+
   def minus(elements)
     reject do |current|
       Array(elements).include?(current)
@@ -543,6 +557,14 @@ class Block
     Block.new(kind, x, y + 1)
   end
 
+  def free_left
+    Block.new(kind, x - 1, y)
+  end
+
+  def free_right
+    Block.new(kind, x + 1, y)
+  end
+
   def crash?
     ("a".."z").include?(kind)
   end
@@ -663,28 +685,28 @@ class InitialRotator < BaseScaffold
     def rotate_clockwise
       if horizontal?
         if center_left?
-          [@block1, @block2.left.down]
+          [@block1, @block2.free_left.down]
         else
-          [@block1, @block2.right.up]
+          [@block1, @block2.free_right.up]
         end
       elsif center_top?
-        [@block1, @block2.left.up]
+        [@block1, @block2.free_left.up]
       else
-        [@block1, @block2.right.down]
+        [@block1, @block2.free_right.down]
       end
     end
 
     def rotate_anticlockwise
       if horizontal?
         if center_left?
-          [@block1, @block2.left.up]
+          [@block1, @block2.free_left.up]
         else
-          [@block1, @block2.right.down]
+          [@block1, @block2.free_right.down]
         end
       elsif center_top?
-        [@block1, @block2.right.up]
+        [@block1, @block2.free_right.up]
       else
-        [@block1, @block2.left.down]
+        [@block1, @block2.free_left.down]
       end
     end
 
@@ -700,12 +722,21 @@ class InitialRotator < BaseScaffold
       )
     end
 
-    def adjust_negatives
+    def adjust_columns
+      return self if @block1.x >= 0 && @block2.x >= 0
+
+      Pair.new(
+        @block1.copy(x: @block1.x + 1),
+        @block2.copy(x: @block2.x + 1),
+      )
+    end
+
+    def adjust_lines
       return self if @block1.y >= 0 && @block2.y >= 0
 
       Pair.new(
-        Block.new(@block1.kind, @block1.x, @block1.y + 1),
-        Block.new(@block2.kind, @block2.x, @block2.y + 1),
+        @block1.copy(y: @block1.y + 1),
+        @block2.copy(y: @block2.y + 1),
       )
     end
 
@@ -731,7 +762,6 @@ class InitialRotator < BaseScaffold
 
   def call
     perform_moves
-    adjust_negatives
     @pair.blocks.sort.reverse
   end
 
@@ -752,11 +782,9 @@ class InitialRotator < BaseScaffold
         else
           raise ArgumentError, invalid_move_error_message
         end
+      @pair = @pair.adjust_columns
     end
-  end
-
-  def adjust_negatives
-    @pair = @pair.adjust_negatives
+    @pair = @pair.adjust_lines
   end
 
   def invalid_move_error_message
