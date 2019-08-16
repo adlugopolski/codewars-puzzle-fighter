@@ -815,6 +815,55 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solves_game_18
+    instructions = [
+      ["BR", "AARRR"],
+      ["YR", "BBB"],
+      ["Rg", "R"],
+      ["RB", "AAAL"],
+      ["BB", "BBBLLL"],
+      ["By", "LL"],
+      ["YB", "AALL"],
+      ["GY", "BL"],
+      ["gB", "AR"],
+      ["GY", "AR"],
+      ["RY", "ARR"],
+      ["GY", "BBBRRR"],
+      ["RY", "BBB"],
+      ["R0", "BL"],
+      ["RG", "BRR"],
+      ["YG", "B"],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "    G ",
+      "    G ",
+      " BG RR",
+      " BR RB",
+      " BGYgR",
+      "BBRRRB",
+    ].unlines
+
+    assert_equal game_state, PuzzleFighter.call(instructions)
+  end
+
+  def test_solves_game_19
+    pend
+
+    game_state = [
+
+
+    ].unlines
+
+    assert_equal game_state, PuzzleFighter.call(instructions)
+  end
+
+  def test_solves_game_20
     pend
 
     game_state = [
