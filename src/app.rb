@@ -114,7 +114,10 @@ class Effects < BaseScaffold
   end
 
   def call
-    logic
+    @blocks
+      .then(&Rainbow)
+      .then(&PowerCombiner)
+      .then(&method(:crash_logic))
       .then(&PowerCombiner)
       .then(&PowerExpander)
       .then(&PowerMerger)
@@ -122,8 +125,8 @@ class Effects < BaseScaffold
 
   private
 
-  def logic
-    ERANGE.reduce(@blocks) do |eboard, _|
+  def crash_logic(board)
+    ERANGE.reduce(board) do |eboard, _|
       new_board = crashes(eboard)
 
       break eboard if eboard == new_board
@@ -132,20 +135,15 @@ class Effects < BaseScaffold
     end
   end
 
-  def crashes(eboard)
-    eboard
-      .then(&Rainbow)
-      .then(&crash_steps)
-      .then(&PowerCombiner)
+  def crashes(board)
+    board
+      .then(&method(:crash_steps))
       .then(&Gravity)
   end
 
-  def crash_steps
-    proc do |board|
-      bombs = board.select(&:crash?)
-      bombs.reduce(board) do |rboard, crash|
-        Crash.call(rboard, crash)
-      end
+  def crash_steps(board)
+    board.select(&:crash?).reduce(board) do |rboard, crash|
+      Crash.call(rboard, crash)
     end
   end
 end
@@ -896,68 +894,33 @@ end
 
 if $PROGRAM_NAME == __FILE__
   instructions = [
-    ["BY", "AALLL"],
-    ["BB", "LL"],
-    ["GR", "BBLRR"],
-    ["RR", "LA"],
-    ["BY", "AAALLL"],
-    ["YG", "LBB"],
-    ["BY", "BLRRR"],
-    ["GR", "AAALRRR"],
-    ["Rr", "LAALLL"],
-    ["YY", "ALA"],
-    ["BG", "LLL"],
-    ["br", "LL"],
-    ["RR", "L"],
-    ["BY", "L"],
-    ["BR", "LA"],
-    ["GY", "ALLLL"],
-    ["BY", "BBBLR"],
-    ["Y0", "LLLL"],
-    ["Yr", "LAALL"],
-    ["RR", "AALR"],
-    ["GY", "LR"],
-    ["RY", "ALAL"],
-    ["RY", "ALR"],
-    ["YG", "BLL"],
-    ["RY", "AALLLL"],
-    ["GY", "LB"],
-    ["rB", "AALRR"],
-    ["Y0", "LRR"],
-    ["BG", "ALAA"],
-    ["YB", "AAALRRR"],
-    ["BR", "L"],
-    ["Yy", "ALRRR"],
-    ["BY", "LLL"],
-    ["RB", "LBBL"],
-    ["GY", "LA"],
-    ["BY", "BBLR"],
-    ["GY", "LA"],
-    ["YR", "LL"],
-    ["BB", "LBBBLL"],
-    ["YY", "AAALL"],
-    ["BG", "LAL"],
-    ["GB", "LLL"],
-    ["RB", "AALRR"],
-    ["GB", "LB"],
-    ["BY", "BBLB"],
-    ["YR", "LBBLL"],
-    ["RR", "AALR"],
-    ["GY", "LLLL"],
-    ["GY", "L"],
-    ["RY", "AALLL"],
-    ["BG", "BBLB"],
-    ["GG", "LR"],
-    ["Br", "L"],
-    ["Gr", "ALRRR"],
-    ["YR", "ALAL"],
-    ["rB", "LRR"],
-    ["GY", "AAALR"],
-    ["YY", "LBBBLL"],
-    ["GB", "ALA"],
-    ["YR", "BLRRR"],
-    ["YY", "L"],
-    ["BB", "BBBLR"],
+    ["YR", "LLL"],
+    ["GY", "LLLRL"],
+    ["RY", "BBLL"],
+    ["RB", "AAL"],
+    ["GR", "BR"],
+    ["GG", "A"],
+    ["YY", "LL"],
+    ["GG", "BLLL"],
+    ["YY", "ALLL"],
+    ["BY", "BL"],
+    ["YB", "ALLLR"],
+    ["RY", "LLLB"],
+    ["GG", "BBBBB"],
+    ["GB", "A"],
+    ["GR", "AA"],
+    ["gB", "AALAB"],
+    ["YR", "RRAAA"],
+    ["BB", ""],
+    ["RG", "AL"],
+    ["GG", "L"],
+    ["RG", "RRBL"],
+    ["Gb", "A"],
+    ["rB", "R"],
+    ["GG", "RR"],
+    ["RB", "AARR"],
+    ["GG", "BR"],
+    ["bR", "AARR"],
   ]
 
   # puts Benchmark.realtime {
