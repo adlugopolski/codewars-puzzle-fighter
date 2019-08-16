@@ -8,7 +8,8 @@ class PuzzleFighterTest < Test::Unit::TestCase
   end
 
   def test_returns_expected_game_output_format
-    assert_match @expected_output_format, puzzle_fighter(@instructions)
+    assert_match @expected_output_format, PuzzleFighter.call(@instructions)
+
   end
 
   def test_passes_initial_state_in_expected_format
