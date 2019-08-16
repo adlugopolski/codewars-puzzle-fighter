@@ -115,11 +115,9 @@ class Effects < BaseScaffold
 
   def call
     logic
-      .then(&Rainbow)
       .then(&PowerCombiner)
       .then(&PowerExpander)
       .then(&PowerMerger)
-      .then(&Gravity)
   end
 
   private

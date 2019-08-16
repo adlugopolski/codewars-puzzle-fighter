@@ -1134,7 +1134,102 @@ class GameTest < Test::Unit::TestCase
     assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
-  def xtest_solves_game_24
+  def test_solves_game_24
+    instructions = [
+      ["YY", "B"],
+      ["RY", "AALL"],
+      ["BG", "BBRR"],
+      ["BB", "R"],
+      ["BG", "BBBRR"],
+      ["BG", "ALLL"],
+      ["GR", "AA"],
+      ["RY", "BBBLLL"],
+      ["Yy", "BBRRR"],
+      ["GG", "BB"],
+      ["BR", "RR"],
+      ["by", "R"],
+      ["YY", ""],
+      ["BG", ""],
+      ["BY", "B"],
+      ["RG", "BRRR"],
+      ["BG", "AAAL"],
+      ["G0", "RRR"],
+      ["Gy", "BBRR"],
+      ["YY", "BBL"],
+      ["RG", "L"],
+      ["YG", "BBR"],
+      ["YG", "BL"],
+      ["GR", "AR"],
+      ["RG", "A"],
+      ["yB", "BBLL"],
+      ["YG", "BBRRR"],
+      ["G0", "LL"],
+      ["BR", "BBB"],
+      ["GB", "BBBLLL"],
+      ["YB", "AAR"],
+      ["BG", "RR"],
+      ["BY", ""],
+      ["Gg", "BLLL"],
+      ["RG", "B"],
+      ["BG", "AAL"],
+      ["RG", "B"],
+      ["GY", "R"],
+      ["BB", "AAARR"],
+      ["GG", "BBBR"],
+      ["BR", "BR"],
+      ["RB", "RR"],
+      ["YB", "BBLL"],
+      ["RB", "A"],
+      ["BG", "AAA"],
+      ["GY", "AARR"],
+      ["YY", "BBL"],
+      ["RG", "RRR"],
+      ["RG", "BBBL"],
+      ["RR", "L"],
+      ["RB", "BB"],
+      ["Ry", "BLLL"],
+      ["yB", "LL"],
+      ["GY", "ALLL"],
+      ["GG", "AAARR"],
+      ["YG", "BBRR"],
+      ["BB", "AAAL"],
+      ["GY", "BBR"],
+      ["BR", "AAA"],
+      ["By", ""],
+      ["GG", ""],
+      ["RG", ""],
+    ]
+
+    game_state = [
+      "      ",
+      "     Y",
+      "     G",
+      "   BBR",
+      " BYRBB",
+      " YYRGG",
+      " GGRBB",
+      " BGRGB",
+      " GGBYG",
+      " GBYBG",
+      " GGBYY",
+      " YRRRR",
+    ].unlines
+
+    assert_equal game_state, PuzzleFighter.call(instructions)
+  end
+
+  def xtest_solves_game_25
+    pen6
+
+    game_state = [
+
+
+    ].unlines
+
+    assert_equal game_state, PuzzleFighter.call(instructions)
+  end
+
+  def xtest_solves_game_26
     pend
 
     game_state = [
