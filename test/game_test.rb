@@ -34,7 +34,7 @@ class GameTest < Test::Unit::TestCase
       "RYGGYB",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_1
@@ -69,7 +69,7 @@ class GameTest < Test::Unit::TestCase
       "RR  RB"
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_2
@@ -112,7 +112,7 @@ class GameTest < Test::Unit::TestCase
       "GRRBBB",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def x_test_solves_game_3
@@ -154,7 +154,7 @@ class GameTest < Test::Unit::TestCase
       "RGRGGY",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_4
@@ -198,7 +198,7 @@ class GameTest < Test::Unit::TestCase
       "  GRRR",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_5
@@ -241,7 +241,7 @@ class GameTest < Test::Unit::TestCase
       "BBYYRB",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_6
@@ -289,7 +289,7 @@ class GameTest < Test::Unit::TestCase
       "RRGGGG",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_7
@@ -338,7 +338,7 @@ class GameTest < Test::Unit::TestCase
       "YY GBG",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_8
@@ -384,7 +384,7 @@ class GameTest < Test::Unit::TestCase
       "YR RRR",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_9
@@ -418,7 +418,7 @@ class GameTest < Test::Unit::TestCase
       "      ",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_10
@@ -474,7 +474,7 @@ class GameTest < Test::Unit::TestCase
       "YY GGG",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_11
@@ -521,7 +521,7 @@ class GameTest < Test::Unit::TestCase
       "RYBR G",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_12
@@ -568,7 +568,7 @@ class GameTest < Test::Unit::TestCase
       "RYBR G",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_13
@@ -597,7 +597,7 @@ class GameTest < Test::Unit::TestCase
       "GYYYYY",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_14
@@ -682,7 +682,7 @@ class GameTest < Test::Unit::TestCase
       "GBGBYR",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_15
@@ -737,7 +737,7 @@ class GameTest < Test::Unit::TestCase
       "GGGG  ",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_16
@@ -773,7 +773,7 @@ class GameTest < Test::Unit::TestCase
       " B YRy",
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_17
@@ -784,7 +784,7 @@ class GameTest < Test::Unit::TestCase
 
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
   def test_solves_game_18
@@ -795,6 +795,6 @@ class GameTest < Test::Unit::TestCase
 
     ].unlines
 
-    assert_equal game_state, puzzle_fighter(instructions)
+    assert_equal game_state, PuzzleFighter.call(instructions)
   end
 end
