@@ -91,7 +91,7 @@ class DebugRun < BaseScaffold
 
   def headers(commands)
     commands.map do |command|
-      format "%-6s", command
+      format("%-6s", command)[0..5]
     end
   end
 end
