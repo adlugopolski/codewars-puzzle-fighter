@@ -1,4 +1,3 @@
-
 require "pathname"
 require "forwardable"
 
@@ -117,8 +116,20 @@ class Effects < BaseScaffold
 
   private
 
+  def precrash
+    @blocks.last(2).then do |crashes|
+      if crashes.all?(&:crash?)
+        @blocks
+          .then(crashes.first, &Crash)
+          .then(crashes.last, &Crash)
+      else
+        @blocks
+      end
+    end
+  end
+
   def logic
-    ERANGE.reduce(@blocks) do |eboard, _|
+    ERANGE.reduce(precrash) do |eboard, _|
       bombs = eboard.select(&:crash?)
       new_board = crashes(bombs, eboard)
 
@@ -130,11 +141,8 @@ class Effects < BaseScaffold
 
   def crashes(bombs, eboard)
     bombs.reduce(eboard) do |board, crash|
-      target = board.at(crash.x, crash.y) || Block.new("?", -1, -1)
-
       board
-        .then(&Rainbow)
-        .then(target, &Crash)
+        .then(crash, &Crash)
         .then(&PowerCombiner)
         .then(&PowerMerger)
         .then(&PowerExpander)
@@ -348,7 +356,7 @@ end
 class Crash < BaseScaffold
   def initialize(blocks, crash)
     @blocks = blocks.map(&:copy)
-    @crash = crash.copy
+    @crash = crash
     @remove = []
   end
 
@@ -356,6 +364,7 @@ class Crash < BaseScaffold
     return @blocks unless @crash.crash?
 
     traverse(@crash, :none)
+
     if @remove.size > 1
       @blocks - @remove
     else
@@ -682,12 +691,10 @@ class MainLoop < BaseScaffold
   end
 
   def call
-    Effects.call(
-      Overflow.call(@state, InitialRotator.call(@step))
-        .reduce(@state) do |state, block|
-          Inject.call(state, block)
-        end
-    )
+    Overflow
+      .call(@state, InitialRotator.call(@step))
+      .reduce(@state) { |state, block| Inject.call(state, block) }
+      .then(&Effects)
   end
 end
 
