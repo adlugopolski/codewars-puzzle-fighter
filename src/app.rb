@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 
 require "pathname"
 require "forwardable"
@@ -122,6 +121,7 @@ class Effects < BaseScaffold
     ERANGE.reduce(@blocks) do |eboard, _|
       bombs = eboard.select(&:crash?)
       new_board = crashes(bombs, eboard)
+
       break eboard if eboard == new_board
 
       new_board
@@ -130,14 +130,11 @@ class Effects < BaseScaffold
 
   def crashes(bombs, eboard)
     bombs.reduce(eboard) do |board, crash|
+      target = board.at(crash.x, crash.y) || Block.new("?", -1, -1)
+
       board
-        .sort
-        .reverse
-        .then(&Board)
-        .then { |nboard| nboard.at(crash.x, crash.y) }
-        .if_none { Block.new("?", -1, -1) }
-        .then(board, &Crash)
         .then(&Rainbow)
+        .then(target, &Crash)
         .then(&PowerCombiner)
         .then(&PowerMerger)
         .then(&PowerExpander)
@@ -349,13 +346,15 @@ class Rainbow < BaseScaffold
 end
 
 class Crash < BaseScaffold
-  def initialize(crash, blocks)
+  def initialize(blocks, crash)
     @blocks = blocks.map(&:copy)
     @crash = crash.copy
     @remove = []
   end
 
   def call
+    return @blocks unless @crash.crash?
+
     traverse(@crash, :none)
     if @remove.size > 1
       @blocks - @remove
