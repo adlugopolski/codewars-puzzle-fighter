@@ -130,7 +130,8 @@ class Effects < BaseScaffold
       board
         .sort
         .reverse
-        .detect { |block| block.kind == crash.kind }
+        .then(&Board)
+        .then { |nboard| nboard.at(crash.x, crash.y) }
         .if_none { Block.new("?", -1, -1) }
         .then(board, &Crash)
         .then(&Rainbow)
@@ -867,7 +868,7 @@ def puzzle_fighter(instructions)
 end
 
 if $PROGRAM_NAME == __FILE__
-  instructions = [
+  xinstructions = [
     ["RR", "L"],
     ["GB", "BBLLL"],
     ["RR", "BRRR"],
@@ -931,7 +932,23 @@ if $PROGRAM_NAME == __FILE__
     ["RB", "BBBR"],
     ["bG", ""],
     ["GB", "AAR"],
+  ]
 
+  instructions = [
+    ["RR", "R"],
+    ["gy", "RR"],
+    ["Gg", ""],
+    ["Yg", "A"],
+    ["GB", ""],
+    ["BB", "B"],
+    ["YG", ""],
+    ["gb", "B"],
+    ["gB", "LL"],
+    ["BY", ""],
+    ["GY", "RRR"],
+    ["BR", "BB"],
+    ["GR", "AARRR"],
+    ["YG", "LL"],
   ]
 
   PuzzleFighter.call(instructions) do |fighter|
