@@ -149,30 +149,38 @@ class Effects < BaseScaffold
 end
 
 class HistogramArea < BaseScaffold
+  @@cache ||= {}
+
   def initialize(row)
     @row = row
   end
 
   # This is O(N^2)
   def call
-    BM "HistogramArea#call" do
     subrows
       .select { |group| group[:size] >= 4 }
       .select { |group| group[:positions].size >= 2 }
       .select { |group| group[:values].min >= 2 }
       .max_by { |group| [group[:size], group[:positions].size] }
-    end
+  end
+
+  private
+
+  def cache(key)
+    @@cache[key] ||= yield
   end
 
   def subrows
-    (0..@row.size).flat_map do |index|
-      index.upto(@row.size - 1).map do |position|
-        subrow = @row[index..position]
-        {
-          size: subrow.size * subrow.min,
-          positions: Array(index..position),
-          values: subrow,
-        }
+    cache @row do
+      (0..@row.size).flat_map do |index|
+        index.upto(@row.size - 1).map do |position|
+          subrow = @row[index..position]
+          {
+            size: subrow.size * subrow.min,
+            positions: Array(index..position),
+            values: subrow,
+          }
+        end
       end
     end
   end
@@ -191,7 +199,7 @@ class PowerMerger < BaseScaffold
 
   def process_color(state, color)
     ERANGE.reduce(state) do |board, _|
-      new_board = BM("PowerMerger#merge") { merge(color, board) }
+      new_board = merge(color, board)
 
       break board if new_board.power_count == board.power_count
 
@@ -224,10 +232,8 @@ class PowerExpander < BaseScaffold
   end
 
   def call
-    BM "PowerExpander#expand" do
     %w[R G B Y].reduce(@blocks) do |blocks, color|
       expand(blocks, color)
-    end
     end
   end
 
@@ -256,10 +262,8 @@ class PowerCombiner < BaseScaffold
   end
 
   def call
-    BM "PowerCombiner#call" do
     %w[R G B Y].reduce(@blocks) do |blocks, color|
       mark_power_gems(blocks, color)
-    end
     end
   end
 
@@ -271,9 +275,11 @@ class PowerCombiner < BaseScaffold
 
       break blocks if power.empty?
 
-      result = blocks.minus(power) + power.map do |block|
+      power_block = power.map do |block|
         block.copy(power: blocks.power_count)
       end
+
+      result = blocks.minus(power).plus(power_block)
 
       Board.new(result)
     end
@@ -283,9 +289,7 @@ end
 class Power < BaseScaffold
   def initialize(blocks, color)
     @color = color
-    BM "Power.new" do
     @blocks = Board.new(blocks.select { |block| block.kind == color }.sort)
-    end
   end
 
   def call
@@ -443,6 +447,10 @@ class Board < Array
 
   def unpowered
     Board.new(select(&:power_zero?))
+  end
+
+  def powered
+    Board.new(reject(&:power_zero?))
   end
 
   def power_count
@@ -922,16 +930,6 @@ if $PROGRAM_NAME == __FILE__
     ["GG", "BR"],
     ["bR", "AARR"],
   ]
-
-  # puts Benchmark.realtime {
-  #   1_000_000.times { Board.new [] }
-  # }
-
-  # puts Benchmark.realtime {
-  #   1.times { PuzzleFighter.call(instructions) }
-  # }
-
-  # pp $count.sort
 
   PuzzleFighter.call(instructions) do |fighter|
     puts DebugRun.call(fighter, ARGV[0]) if defined? DebugRun
