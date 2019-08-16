@@ -1302,12 +1302,34 @@ class GameTest < Test::Unit::TestCase
     assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
-  def xtest_solves_game_27
-    pend
+  def test_solves_game_27
+    instructions = [
+      ["GY", "L"],
+      ["RR", "ALLL"],
+      ["GY", "LR"],
+      ["GG", "LL"],
+      ["BB", "LA"],
+      ["GG", "LA"],
+      ["BB", "LA"],
+      ["GG", "LA"],
+      ["GG", "LA"],
+      ["0B", "LRR"],
+      ["Rr", "LLL"],
+    ]
 
     game_state = [
-
-
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "  GG  ",
+      "  GG  ",
+      " GGG  ",
+      " GGG  ",
+      "  YY  ",
     ].unlines
 
     assert_equal game_state, PuzzleFighter.call(instructions)
