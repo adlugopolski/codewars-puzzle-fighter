@@ -1215,8 +1215,6 @@ class GameTest < Test::Unit::TestCase
       " YRRRR",
     ].unlines
 
-    pend
-
     assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
