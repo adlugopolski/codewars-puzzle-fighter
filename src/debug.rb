@@ -142,3 +142,22 @@ class PowerDebug < BaseScaffold
     end
   end
 end
+
+def TS(comment = nil)
+  $start ||= Time.now
+  puts format("%.4f %s", Time.now - $start, comment)
+end
+
+def CN(name, value = 1)
+  $count ||= Hash.new(0)
+  $count[name] += value
+end
+
+def BM(name)
+  return yield
+  CN name + "/count"
+  from = Time.now
+  value = yield
+  CN name + "/time", Time.now - from
+  value
+end
