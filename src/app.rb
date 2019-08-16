@@ -1,5 +1,6 @@
 require "pathname"
 require "forwardable"
+require "benchmark"
 
 ERANGE = (0..Float::INFINITY).freeze
 
@@ -69,7 +70,16 @@ end
 class BoardOverflow < StandardError
 end
 
+def TS(comment = nil)
+  $start ||= Time.now
+  puts format("%.4f %s", Time.now - $start, comment)
+end
+
+$count = Hash.new(0)
+
 class PuzzleFighter < BaseScaffold
+  using ArrayExtensions
+
   attr_reader :debug, :input
 
   def initialize(input)
@@ -78,7 +88,10 @@ class PuzzleFighter < BaseScaffold
   end
 
   def call
+    puts
+    TS input.unwords.slice(0, 80)
     result
+    TS "-"
     yield self if block_given?
     output_format
   end
@@ -278,11 +291,7 @@ end
 class Power < BaseScaffold
   def initialize(blocks, color)
     @color = color
-    @blocks = Board.new(
-      blocks
-      .select { |block| block.kind? Block.new(color, 0, 0) }
-        .sort
-    )
+    @blocks = Board.new(blocks.select { |block| block.kind == color }.sort)
   end
 
   def call
@@ -293,7 +302,6 @@ class Power < BaseScaffold
 
   def find_power_block
     possible_blocks
-      .sort
       .group_by(&:y)
       .map { |y, row| [y, kinds_with_gaps(row)] }
       .map { |y, row| [y, HistogramArea.call(row)] }
@@ -402,6 +410,7 @@ class Board < Array
   end
 
   def ==(other)
+    $count["Board#=="] += 1
     return false unless size == other.size
 
     sort.zip(other.sort).all? do |sblock, oblock|
@@ -637,6 +646,8 @@ class Block
   end
 
   def <=>(other)
+    $count["<=>"] += 1
+
     return 0 if other == self
 
     if y > other.y
@@ -879,35 +890,52 @@ end
 
 if $PROGRAM_NAME == __FILE__
   instructions = [
-    ["YR", "LLL"],
-    ["bG", "LA"],
-    ["gR", "AALA"],
-    ["RR", "LBLL"],
-    ["RG", "L"],
-    ["GY", "AAALR"],
-    ["By", "LLL"],
-    ["YG", "LLL"],
-    ["RY", "LLLL"],
-    ["RG", "LA"],
-    ["YY", "LB"],
-    ["YB", "BLRRR"],
-    ["Gb", "BBBLRR"],
-    ["yb", "BBLRR"],
-    ["Y0", "LBLL"],
-    ["YG", "BBLBLLL"],
-    ["RG", "BBBLRRR"],
-    ["GB", "LALL"],
-    ["RY", "BBBLL"],
-    ["GG", "ALAAL"],
-    ["RB", "LL"],
-    ["RR", "LBB"],
-    ["YG", "BBBLR"],
-    ["YG", "ALL"],
-    ["BY", "BLRRR"],
-    ["YG", "BBLLL"],
+    ["GG", "LR"],
+    ["GG", "BLL"],
+    ["RR", "LRR"],
+    ["RR", "LRRR"],
+    ["GG", "L"],
+    ["RR", "LBL"],
+    ["YY", "LA"],
+    ["YY", "LA"],
+    ["YY", "LA"],
+    ["YY", "LA"],
+    ["YY", "ALRR"],
+    ["YY", "ALRR"],
+    ["YY", "ALRR"],
+    ["YY", "BLL"],
+    ["BB", "BLL"],
+    ["YY", "LBL"],
+    ["GG", "LBL"],
+    ["YY", "LBL"],
+    ["BB", "BLL"],
+    ["YY", "LBL"],
+    ["BB", "LA"],
+    ["BB", "LA"],
+    ["YY", "LA"],
+    ["BB", "ALRR"],
+    ["YY", "ALRR"],
+    ["YY", "ALRR"],
+    ["BB", "ALRR"],
+    ["R0", "LRRR"],
+    ["B0", "LRRR"],
+    ["YY", "BLRRR"],
+    ["BR", "LLL"],
+    ["YG", "BLRR"],
+    ["YY", "LA"],
   ]
 
-  PuzzleFighter.call(instructions) do |fighter|
-    puts DebugRun.call(fighter, ARGV[0])
-  end
+  # puts Benchmark.realtime {
+  #   1_000_000.times { Board.new [] }
+  # }
+
+  puts Benchmark.realtime {
+    50.times { PuzzleFighter.call(instructions) }
+  }
+
+  pp $count
+
+  #   PuzzleFighter.call(instructions) do |fighter|
+  #    puts DebugRun.call(fighter, ARGV[0])
+  #   end
 end
