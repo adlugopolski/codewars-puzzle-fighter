@@ -44,7 +44,7 @@ class BaseScaffold
   end
 end
 
-require_relative "debug.rb"
+# require_relative "debug.rb"
 
 class FormatOutput < BaseScaffold
   def initialize(blocks, rows = 12)
@@ -858,11 +858,11 @@ class InitialRotator < BaseScaffold
 end
 
 def puzzle_fighter(instructions)
-  # puts "["
-  # instructions.each do |line|
-  #   puts format("  %s,", line.inspect)
-  # end
-  # puts "]"
+  puts "instructions = ["
+  instructions.each do |line|
+    puts format("  %s,", line.inspect)
+  end
+  puts "]"
 
   PuzzleFighter.call(instructions)
 end
@@ -952,6 +952,6 @@ if $PROGRAM_NAME == __FILE__
   ]
 
   PuzzleFighter.call(instructions) do |fighter|
-    puts DebugRun.call(fighter, ARGV[0])
+    # puts DebugRun.call(fighter, ARGV[0])
   end
 end
