@@ -116,20 +116,20 @@ class Effects < BaseScaffold
 
   private
 
-  def precrash
-    @blocks.last(2).then do |crashes|
-      if crashes.all?(&:crash?)
-        @blocks
-          .then(crashes.first, &Crash)
-          .then(crashes.last, &Crash)
-      else
-        @blocks
-      end
-    end
-  end
+  # def precrash
+  #   @blocks.last(2).then do |crashes|
+  #     if crashes.all?(&:crash?)
+  #       @blocks
+  #         .then(crashes.first, &Crash)
+  #         .then(crashes.last, &Crash)
+  #     else
+  #       @blocks
+  #     end
+  #   end
+  # end
 
   def logic
-    ERANGE.reduce(precrash) do |eboard, _|
+    ERANGE.reduce(@blocks) do |eboard, _|
       bombs = eboard.select(&:crash?)
       new_board = crashes(bombs, eboard)
 
