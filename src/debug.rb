@@ -113,11 +113,16 @@ class PowerDebug < BaseScaffold
     " " => ".",
   }.freeze
 
-  def initialize(board)
+  def initialize(board, comment = nil)
     @board = Board.new(board)
+    @comment = comment
   end
 
   def call
+    [@comment, *table, "------"].compact
+  end
+
+  def table
     (0..11).map do |row|
       (0..5).map do |col|
         @board
@@ -125,7 +130,7 @@ class PowerDebug < BaseScaffold
           .if_none { Block.new(".", row, col, 0) }
           .then(&method(:colorize))
       end.join("")
-    end + ["------"]
+    end
   end
 
   def colorize(block)
