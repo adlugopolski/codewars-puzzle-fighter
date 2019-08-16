@@ -777,17 +777,6 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solves_game_17
-    pend
-
-    game_state = [
-
-
-    ].unlines
-
-    assert_equal game_state, PuzzleFighter.call(instructions)
-  end
-
-  def test_solves_game_18
     instructions = [
       ["BB", "LL"],
       ["Bb", "AL"],
@@ -820,6 +809,17 @@ class GameTest < Test::Unit::TestCase
       "Y   R ",
       "RR  BY",
       "RY byR",
+    ].unlines
+
+    assert_equal game_state, PuzzleFighter.call(instructions)
+  end
+
+  def test_solves_game_18
+    pend
+
+    game_state = [
+
+
     ].unlines
 
     assert_equal game_state, PuzzleFighter.call(instructions)
