@@ -1215,15 +1215,90 @@ class GameTest < Test::Unit::TestCase
       " YRRRR",
     ].unlines
 
+    pend
+
     assert_equal game_state, PuzzleFighter.call(instructions)
   end
 
-  def xtest_solves_game_25
-    pen6
+  def test_solves_game_25
+    instructions = [
+      ["BY", "AALLL"],
+      ["BB", "LL"],
+      ["GR", "BBLRR"],
+      ["RR", "LA"],
+      ["BY", "AAALLL"],
+      ["YG", "LBB"],
+      ["BY", "BLRRR"],
+      ["GR", "AAALRRR"],
+      ["Rr", "LAALLL"],
+      ["YY", "ALA"],
+      ["BG", "LLL"],
+      ["br", "LL"],
+      ["RR", "L"],
+      ["BY", "L"],
+      ["BR", "LA"],
+      ["GY", "ALLLL"],
+      ["BY", "BBBLR"],
+      ["Y0", "LLLL"],
+      ["Yr", "LAALL"],
+      ["RR", "AALR"],
+      ["GY", "LR"],
+      ["RY", "ALAL"],
+      ["RY", "ALR"],
+      ["YG", "BLL"],
+      ["RY", "AALLLL"],
+      ["GY", "LB"],
+      ["rB", "AALRR"],
+      ["Y0", "LRR"],
+      ["BG", "ALAA"],
+      ["YB", "AAALRRR"],
+      ["BR", "L"],
+      ["Yy", "ALRRR"],
+      ["BY", "LLL"],
+      ["RB", "LBBL"],
+      ["GY", "LA"],
+      ["BY", "BBLR"],
+      ["GY", "LA"],
+      ["YR", "LL"],
+      ["BB", "LBBBLL"],
+      ["YY", "AAALL"],
+      ["BG", "LAL"],
+      ["GB", "LLL"],
+      ["RB", "AALRR"],
+      ["GB", "LB"],
+      ["BY", "BBLB"],
+      ["YR", "LBBLL"],
+      ["RR", "AALR"],
+      ["GY", "LLLL"],
+      ["GY", "L"],
+      ["RY", "AALLL"],
+      ["BG", "BBLB"],
+      ["GG", "LR"],
+      ["Br", "L"],
+      ["Gr", "ALRRR"],
+      ["YR", "ALAL"],
+      ["rB", "LRR"],
+      ["GY", "AAALR"],
+      ["YY", "LBBBLL"],
+      ["GB", "ALA"],
+      ["YR", "BLRRR"],
+      ["YY", "L"],
+      ["BB", "BBBLR"],
+    ]
 
     game_state = [
-
-
+      "      ",
+      "R     ",
+      "Y     ",
+      "GBB   ",
+      "BBGRB ",
+      "YYGRR ",
+      "BBGYY ",
+      "BYGYB ",
+      "YRBYY ",
+      "YBRBY ",
+      "RRBYY ",
+      "GGGGR ",
     ].unlines
 
     assert_equal game_state, PuzzleFighter.call(instructions)
