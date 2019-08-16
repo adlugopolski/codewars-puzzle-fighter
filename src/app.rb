@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "pathname"
 require "forwardable"
 
 ERANGE = (0..Float::INFINITY).freeze
@@ -44,7 +45,9 @@ class BaseScaffold
   end
 end
 
-# require_relative "debug.rb"
+if File.exist? Pathname.new(__dir__).join("debug.rb")
+  require_relative "debug.rb"
+end
 
 class FormatOutput < BaseScaffold
   def initialize(blocks, rows = 12)
@@ -101,7 +104,7 @@ end
 
 class Effects < BaseScaffold
   def initialize(blocks)
-    @blocks = blocks.map(&:copy)
+    @blocks = Board.new blocks.map(&:copy)
   end
 
   def call
@@ -119,7 +122,7 @@ class Effects < BaseScaffold
     ERANGE.reduce(@blocks) do |eboard, _|
       bombs = eboard.select(&:crash?)
       new_board = crashes(bombs, eboard)
-      break eboard if new_board == eboard
+      break eboard if eboard == new_board
 
       new_board
     end
@@ -392,6 +395,8 @@ class Board < Array
   end
 
   def ==(other)
+    return false unless size == other.size
+
     sort.zip(other.sort).all? do |sblock, oblock|
       sblock == oblock
     end
@@ -935,23 +940,25 @@ if $PROGRAM_NAME == __FILE__
   ]
 
   instructions = [
-    ["RR", "R"],
-    ["gy", "RR"],
-    ["Gg", ""],
-    ["Yg", "A"],
-    ["GB", ""],
-    ["BB", "B"],
-    ["YG", ""],
-    ["gb", "B"],
-    ["gB", "LL"],
-    ["BY", ""],
-    ["GY", "RRR"],
-    ["BR", "BB"],
-    ["GR", "AARRR"],
-    ["YG", "LL"],
+    ["BB", "LL"],
+    ["Bb", "AL"],
+    ["yb", "BR"],
+    ["GG", "AAL"],
+    ["BR", "AAAR"],
+    ["GR", "BLLL"],
+    ["RY", "BBLLL"],
+    ["YR", "BLL"],
+    ["RY", "AAARRR"],
+    ["GY", "BRRR"],
+    ["yr", "BB"],
+    ["rY", "BBBRR"],
+    ["RR", "AAR"],
+    ["G0", "AAR"],
+    ["GR", "R"],
+    ["BR", "BBBLLL"],
   ]
 
   PuzzleFighter.call(instructions) do |fighter|
-    # puts DebugRun.call(fighter, ARGV[0])
+    puts DebugRun.call(fighter, ARGV[0])
   end
 end
