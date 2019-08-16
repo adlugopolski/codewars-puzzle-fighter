@@ -46,6 +46,10 @@ end
 
 if File.exist? Pathname.new(__dir__).join("debug.rb")
   require_relative "debug.rb"
+else
+  def BM(_)
+    yield
+  end
 end
 
 class FormatOutput < BaseScaffold
@@ -70,13 +74,6 @@ end
 class BoardOverflow < StandardError
 end
 
-def TS(comment = nil)
-  $start ||= Time.now
-  puts format("%.4f %s", Time.now - $start, comment)
-end
-
-$count = Hash.new(0)
-
 class PuzzleFighter < BaseScaffold
   using ArrayExtensions
 
@@ -88,10 +85,7 @@ class PuzzleFighter < BaseScaffold
   end
 
   def call
-    puts
-    TS input.unwords.slice(0, 80)
     result
-    TS "-"
     yield self if block_given?
     output_format
   end
@@ -99,6 +93,7 @@ class PuzzleFighter < BaseScaffold
   private
 
   def result
+    $step = 0
     @_result ||= @input.reduce([]) do |state, step|
       MainLoop.call(state, step).tap do |nstate|
         @debug << nstate
@@ -129,22 +124,9 @@ class Effects < BaseScaffold
 
   private
 
-  # def precrash
-  #   @blocks.last(2).then do |crashes|
-  #     if crashes.all?(&:crash?)
-  #       @blocks
-  #         .then(crashes.first, &Crash)
-  #         .then(crashes.last, &Crash)
-  #     else
-  #       @blocks
-  #     end
-  #   end
-  # end
-
   def logic
     ERANGE.reduce(@blocks) do |eboard, _|
-      bombs = eboard.select(&:crash?)
-      new_board = crashes(bombs, eboard)
+      new_board = crashes(eboard)
 
       break eboard if eboard == new_board
 
@@ -152,14 +134,21 @@ class Effects < BaseScaffold
     end
   end
 
-  def crashes(bombs, eboard)
-    bombs
-      .reduce(eboard) { |board, crash| Crash.call(board, crash) }
+  def crashes(eboard)
+    eboard
       .then(&Rainbow)
+      .then(&crash_steps)
       .then(&PowerCombiner)
-      .then(&PowerMerger)
-      .then(&PowerExpander)
       .then(&Gravity)
+  end
+
+  def crash_steps
+    proc do |board|
+      bombs = board.select(&:crash?)
+      bombs.reduce(board) do |rboard, crash|
+        Crash.call(rboard, crash)
+      end
+    end
   end
 end
 
@@ -170,11 +159,13 @@ class HistogramArea < BaseScaffold
 
   # This is O(N^2)
   def call
+    BM "HistogramArea#call" do
     subrows
       .select { |group| group[:size] >= 4 }
       .select { |group| group[:positions].size >= 2 }
       .select { |group| group[:values].min >= 2 }
       .max_by { |group| [group[:size], group[:positions].size] }
+    end
   end
 
   def subrows
@@ -204,7 +195,7 @@ class PowerMerger < BaseScaffold
 
   def process_color(state, color)
     ERANGE.reduce(state) do |board, _|
-      new_board = merge(color, board)
+      new_board = BM("PowerMerger#merge") { merge(color, board) }
 
       break board if new_board.power_count == board.power_count
 
@@ -216,13 +207,14 @@ class PowerMerger < BaseScaffold
     filtered_blocks = state.power_blocks(color).combination(2)
 
     filtered_blocks.reduce(state) do |board, pair|
-      power = Power.call(pair.flatten, color)
-      if pair.flatten.sort == power.sort
-        break Board.new(
-          board.minus(power) + power.map do |block|
-            block.copy(power: board.power_count)
-          end
-        )
+      verified_blocks = pair.flatten.sort
+      power = Power.call(verified_blocks, color)
+      if verified_blocks == power
+        new_power_block = power.map do |block|
+          block.copy(power: board.power_count)
+        end
+
+        break board.minus(power).plus(new_power_block)
       else
         board
       end
@@ -236,8 +228,10 @@ class PowerExpander < BaseScaffold
   end
 
   def call
+    BM "PowerExpander#expand" do
     %w[R G B Y].reduce(@blocks) do |blocks, color|
       expand(blocks, color)
+    end
     end
   end
 
@@ -266,8 +260,10 @@ class PowerCombiner < BaseScaffold
   end
 
   def call
+    BM "PowerCombiner#call" do
     %w[R G B Y].reduce(@blocks) do |blocks, color|
       mark_power_gems(blocks, color)
+    end
     end
   end
 
@@ -291,7 +287,9 @@ end
 class Power < BaseScaffold
   def initialize(blocks, color)
     @color = color
+    BM "Power.new" do
     @blocks = Board.new(blocks.select { |block| block.kind == color }.sort)
+    end
   end
 
   def call
@@ -322,7 +320,7 @@ class Power < BaseScaffold
   end
 
   def possible_blocks
-    @blocks.each_with_object(Board.new) do |block, memo|
+    @blocks.reduce(Board.new) do |memo, block|
       upper_block = memo.at(block.x, block.y - 1) || Block.new(0, 0, 0)
       memo.append block.copy(kind: upper_block.kind + 1)
     end
@@ -410,7 +408,6 @@ class Board < Array
   end
 
   def ==(other)
-    $count["Board#=="] += 1
     return false unless size == other.size
 
     sort.zip(other.sort).all? do |sblock, oblock|
@@ -424,6 +421,14 @@ class Board < Array
         Array(elements).include?(current)
       end
     )
+  end
+
+  def plus(elements)
+    Board.new(self + elements)
+  end
+
+  def +(_)
+    super
   end
 
   def contains?(elements)
@@ -646,8 +651,6 @@ class Block
   end
 
   def <=>(other)
-    $count["<=>"] += 1
-
     return 0 if other == self
 
     if y > other.y
@@ -710,7 +713,7 @@ end
 
 class Overflow < BaseScaffold
   def initialize(state, blocks)
-    @state = state
+    @state = Board.new(state)
     @blocks = Array(blocks)
   end
 
@@ -728,10 +731,15 @@ class Overflow < BaseScaffold
 
   def overflow?
     projection
+      .select { |block| [0, 1].include?(block.y) }
       .group_by(&:x)
       .values
       .map(&:size)
-      .any? { |size| size > 12 }
+      .any? { |size| size > 2 }
+  end
+
+  def initial?
+    @state.at(3, 0)
   end
 end
 
@@ -890,52 +898,48 @@ end
 
 if $PROGRAM_NAME == __FILE__
   instructions = [
-    ["GG", "LR"],
-    ["GG", "BLL"],
-    ["RR", "LRR"],
-    ["RR", "LRRR"],
+    ["BG", "AAAR"],
+    ["RY", "AL"],
+    ["bR", ""],
+    ["RB", "BBL"],
+    ["B0", "BB"],
+    ["BR", "LL"],
+    ["gR", "AA"],
+    ["RB", "L"],
+    ["BR", "BBRRR"],
+    ["BR", "BBRR"],
+    ["BY", "RRR"],
+    ["YR", "BB"],
+    ["YB", "AALL"],
+    ["GB", ""],
+    ["RG", "AAR"],
+    ["BB", "BBB"],
     ["GG", "L"],
-    ["RR", "LBL"],
-    ["YY", "LA"],
-    ["YY", "LA"],
-    ["YY", "LA"],
-    ["YY", "LA"],
-    ["YY", "ALRR"],
-    ["YY", "ALRR"],
-    ["YY", "ALRR"],
-    ["YY", "BLL"],
-    ["BB", "BLL"],
-    ["YY", "LBL"],
-    ["GG", "LBL"],
-    ["YY", "LBL"],
-    ["BB", "BLL"],
-    ["YY", "LBL"],
-    ["BB", "LA"],
-    ["BB", "LA"],
-    ["YY", "LA"],
-    ["BB", "ALRR"],
-    ["YY", "ALRR"],
-    ["YY", "ALRR"],
-    ["BB", "ALRR"],
-    ["R0", "LRRR"],
-    ["B0", "LRRR"],
-    ["YY", "BLRRR"],
-    ["BR", "LLL"],
-    ["YG", "BLRR"],
-    ["YY", "LA"],
+    ["RR", "BRR"],
+    ["GB", "ALLL"],
+    ["RG", "ALL"],
+    ["BG", "AA"],
+    ["BG", "AAARR"],
+    ["R0", "AAA"],
+    ["Gb", "LL"],
+    ["gY", "BRRR"],
+    ["RY", "BBBRR"],
+    ["GY", "AARR"],
+    ["YR", "AAR"],
+    ["bG", "BLL"],
   ]
 
   # puts Benchmark.realtime {
   #   1_000_000.times { Board.new [] }
   # }
 
-  puts Benchmark.realtime {
-    50.times { PuzzleFighter.call(instructions) }
-  }
+  # puts Benchmark.realtime {
+  #   1.times { PuzzleFighter.call(instructions) }
+  # }
 
-  pp $count
+  # pp $count.sort
 
-  #   PuzzleFighter.call(instructions) do |fighter|
-  #    puts DebugRun.call(fighter, ARGV[0])
-  #   end
+  PuzzleFighter.call(instructions) do |fighter|
+    puts DebugRun.call(fighter, ARGV[0]) if defined? DebugRun
+  end
 end
