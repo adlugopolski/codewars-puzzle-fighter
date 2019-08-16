@@ -154,7 +154,6 @@ def CN(name, value = 1)
 end
 
 def BM(name)
-  return yield
   CN name + "/count"
   from = Time.now
   value = yield
