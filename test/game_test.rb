@@ -669,7 +669,7 @@ class GameTest < Test::Unit::TestCase
       ["GB", "AAR"],
     ]
 
-    game_state =[
+    game_state = [
       "      ",
       "   b  ",
       "  RY  ",
@@ -743,11 +743,60 @@ class GameTest < Test::Unit::TestCase
   end
 
   def test_solves_game_16
+    instructions = [
+      ["RR", "R"],
+      ["gy", "RR"],
+      ["Gg", ""],
+      ["Yg", "A"],
+      ["GB", ""],
+      ["BB", "B"],
+      ["YG", ""],
+      ["gb", "B"],
+      ["gB", "LL"],
+      ["BY", ""],
+      ["GY", "RRR"],
+      ["BR", "BB"],
+      ["GR", "AARRR"],
+      ["YG", "LL"],
+    ]
+
+    game_state = [
+      "      ",
+      "      ",
+      "      ",
+      "      ",
+      "   R  ",
+      "   B  ",
+      "   B R",
+      "   Y G",
+      "   g G",
+      "   Y Y",
+      " Y GRg",
+      " B YRy",
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 
   def test_solves_game_17
+    pend
+
+    game_state = [
+
+
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 
   def test_solves_game_18
+    pend
+
+    game_state = [
+
+
+    ].unlines
+
+    assert_equal game_state, puzzle_fighter(instructions)
   end
 end
